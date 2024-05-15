@@ -19,10 +19,11 @@ Map::Map(int enemies_number, int npc_number) {
     this->id = tempID++;
     this->enemies_number = enemies_number;
     this->npc_number = npc_number;
-    // TODO napraw to kiedys debilu
     this->entity_vec = tansformEntities(generateMap(25,14));
     this->items_vec = transformObjects(generateMap(25,14));
     this->map_vec = generateMap(25,14);
+
+
 //    this->map_vec = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 //                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 //                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -46,8 +47,6 @@ Map::Map(int enemies_number, int npc_number) {
 //    };
     this->walls_vec = transformWalls(map_vec);
 }
-
-
 std::vector<std::vector<int>> Map::generateMap(int x, int y) {
     if(x < 2 or y < 2){
        x = 10;
@@ -60,7 +59,7 @@ std::vector<std::vector<int>> Map::generateMap(int x, int y) {
     std::mt19937 gen(rd()); // Mersenne Twister engine
 
     std::uniform_int_distribution<> dist(0, 3);
-    ;
+
     std::uniform_int_distribution<> distDoor(ground + 1, y - 3);
     std::uniform_int_distribution<> xoidGen(3, y-5);
     std::uniform_int_distribution<> platformLength(2, 4);
@@ -71,6 +70,11 @@ std::vector<std::vector<int>> Map::generateMap(int x, int y) {
     int column = distDoor(gen);
     int platform = distDoor(gen);
     int platformY = distDoor(gen);
+    int platformN = distDoor(gen);
+    int platformY2 = distDoor(gen);
+    if(platform == platformN){
+        platformN = distDoor(gen);
+    }
 
     int xoid = xoidGen(gen);
     int door = distDoor(gen);
@@ -91,6 +95,9 @@ std::vector<std::vector<int>> Map::generateMap(int x, int y) {
                 temp.push_back(1);
             }
             else if(j >= platform and j <platform + platfLength and i == platformY){
+                temp.push_back(1);
+            }
+            else if(j >= platformN and j <platformN + platfLength and i == platformY2){
                 temp.push_back(1);
             }
             else if(j == column and i <= y - ground - 1 and i >= y - ground - platfLength){

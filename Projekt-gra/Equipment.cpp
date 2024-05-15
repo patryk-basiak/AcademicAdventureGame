@@ -15,7 +15,7 @@ Equipment::Equipment(){
     eqRect.setSize(sf::Vector2f(220,220));
     eqRect.setPosition(800 - (eqRect.getSize().x/2),450 - (eqRect.getSize().y/2));
     eqRect.setFillColor({173,216,230,255});
-    smallEq.setSize(sf::Vector2f(230,70));
+    smallEq.setSize(sf::Vector2f(220,70));
     smallEq.setPosition(800 - (smallEq.getSize().x/2),900 - (smallEq.getSize().y));
     smallEq.setFillColor(sf::Color::Magenta);
 
@@ -159,7 +159,7 @@ void Equipment::movedMouse() {
         this->currentEq = 0;
         pointer.setPosition(700, 840);
     }
-    if(pointer.getPosition().x < 700  or pointer.getPosition().x > 920){
+    if(pointer.getPosition().x < 700  or pointer.getPosition().x > 900){
         pointer.setPosition(700,840);
     }
 
@@ -169,11 +169,11 @@ void Equipment::movedMouseDown() {
     this->currentEq -= 1;
     pointer.setPosition(pointer.getPosition().x - 70, pointer.getPosition().y);
     if(this->currentEq < 0){
-        pointer.setPosition(910, pointer.getPosition().y);
+        pointer.setPosition(840, pointer.getPosition().y);
         this->currentEq = 3;
     }
-    if(pointer.getPosition().x < 690 or pointer.getPosition().x > 910 ){
-        pointer.setPosition(  910, 840);
+    if(pointer.getPosition().x < 690 or pointer.getPosition().x > 900 ){
+        pointer.setPosition(840, 840);
     }
 }
 

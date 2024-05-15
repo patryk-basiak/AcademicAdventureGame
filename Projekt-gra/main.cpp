@@ -19,37 +19,37 @@ auto transform(std::vector<std::vector<int>>) -> std::vector<std::unique_ptr<Wal
 auto block_until_gained_focus(sf::Window& window) -> void;
 
 auto main() -> int {
-    auto window = sf::RenderWindow(
+    sf::RenderWindow window = sf::RenderWindow(
             sf::VideoMode({1600, 900}), "Adventure",
             sf::Style::Default, sf::ContextSettings(0, 0, 8));
     // set frame limit
 //    window.setFramerateLimit(144);
     // game initialize bool
-    auto game = true;
+    bool game = true;
     // lvl
-    auto menu = false;
-    auto pause = false;
+    bool menu = false;
+    bool pause = false;
     //background image
     sf::Font font;
     if (!font.loadFromFile("../graphics/arial.ttf")) {
         fmt::println("font loading error");
     }
-    auto textX = sf::Text("000", font, 30);
+    sf::Text textX = sf::Text("000", font, 30);
     textX.setPosition({1250, 150});
     textX.setFillColor(sf::Color::Black);
 
-    auto showLvlnumber = sf::Text("000", font, 30);
+    sf::Text showLvlnumber = sf::Text("000", font, 30);
     showLvlnumber.setPosition({1250, 200});
     showLvlnumber.setFillColor(sf::Color::Black);
 
-    auto fps = sf::Text("000", font, 30);
+    sf::Text fps = sf::Text("000", font, 30);
     fps.setPosition({1250, 250});
     fps.setFillColor(sf::Color::Black);
 
-    auto textY = sf::Text("000", font, 30);
+    sf::Text textY = sf::Text("000", font, 30);
     textY.setPosition({1250, 100});
     textY.setFillColor(sf::Color::Black);
-    auto health = sf::Text("Health: 000", font, 30);
+    sf::Text health = sf::Text("Health: 000", font, 30);
     health.setPosition({150, 150});
     health.setFillColor(sf::Color::Black);
 
@@ -65,12 +65,12 @@ auto main() -> int {
     // lvls as vectors
     // transform int into sf::RectangleShape
 
-    auto maps = std::vector<Map>{
+    std::vector<Map> maps = std::vector<Map>{
         Map(3,1), Map(2,4), Map(5,1)};
 
-    auto lastLvl = 5; //
+    int lastLvl = 5; //
     int current_Lvl = 0;
-    auto currentMap = maps[current_Lvl];
+    Map currentMap = maps[current_Lvl];
     sf::Clock clock;
     sf::Clock timer;
 
@@ -86,7 +86,7 @@ auto main() -> int {
             health.setString("Health: " + std::to_string(player.getHealth()));
             fps.setString("FPS: " + std::to_string((int)std::round(1/deltaTime.asSeconds())));
             textY.setString("Y pos: " + std::to_string(((int) player.getPosition().y)));
-            auto event = sf::Event();
+            sf::Event event = sf::Event();
             while (window.pollEvent(event)) {
                 if (event.type == sf::Event::Closed) {
                     window.close();
