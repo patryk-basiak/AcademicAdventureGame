@@ -19,6 +19,7 @@ Map::Map(int enemies_number, int npc_number) {
     this->id = tempID++;
     this->enemies_number = enemies_number;
     this->npc_number = npc_number;
+    // TODO napraw to kiedys debilu
     this->entity_vec = tansformEntities(generateMap(25,14));
     this->items_vec = transformObjects(generateMap(25,14));
     this->map_vec = generateMap(25,14);
