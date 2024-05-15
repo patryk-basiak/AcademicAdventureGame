@@ -1,0 +1,200 @@
+#include "Equipment.h"
+#include "fmt/ranges.h"
+#include "objects/Pistol.h"
+#include "Player.h"
+#include "Settings.h"
+#include "objects/Coin.h"
+
+std::vector<int> Equipment::eq;
+
+Equipment::Equipment(){
+    if (!this->font.loadFromFile("../graphics/arial.ttf")) {
+        fmt::println("font loading error");
+    }
+    this->currentEq = 0;
+    eqRect.setSize(sf::Vector2f(220,220));
+    eqRect.setPosition(800 - (eqRect.getSize().x/2),450 - (eqRect.getSize().y/2));
+    eqRect.setFillColor({173,216,230,255});
+    smallEq.setSize(sf::Vector2f(230,70));
+    smallEq.setPosition(800 - (smallEq.getSize().x/2),900 - (smallEq.getSize().y));
+    smallEq.setFillColor(sf::Color::Magenta);
+
+    pointer.setSize(sf::Vector2f(70,50));
+    pointer.setPosition(700,840);
+    pointer.setOutlineColor(sf::Color::Black);
+    pointer.setFillColor(sf::Color{0,0,0,0});
+    pointer.setOutlineThickness(2);
+}
+
+void Equipment::show() {
+    if(isShown){
+        isShown = false;
+        movable = true;
+    }else {
+        this->isShown = true;
+        movable = false;
+    }
+}
+
+
+
+void Equipment::update(sf::RenderWindow& window, Player& player) const {
+    Equipment::showInHand(player, window);
+    if (!this->isShown) {
+        window.draw(smallEq);
+        window.draw(pointer);
+        float x = smallEq.getPosition().x + padding, y = smallEq.getPosition().y + 5;
+
+        for (auto &item: items) {
+            if (item.second.first->isStackable() and item.second.second > 1) {
+                auto itemCount = sf::Text("000", font, 12);
+                itemCount.setPosition({x + 20, y + 30});
+                itemCount.setFillColor(sf::Color::Black);
+                itemCount.setString(std::to_string(item.second.second));
+                window.draw(itemCount);
+            }
+            int id = item.second.first->getId();
+            if (id == 2) {
+                Pistol temp(x, y);
+                temp.draw(window);
+            } else if (id == 3) {
+                Coin temp(x, y, 15);
+                temp.draw(window);
+            }
+            y += 70.0f;
+        }
+    } else {
+        window.draw(eqRect);
+        float x = eqRect.getPosition().x + padding, y = eqRect.getPosition().y + padding;
+        for (auto &item: items) {
+            if (item.second.first->isStackable() and item.second.second > 1) {
+                auto itemCount = sf::Text("0", font, 12);
+                itemCount.setPosition({x + 20, y + 30});
+                itemCount.setFillColor(sf::Color::Black);
+                itemCount.setString(std::to_string(item.second.second));
+                window.draw(itemCount);
+            }
+            int id = item.second.first->getId();
+            if (id == 2) {
+                Pistol temp(x, y, 30, 30);
+                temp.draw(window);
+            } else if (id == 3) {
+                Coin temp(x, y, 15);
+                temp.draw(window);
+            }
+
+            y += 70.0f;
+            if (y > 470) {
+                y = 320;
+                x += 70.0f;
+            }
+        }
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            sf::Vector2i pos = sf::Mouse::getPosition(window);
+            for (int i = 0; i < 3; ++i) {
+                for (int j = 0; j < 3; ++j) {
+
+                    if (pos.x >= 320 + (70 * i) && pos.x <= 380 + (70 * i) && pos.y >= 320 + (70 * j) &&
+                        pos.y <= 380 + (70 * j)) {
+                        if (j == 0) {
+                            fmt::println("Kliknięto w pole: {}", i);
+                        }
+                        if (j == 1)
+                            fmt::println("Kliknięto w pole: {}", i + j + 2);
+                        if (j == 2) {
+                            fmt::println("Kliknięto w pole: {}", i + j + 4);
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+}
+
+int Equipment::itemInHand() const {
+    if (!eq.empty()){
+        return eq[currentEq];
+    }
+    return -1;
+}
+void Equipment::showInHand(Player player, sf::RenderWindow& window) const {
+    if (!items.empty() && currentEq < items.size()) {
+        auto& item = temp_items.at(currentEq);
+        if (item == nullptr) {
+            return;
+        }
+        int id = item->getId();
+        float posX = player.getPosition().x + 50;
+        float posY = player.getPosition().y;
+        switch (id) {
+            case 3: { // Coin
+                Coin temp(posX, posY, 15);
+                temp.draw(window);
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                    temp.usage();
+                    temp.update(window);
+                }
+                break;
+            }
+            case 2: { // Pistol
+                Pistol temp(posX, posY);
+                temp.draw(window);
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                    temp.usage();
+                    temp.update(window);
+                }
+                break;
+            }
+        }
+    }
+}
+
+void Equipment::movedMouse() {
+    this->currentEq += 1;
+    pointer.setPosition(pointer.getPosition().x + 70, pointer.getPosition().y);
+    if(this->currentEq >= 3){
+        this->currentEq = 0;
+        pointer.setPosition(700, 840);
+    }
+    if(pointer.getPosition().x < 700  or pointer.getPosition().x > 920){
+        pointer.setPosition(700,840);
+    }
+
+}
+
+void Equipment::movedMouseDown() {
+    this->currentEq -= 1;
+    pointer.setPosition(pointer.getPosition().x - 70, pointer.getPosition().y);
+    if(this->currentEq < 0){
+        pointer.setPosition(910, pointer.getPosition().y);
+        this->currentEq = 3;
+    }
+    if(pointer.getPosition().x < 690 or pointer.getPosition().x > 910 ){
+        pointer.setPosition(  910, 840);
+    }
+}
+
+void Equipment::addItem(const std::shared_ptr<Collectable>& itemPtr) {
+    if(items.find(itemPtr->getId()) == items.end()){
+        items.insert({itemPtr->getId(), {itemPtr, 1}});
+        if(temp_items.size() < 3){
+            temp_items.push_back(itemPtr);
+        }
+    }else{
+        if(itemPtr->isStackable()){
+                items.find(itemPtr->getId())->second.second++;
+        }
+    }
+}
+
+void Equipment::useItemInHand() {
+    if(!temp_items.empty()){
+        this->temp_items[currentEq]->usage();
+    }
+
+
+}
+

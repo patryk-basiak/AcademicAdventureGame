@@ -1,0 +1,165 @@
+#include "SFML/Graphics.hpp"
+#include "SFML/System/Clock.hpp"
+#include "fmt/core.h"
+#include "fmt/ostream.h"
+#include "fmt/ranges.h"
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <fstream>
+#include <random>
+#include "Player.h"
+#include "Equipment.h"
+#include "ResourceManager.h"
+#include "Map.h"
+
+auto transform(std::vector<std::vector<int>>) -> std::vector<std::unique_ptr<Wall>>;
+auto block_until_gained_focus(sf::Window& window) -> void;
+
+auto main() -> int {
+    auto window = sf::RenderWindow(
+            sf::VideoMode({1600, 900}), "Adventure",
+            sf::Style::Default, sf::ContextSettings(0, 0, 8));
+    // set frame limit
+//    window.setFramerateLimit(144);
+    // game initialize bool
+    auto game = true;
+    // lvl
+    auto menu = false;
+    auto pause = false;
+    //background image
+    sf::Font font;
+    if (!font.loadFromFile("../graphics/arial.ttf")) {
+        fmt::println("font loading error");
+    }
+    auto textX = sf::Text("000", font, 30);
+    textX.setPosition({1250, 150});
+    textX.setFillColor(sf::Color::Black);
+
+    auto showLvlnumber = sf::Text("000", font, 30);
+    showLvlnumber.setPosition({1250, 200});
+    showLvlnumber.setFillColor(sf::Color::Black);
+
+    auto fps = sf::Text("000", font, 30);
+    fps.setPosition({1250, 250});
+    fps.setFillColor(sf::Color::Black);
+
+    auto textY = sf::Text("000", font, 30);
+    textY.setPosition({1250, 100});
+    textY.setFillColor(sf::Color::Black);
+    auto health = sf::Text("Health: 000", font, 30);
+    health.setPosition({150, 150});
+    health.setFillColor(sf::Color::Black);
+
+    // creating background image
+    sf::Texture worldBackground = sf::Texture();
+    sf::Sprite worldBack = sf::Sprite();
+    worldBack.setTexture(ResourceManager::getTexture("../graphics/backgroundCity.png"));
+    worldBack.scale(0.78125, 0.78125);
+
+    // initialize player
+    Player player;
+    Equipment eq;
+    // lvls as vectors
+    // transform int into sf::RectangleShape
+
+    auto maps = std::vector<Map>{
+        Map(3,1), Map(2,4), Map(5,1)};
+
+    auto lastLvl = 5; //
+    int current_Lvl = 0;
+    auto currentMap = maps[current_Lvl];
+    sf::Clock clock;
+    sf::Clock timer;
+
+
+    while (window.isOpen()) {
+//        while(pause){
+//
+//        }
+        while (game) {
+            sf::Time deltaTime = clock.restart();
+            textX.setString("X pos: " + std::to_string(((int) player.getPosition().x)));
+            showLvlnumber.setString("Current lvl: " + std::to_string(((int)current_Lvl)));
+            health.setString("Health: " + std::to_string(player.getHealth()));
+            fps.setString("FPS: " + std::to_string((int)std::round(1/deltaTime.asSeconds())));
+            textY.setString("Y pos: " + std::to_string(((int) player.getPosition().y)));
+            auto event = sf::Event();
+            while (window.pollEvent(event)) {
+                if (event.type == sf::Event::Closed) {
+                    window.close();
+                    game = false;
+                }
+                if (event.type == sf::Event::KeyPressed)
+                    if (event.key.code == sf::Keyboard::E) {
+                        eq.show();
+                    }
+                if(event.type == sf::Event::LostFocus){
+                    // source https://stackoverflow.com/questions/73884580/sfml-lostfocus-gainedfocus-cpu-usage
+                    block_until_gained_focus(window);
+                }
+                if(event.type == sf::Event::GainedFocus){
+                    // resume
+                }
+                if(event.type == sf::Event::MouseWheelScrolled){
+                    if (event.mouseWheelScroll.delta > 0)
+                    {
+                        eq.movedMouse();
+                    }
+                    else if (event.mouseWheelScroll.delta < 0)
+                    {
+                        eq.movedMouseDown();
+                    }
+
+                }
+                if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                    eq.useItemInHand();
+                }
+
+            }
+            if (player.getPosition().x >=  (float)(window.getSize().x - 30)) {
+                player.setPosition(0.f, player.getSurface());
+                if (current_Lvl != lastLvl)
+                    player.setStartPosition();
+                    current_Lvl += 1;
+                    currentMap = maps[current_Lvl];
+
+
+            }
+            if (player.getPosition().x < -40) {
+                player.setPosition((float)(window.getSize().x - 30), player.getSurface());
+                if (current_Lvl != 0)
+                    player.setEndPosition();
+                    current_Lvl -= 1;
+                    currentMap = maps[current_Lvl];
+
+                if (current_Lvl == 0) {
+                    player.setPosition(-10.f, player.getSurface());
+                }
+            }
+            window.clear(sf::Color::White);
+            currentMap.update(window,deltaTime, player, eq);
+            currentMap.draw(window);
+            window.draw(textX);
+            window.draw(showLvlnumber);
+            window.draw(fps);
+            window.draw(textY);
+            window.draw(health);
+            player.update(deltaTime);
+            player.draw(window);
+            eq.update(window, player);
+            window.display();
+        }
+    }
+}
+
+void block_until_gained_focus(sf::Window& window) {
+    sf::Event event{};
+    while (true) {
+        if (window.waitEvent(event) && event.type == sf::Event::GainedFocus) {
+            return;
+        }
+    }
+}

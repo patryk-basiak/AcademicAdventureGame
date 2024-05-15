@@ -1,0 +1,44 @@
+Version 0.0.1
+created: 10.05.2024r.
+last edited: null
+--------------------------------
+ID for map generation:
+0 - void (not an object)
+1 - Wall
+2- Jump pad
+
+---------------------------------
+ID for items:
+0 - null (not an object)
+1 -
+2 - Pistol
+3 - Coin
+4 - Bullet
+5 -
+---------------------------------
+Classes:
+main.cpp
+player.cpp
+ResourceManager.cpp
+settings.cpp
+
+Collectable:
+    - Coin
+    - Pistol
+    - Bullet (still empty)
+Entity:
+    -
+
+Wall:
+    -Jump Pad
+
+---------------------------------
+Levels:
+
+
+
+
+
+
+---------------------------------
+Story:
