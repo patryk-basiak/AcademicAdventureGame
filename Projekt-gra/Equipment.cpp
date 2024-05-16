@@ -83,10 +83,10 @@ void Equipment::update(sf::RenderWindow& window, Player& player) const {
                 temp.draw(window);
             }
 
-            y += 70.0f;
+            x += 70.0f;
             if (y > 470) {
-                y = 320;
-                x += 70.0f;
+                x = 320;
+                y += 70.0f;
             }
         }
 

@@ -7,10 +7,11 @@
 
 
 Player::Player() {
-    collisionRect = sf::FloatRect(300,200+100, 46.88, 71.76);
-    player.setScale(0.08,0.08);
-    size.push_back(46.88);
-    size.push_back(71.76);
+    collisionRect = sf::FloatRect(400,500, 46.88, 71.76);
+    player.setPosition(300,150);
+    player.setScale(0.06,0.06);
+    size.push_back(35.16);
+    size.push_back(53.82);
 }
 
 void Player::move(float x, float y) {

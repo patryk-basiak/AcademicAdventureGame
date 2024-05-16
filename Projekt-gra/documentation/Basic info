@@ -16,6 +16,11 @@ ID for items:
 4 - Bullet
 5 -
 ---------------------------------
+ID for entities:
+0 - null (not an object)
+1 -
+2 -
+3 - Entity
 Classes:
 main.cpp
 player.cpp

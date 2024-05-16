@@ -11,7 +11,11 @@ public:
     sf::FloatRect getGlobalBounds();
     void update(sf::Time time);
     void collision(Player& player);
+    sf::Vector2<float> getPosition();
+    sf::Vector2<float> getSize();
 
+
+    void setPosition(float d, float d1);
 
 private:
     sf::RectangleShape entity;

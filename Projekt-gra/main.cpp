@@ -96,10 +96,10 @@ auto main() -> int {
                     if (event.key.code == sf::Keyboard::E) {
                         eq.show();
                     }
-                if(event.type == sf::Event::LostFocus){
-                    // source https://stackoverflow.com/questions/73884580/sfml-lostfocus-gainedfocus-cpu-usage
-                    block_until_gained_focus(window);
-                }
+//                if(event.type == sf::Event::LostFocus){
+//                    // source https://stackoverflow.com/questions/73884580/sfml-lostfocus-gainedfocus-cpu-usage
+////                    block_until_gained_focus(window);
+//                }
                 if(event.type == sf::Event::GainedFocus){
                     // resume
                 }

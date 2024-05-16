@@ -11,7 +11,7 @@ Entity::Entity(float x, float y) {
     this->entity.setPosition(x, y);
     this->startPosition = sf::Vector2f(x,y);
     this->entity.setFillColor(sf::Color{255, 0, 0});
-    this->entity.setSize(sf::Vector2f(100,100));
+    this->entity.setSize(sf::Vector2f(64,32));
 }
 
 sf::FloatRect Entity::getGlobalBounds() {
@@ -41,5 +41,17 @@ void Entity::update(sf::Time time) {
 
 void Entity::collision(Player &player) {
     player.setHealth(player.getHealth()-1);
+}
+
+sf::Vector2<float> Entity::getPosition() {
+    return this->entity.getPosition();
+}
+
+sf::Vector2<float> Entity::getSize() {
+    return this->entity.getSize();
+}
+
+void Entity::setPosition(float d, float d1) {
+    this->entity.setPosition(d,d1);
 }
 

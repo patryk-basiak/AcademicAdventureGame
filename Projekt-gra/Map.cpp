@@ -5,6 +5,7 @@
 #include <random>
 #include "Map.h"
 #include "ranges"
+#include <cfloat>
 #include <fmt/ranges.h>
 #include "objects/Pistol.h"
 #include "objects/Coin.h"
@@ -19,10 +20,10 @@ Map::Map(int enemies_number, int npc_number) {
     this->id = tempID++;
     this->enemies_number = enemies_number;
     this->npc_number = npc_number;
-    this->entity_vec = tansformEntities(generateMap(25,14));
-    this->items_vec = transformObjects(generateMap(25,14));
-    this->map_vec = generateMap(25,14);
-
+    this->map_vec = this->generateMap(25,14);
+    this->entity_vec = tansformEntities(map_vec[2]);
+    this->items_vec = transformObjects(map_vec[1]);
+    this->walls_vec = transformWalls(map_vec[0]);
 
 //    this->map_vec = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 //                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -45,14 +46,14 @@ Map::Map(int enemies_number, int npc_number) {
 //                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 //                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 //    };
-    this->walls_vec = transformWalls(map_vec);
+
 }
-std::vector<std::vector<int>> Map::generateMap(int x, int y) {
+std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const {
     if(x < 2 or y < 2){
        x = 10;
        y = 10;
     }
-    auto vec = std::vector<std::vector<int>>();
+    auto vec = std::vector<std::vector<std::vector<int>>>();
     int ground = 2;
     // source: https://stackoverflow.com/questions/22923551/generating-number-0-1-using-mersenne-twister-c
     std::random_device rd;
@@ -63,6 +64,8 @@ std::vector<std::vector<int>> Map::generateMap(int x, int y) {
     std::uniform_int_distribution<> distDoor(ground + 1, y - 3);
     std::uniform_int_distribution<> xoidGen(3, y-5);
     std::uniform_int_distribution<> platformLength(2, 4);
+    std::uniform_int_distribution<> spawn(0, 5);
+    std::uniform_int_distribution<> enemy(0, 4);
 
     int random = dist(gen);
     int platfLength = platformLength(gen);
@@ -78,41 +81,83 @@ std::vector<std::vector<int>> Map::generateMap(int x, int y) {
 
     int xoid = xoidGen(gen);
     int door = distDoor(gen);
+    std::vector<std::vector<int>> walls = std::vector<std::vector<int>>();
+    int items = 4;
+    std::vector<std::vector<int>> vec_items = std::vector<std::vector<int>>();
+    std::vector<std::vector<int>> vec_enemies = std::vector<std::vector<int>>();
     for(int i = 0; i<y; ++i){
         std::vector temp = std::vector<int>();
+        std::vector temporaryItems = std::vector<int>();
+        std::vector temporaryEnemy = std::vector<int>();
         for(int j = 0; j<x; ++j){
             if(j == x -1 and (i == door or i == door -1)){
                 temp.push_back(99);
-            }else if(j == 0 or j == x-1){
+                temporaryItems.push_back(0);
+                temporaryEnemy.push_back(0);
+            }
+            else if( (i == door + 3 and j == x - 6) or (i == door + 4 and j > x - 8 and j <= x - dist(gen))){
                 temp.push_back(1);
+            }
+            else if(j == 0 or j == x-1){
+                temp.push_back(1);
+                temporaryItems.push_back(0);
+                temporaryEnemy.push_back(0);
             }else if(j >= x-3 and i == door +1) {
                 temp.push_back(1);
+                temporaryItems.push_back(0);
+                temporaryEnemy.push_back(0);
             }
             else if(j >= xoid and j < xoid + 4 and i >= y - ground){
                 temp.push_back(0);
+                temporaryItems.push_back(3);
+                temporaryEnemy.push_back(0);
             }
             else if(j >= xoid and j < xoid + platfLength and i == y - ground - 3){
                 temp.push_back(1);
+                temporaryItems.push_back(0);
+                temporaryEnemy.push_back(0);
+            }
+            else if(i == y - ground - 2){
+                temporaryItems.push_back(0);
+                temp.push_back(0);
+                temporaryEnemy.push_back(enemy(gen));
             }
             else if(j >= platform and j <platform + platfLength and i == platformY){
-                temp.push_back(1);
-            }
-            else if(j >= platformN and j <platformN + platfLength and i == platformY2){
-                temp.push_back(1);
+                temp.push_back(0);
+                temporaryItems.push_back(3);
+                temporaryEnemy.push_back(0);
             }
             else if(j == column and i <= y - ground - 1 and i >= y - ground - platfLength){
                 temp.push_back(1);
+                temporaryItems.push_back(0);
+                temporaryEnemy.push_back(0);
             }
             else if(i >= y - ground){
                 temp.push_back(1);
+                temporaryItems.push_back(0);
+                temporaryEnemy.push_back(0);
             }
             else{
+                temporaryEnemy.push_back(0);
                 temp.push_back(0);
+                int rand = spawn(gen);
+                if( rand != 0 and items > 0 and j % 6 == 0){
+                    temporaryItems.push_back(rand);
+                    items--;
+                }
+
             }
 
         }
-        vec.push_back(temp);
+        if(!temporaryItems.empty()){
+            vec_items.push_back(temporaryItems);
+        }
+        vec_enemies.push_back(temporaryEnemy);
+        walls.push_back(temp);
     }
+    vec.push_back(walls);
+    vec.push_back(vec_items);
+    vec.push_back(vec_enemies);
     return vec;
 
 }
@@ -189,6 +234,9 @@ std::vector<std::shared_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
 
 void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipment& eq){
     this->checkCollision(player);
+    for(auto &e: entity_vec){
+        this->checkCollisionEntity(reinterpret_cast<Entity &>(e));
+    }
     for (auto it = items_vec.begin(); it != items_vec.end(); it++) {
         (*it)->update(window);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
@@ -256,6 +304,36 @@ void Map::checkCollision(Player& player) {
                 // Right
                 player.setVelocity(0);
                 player.setPosition(wallRight + 10, player.getPosition().y);
+                fmt::print("Collision with the right ({}, {})\n", wall->getPosition().x,
+                           wall->getPosition().y);
+            }
+
+        }
+    }
+}
+
+void Map::checkCollisionEntity(Entity& entity){
+    float playerBottom = entity.getPosition().y + entity.getSize().y;
+    float playerTop = entity.getPosition().y;
+    float playerLeft = entity.getPosition().x;
+    float playerRight = entity.getPosition().x + entity.getSize().x;
+    for (const auto &wall: walls_vec) {
+
+        float wallTop = wall->getPosition().y;
+        float wallLeft = wall->getPosition().x;
+        float wallRight = wall->getPosition().x + wall->getSize().x;
+        float wallBottom = wall->getPosition().y + wall->getSize().y;
+
+        if (playerRight > wallLeft && playerLeft < wallRight && playerBottom > wallTop && playerTop < wallBottom) {
+            if (playerRight > wallLeft && playerLeft < wallLeft && playerBottom < wallTop && playerTop > wallTop ) {
+                // Left
+                entity.setPosition(wallLeft - entity.getSize().x, entity.getPosition().y);
+                fmt::print("Collision with the left ({}, {}) ({},{})\n", wallRight,
+                           wallLeft, playerRight, playerLeft);
+            }
+            if (playerLeft < wallRight && playerRight > wallRight && playerBottom < wallTop && playerTop > wallTop ) {
+                // Right
+                entity.setPosition(wallRight + 10, entity.getPosition().y);
                 fmt::print("Collision with the right ({}, {})\n", wall->getPosition().x,
                            wall->getPosition().y);
             }
