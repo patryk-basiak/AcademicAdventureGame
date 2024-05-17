@@ -18,7 +18,6 @@ Equipment::Equipment(){
     smallEq.setSize(sf::Vector2f(220,70));
     smallEq.setPosition(800 - (smallEq.getSize().x/2),900 - (smallEq.getSize().y));
     smallEq.setFillColor(sf::Color::Magenta);
-
     pointer.setSize(sf::Vector2f(70,50));
     pointer.setPosition(700,840);
     pointer.setOutlineColor(sf::Color::Black);
@@ -43,7 +42,7 @@ void Equipment::update(sf::RenderWindow& window, Player& player) const {
     if (!this->isShown) {
         window.draw(smallEq);
         window.draw(pointer);
-        float x = smallEq.getPosition().x + padding, y = smallEq.getPosition().y + 5;
+        float x = smallEq.getPosition().x + padding, y = smallEq.getPosition().y + padding;
 
         for (auto &item: items) {
             if (item.second.first->isStackable() and item.second.second > 1) {
@@ -53,15 +52,9 @@ void Equipment::update(sf::RenderWindow& window, Player& player) const {
                 itemCount.setString(std::to_string(item.second.second));
                 window.draw(itemCount);
             }
-            int id = item.second.first->getId();
-            if (id == 2) {
-                Pistol temp(x, y);
-                temp.draw(window);
-            } else if (id == 3) {
-                Coin temp(x, y, 15);
-                temp.draw(window);
-            }
-            y += 70.0f;
+            item.second.first->setPosition(x,y);
+            item.second.first->draw(window);
+            x += 70.0f;
         }
     } else {
         window.draw(eqRect);
@@ -74,14 +67,7 @@ void Equipment::update(sf::RenderWindow& window, Player& player) const {
                 itemCount.setString(std::to_string(item.second.second));
                 window.draw(itemCount);
             }
-            int id = item.second.first->getId();
-            if (id == 2) {
-                Pistol temp(x, y, 30, 30);
-                temp.draw(window);
-            } else if (id == 3) {
-                Coin temp(x, y, 15);
-                temp.draw(window);
-            }
+            item.second.first->draw(window);
 
             x += 70.0f;
             if (y > 470) {
@@ -126,31 +112,9 @@ void Equipment::showInHand(Player player, sf::RenderWindow& window) const {
         if (item == nullptr) {
             return;
         }
-        int id = item->getId();
-        float posX = player.getPosition().x + 50;
-        float posY = player.getPosition().y;
-        switch (id) {
-            case 3: { // Coin
-                Coin temp(posX, posY, 15);
-                temp.draw(window);
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-                    temp.usage();
-                    temp.update(window);
-                }
-                break;
-            }
-            case 2: { // Pistol
-                Pistol temp(posX, posY);
-                temp.draw(window);
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-                    temp.usage();
-                    temp.update(window);
-                }
-                break;
-            }
+        item->draw(window);
         }
     }
-}
 
 void Equipment::movedMouse() {
     this->currentEq += 1;

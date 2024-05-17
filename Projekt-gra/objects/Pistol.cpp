@@ -38,8 +38,8 @@ void Pistol::update(sf::RenderWindow& window){
 }
 
 void Pistol::draw(sf::RenderWindow &window) {
-//    fmt::println("{}",ammo.size());
     window.draw(pistol);
+    fmt::println("{}", am.size());
     if(!ammo.empty()){
         for (auto const &e: ammo) {
             window.draw(e);

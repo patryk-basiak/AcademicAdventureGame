@@ -7,9 +7,10 @@
 
 
 Player::Player() {
-    collisionRect = sf::FloatRect(400,500, 46.88, 71.76);
-    player.setPosition(300,150);
+    collisionRect = sf::FloatRect(1230,654, 46.88, 71.76);
+    player.setPosition(1230,654);
     player.setScale(0.06,0.06);
+    this->isFacingRight = false;
     size.push_back(35.16);
     size.push_back(53.82);
 }
@@ -26,15 +27,14 @@ void Player::setY(float y){
 //    this->velocity.y = y;
 }
 void Player::draw(sf::RenderWindow& window) {
-    isFacingLeft ? player.setTexture(ResourceManager::getTexture("../graphics/player.png")) : player.setTexture(ResourceManager::getTexture("../graphics/player1.png"))
+    isFacingRight ? player.setTexture(ResourceManager::getTexture("../graphics/player.png")) : player.setTexture(ResourceManager::getTexture("../graphics/player1.png"))
     ;
     this->player.setPosition(collisionRect.left,collisionRect.top);
     window.draw(this->player);
 }
-void Player::jump(sf::Time time){
+void Player::jump(){
     if(isGround) {
-        movable = false;
-        velocity = -10*time.asSeconds();
+        verticalVelocity = jumpVelocity;
         isGround = false;
     }
 }
@@ -50,11 +50,11 @@ void Player::update(sf::Time time) {
 
     if (movable) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            isFacingLeft = true;
+            isFacingRight = true;
             velocity = speed * deltaTime;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-            isFacingLeft = false;
+            isFacingRight = false;
             velocity = -speed * deltaTime;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
@@ -139,6 +139,7 @@ void Player::setVerticalVelocity(float i) {
 void Player::isGroundCheck(bool boolean) {
     isGround = boolean;
 }
+
 
 //void Player::itemInHand(Collectable &collactable) {
 //

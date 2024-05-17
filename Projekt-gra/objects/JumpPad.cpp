@@ -4,11 +4,11 @@
 #include <iostream>
 #include "jumpPad.h"
 #include "../Player.h"
-
+#include "fmt/core.h"
 
 
 void JumpPad::collision(Player& player){
-    player.setY(-2);
+    fmt::println("collision with jumpad");
 }
 
 JumpPad::~JumpPad() = default;

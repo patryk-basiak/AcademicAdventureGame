@@ -1,6 +1,8 @@
 #include "Wall.h"
+#include "fmt/core.h"
 
 Wall::Wall(float x, float y, float sX, float sY, sf::Color color) {
+    fmt::println("wall created");
     this->wall.setSize(sf::Vector2f(sX,sY));
     this->wall.setPosition(x,y);
     this->wall.setFillColor(color);

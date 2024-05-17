@@ -63,6 +63,7 @@ auto main() -> int {
     Player player;
     Equipment eq;
 
+    bool debug = false;
 
     std::vector<Map> maps = std::vector<Map>{
         Map(0,0, MapTypes::STARTING, 0),
@@ -77,13 +78,13 @@ auto main() -> int {
         Map(2,4, MapTypes::ENDING, 0),
         };
 
-    int lastLvl = 5; //
+    unsigned int lastLvl = maps.size(); //
     int current_Lvl = 0;
     Map currentMap = maps[current_Lvl];
     sf::Clock clock;
     sf::Clock timer;
 
-
+    maps[0].getMapSeed();
     while (window.isOpen()) {
 //        while(pause){
 //
@@ -101,10 +102,18 @@ auto main() -> int {
                     window.close();
                     game = false;
                 }
-                if (event.type == sf::Event::KeyPressed)
+                if (event.type == sf::Event::KeyPressed) {
                     if (event.key.code == sf::Keyboard::E) {
                         eq.show();
                     }
+                    if (event.key.code == sf::Keyboard::SemiColon) {
+                        if (debug) {
+                            debug = false;
+                        } else {
+                            debug = true;
+                        }
+                    }
+                }
 //                if(event.type == sf::Event::LostFocus){
 //                    // source https://stackoverflow.com/questions/73884580/sfml-lostfocus-gainedfocus-cpu-usage
 ////                    block_until_gained_focus(window);
@@ -151,10 +160,13 @@ auto main() -> int {
             window.clear(sf::Color::White);
             currentMap.update(window,deltaTime, player, eq);
             currentMap.draw(window);
-            window.draw(textX);
-            window.draw(showLvlnumber);
-            window.draw(fps);
-            window.draw(textY);
+            if(debug){
+                window.draw(textX);
+                window.draw(showLvlnumber);
+                window.draw(fps);
+                window.draw(textY);
+            }
+
             window.draw(health);
             player.update(deltaTime);
             player.draw(window);

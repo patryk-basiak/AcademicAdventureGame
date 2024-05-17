@@ -55,3 +55,7 @@ void Entity::setPosition(float d, float d1) {
     this->entity.setPosition(d,d1);
 }
 
+Entity::~Entity() {
+
+}
+

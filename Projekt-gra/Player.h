@@ -10,7 +10,7 @@ public:
     void setX(float x);
     void setY(float y);
     sf::FloatRect getGlobalBounds();
-    void jump(sf::Time time);
+    void jump();
     void move(float x, float y);
     void update(sf::Time time);
     float getSurface() const;
@@ -28,13 +28,15 @@ public:
     void setVelocity(float i);
     void setVerticalVelocity(float i);
 
+
 private:
+    int val= 0;
     int health = 3;
     float jumpVelocity = -100;
     int died = 0;
     bool isGround = true;
     float surface = 900000;
-    bool isFacingLeft = true;
+    bool isFacingRight = true;
     float maxY = surface - 100;
     float speed = 200;
     float gravity = 200;

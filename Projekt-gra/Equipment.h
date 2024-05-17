@@ -11,7 +11,7 @@ class Equipment {
 
 private:
     int size = 9;
-    float padding = 20;
+    float padding = 10;
     int currentEq;
     bool isEmpty = true;
     bool isShown = false;

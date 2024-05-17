@@ -12,43 +12,26 @@
 #include "objects/Wall.h"
 #include "objects/JumpPad.h"
 #include "Equipment.h"
+#include "ResourceManager.h"
 
 
 static int tempID = 0;
 
 Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subtype) {
+    this->mainType = mainType;
+    this->subType = subtype;
     this->id = tempID++;
     this->enemies_number = enemies_number;
     this->npc_number = npc_number;
-    this->map_vec = this->generateMap(25,14, mainType, subtype);
+    this->map_vec = this->generateMap(14,25);
     this->entity_vec = tansformEntities(map_vec[2]);
     this->items_vec = transformObjects(map_vec[1]);
     this->walls_vec = transformWalls(map_vec[0]);
-
-//    this->map_vec = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-//                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-//                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-//    };
+    this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/CountrySide.png"));
 
 }
-std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y, MapTypes::types mainType, int subtype) const {
+
+std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const {
 
     if(x < 2 or y < 2){
        x = 10;
@@ -57,29 +40,63 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y, MapTyp
     auto vec = std::vector<std::vector<std::vector<int>>>();
     if(mainType == MapTypes::STARTING){
         auto map = std::vector<std::vector<int>>();
-        map = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        map = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 1, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1},
     };
         vec.push_back(map);
+        auto items = std::vector<std::vector<int>>();
+        items = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+        };
+        vec.push_back(items);
+        vec.push_back({{0}});
+        return vec;
+
     }
+
+
+
+
+//    if(mainType == MapTypes::FOREST){
+//
+//    }
+//
+//    if(mainType == MapTypes::CITY){
+//
+//    }
+//    if(mainType == MapTypes::PJATK){
+//
+//    }
+//    if(mainType == MapTypes::ENDING){
+//
+//    }
+
     int ground = 2;
     // source: https://stackoverflow.com/questions/22923551/generating-number-0-1-using-mersenne-twister-c
     std::random_device rd;
@@ -188,7 +205,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y, MapTyp
 
 }
 
-std::vector<std::shared_ptr<Entity>> Map::tansformEntities(std::vector<std::vector<int>> vec) {
+std::vector<std::shared_ptr<Entity>> Map::tansformEntities(const std::vector<std::vector<int>>& vec) {
     auto trans = std::vector<std::shared_ptr<Entity>>();
     float x = 0;
     float y = 4;
@@ -222,7 +239,7 @@ std::vector<std::shared_ptr<Collectable>> Map::transformObjects(std::vector<std:
                 trans.push_back(std::make_shared<Pistol>(x,y));
             }
             x += 64;
-            if (x >= 2000) {
+            if (x >= 1600) {
                 x = 0;
                 y += 64;
             }
@@ -283,6 +300,7 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
 }
 
 void Map::draw(sf::RenderWindow& window) {
+    window.draw(backgroundTexture);
     for (auto &it: items_vec) {
         it->draw(window);
     }
@@ -308,6 +326,7 @@ void Map::checkCollision(Player& player) {
 
         if (playerRight > wallLeft && playerLeft < wallRight && playerBottom > wallTop && playerTop < wallBottom) {
             if (playerBottom > wallTop && playerTop < wallTop) {
+                wall->collision(player);
                 // Top
                 player.setPosition(player.getPosition().x, wallTop - player.getSize()[1]);
                 player.setVerticalVelocity(0);
@@ -366,6 +385,14 @@ void Map::checkCollisionEntity(Entity& entity){
 
         }
     }
+}
+
+void Map::getMapSeed() {
+    for(auto i : map_vec){
+        fmt::println("{}", fmt::join(i, "\n"));
+        fmt::println("==============================");
+    }
+
 }
 
 

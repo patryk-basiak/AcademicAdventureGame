@@ -4,6 +4,7 @@
 #include <memory>
 #include "../Player.h"
 #include "Collectable.h"
+#include "fmt/core.h"
 
 
 class Pistol
@@ -11,15 +12,56 @@ class Pistol
 
 public:
     Pistol(float x, float y) : Collectable(x, y, sf::Color{255, 165, 0, 255 }, 60, 60){
+        fmt::println("pistol created");
         pistol.setSize(sf::Vector2f(60,60));
         pistol.setPosition(x,y);
         pistol.setFillColor(sf::Color{ 255, 165, 0, 255 });
     }
     Pistol(float x, float y, float width, float height) : Collectable(x, y, sf::Color{255, 165, 0, 255 }, width, height){
+        fmt::println("pistol created v2 ");
         pistol.setSize(sf::Vector2f(width,height));
         pistol.setPosition(x,y);
         pistol.setFillColor(sf::Color{ 255, 165, 0, 255 });
     }
+    Pistol(const Pistol& other) // copy constructor
+            : Collectable(other)
+    {
+        ID = other.ID;
+        Stackable = other.Stackable;
+        am = other.am;
+        toAdd = other.toAdd;
+
+        for (const auto& shape : other.ammo) {
+            ammo.push_back(shape);
+        }
+
+        pistol = other.pistol;
+    }
+
+    Pistol& operator=(const Pistol& other) {
+        if (this != &other) { // Check for self-assignment
+            // Assign base class members
+            Collectable::operator=(other);
+
+            // Assign member variables
+            ID = other.ID;
+            Stackable = other.Stackable;
+            am = other.am;
+            toAdd = other.toAdd;
+
+            // Assign the ammo vector
+            ammo.clear(); // Clear existing content
+            for (const auto& shape : other.ammo) {
+                ammo.push_back(shape);
+            }
+
+            // Assign the pistol shape
+            pistol = other.pistol;
+        }
+        return *this;
+    }
+
+
 
     void usage() override;
     void draw(sf::RenderWindow& window) override;
