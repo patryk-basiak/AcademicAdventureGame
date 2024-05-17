@@ -6,13 +6,14 @@
 #include "objects/Collectable.h"
 #include "objects/Wall.h"
 #include "Equipment.h"
+#include "MapTypes.h"
 
 class Map {
 
 public:
-    Map(int enemies_number, int npc_number);
+    Map(int enemies_number, int npc_number, MapTypes::types mainType, int subtype);
     bool CheckCollision(float x, float y, float width, float height);
-    std::vector<std::vector<std::vector<int>>> generateMap(int x, int y) const;
+    std::vector<std::vector<std::vector<int>>> generateMap(int x, int y, MapTypes::types mainType, int subtype) const;
     static std::vector<std::shared_ptr<Entity>> tansformEntities(std::vector<std::vector<int>>vec);
     static std::vector<std::shared_ptr<Collectable>> transformObjects(std::vector<std::vector<int>> vec);
     static std::vector<std::shared_ptr<Wall>> transformWalls(std::vector<std::vector<int>> vec);

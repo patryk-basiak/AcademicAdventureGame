@@ -46,6 +46,8 @@ add_executable(game main.cpp
         objects/Bullet.h
         Map.cpp
         Map.h
+        MapTypes.cpp
+        MapTypes.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

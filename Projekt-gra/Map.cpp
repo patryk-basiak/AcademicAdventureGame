@@ -16,11 +16,11 @@
 
 static int tempID = 0;
 
-Map::Map(int enemies_number, int npc_number) {
+Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subtype) {
     this->id = tempID++;
     this->enemies_number = enemies_number;
     this->npc_number = npc_number;
-    this->map_vec = this->generateMap(25,14);
+    this->map_vec = this->generateMap(25,14, mainType, subtype);
     this->entity_vec = tansformEntities(map_vec[2]);
     this->items_vec = transformObjects(map_vec[1]);
     this->walls_vec = transformWalls(map_vec[0]);
@@ -48,12 +48,38 @@ Map::Map(int enemies_number, int npc_number) {
 //    };
 
 }
-std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const {
+std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y, MapTypes::types mainType, int subtype) const {
+
     if(x < 2 or y < 2){
        x = 10;
        y = 10;
     }
     auto vec = std::vector<std::vector<std::vector<int>>>();
+    if(mainType == MapTypes::STARTING){
+        auto map = std::vector<std::vector<int>>();
+        map = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+    };
+        vec.push_back(map);
+    }
     int ground = 2;
     // source: https://stackoverflow.com/questions/22923551/generating-number-0-1-using-mersenne-twister-c
     std::random_device rd;

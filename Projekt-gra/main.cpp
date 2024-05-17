@@ -59,14 +59,23 @@ auto main() -> int {
     worldBack.setTexture(ResourceManager::getTexture("../graphics/backgroundCity.png"));
     worldBack.scale(0.78125, 0.78125);
 
-    // initialize player
+    // initialize player and eq
     Player player;
     Equipment eq;
-    // lvls as vectors
-    // transform int into sf::RectangleShape
+
 
     std::vector<Map> maps = std::vector<Map>{
-        Map(3,1), Map(2,4), Map(5,1)};
+        Map(0,0, MapTypes::STARTING, 0),
+        Map(3,0, MapTypes::FOREST, 0),
+        Map(5,1, MapTypes::FOREST, 1),
+        Map(1,10, MapTypes::CITY, 0),
+        Map(0,6, MapTypes::CITY, 1),
+        Map(1,3, MapTypes::PJATK, 0),
+        Map(2,14, MapTypes::PJATK, 1),
+        Map(0,6, MapTypes::CITY, 2),
+        Map(2,4, MapTypes::FOREST, 2),
+        Map(2,4, MapTypes::ENDING, 0),
+        };
 
     int lastLvl = 5; //
     int current_Lvl = 0;

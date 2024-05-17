@@ -14,7 +14,6 @@ public:
     sf::Vector2<float> getPosition();
     sf::Vector2<float> getSize();
 
-
     void setPosition(float d, float d1);
 
 private:
