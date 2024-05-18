@@ -5,6 +5,7 @@
 #include "../Player.h"
 #include "Collectable.h"
 #include "fmt/core.h"
+#include "../ResourceManager.h"
 
 
 class Pistol
@@ -13,15 +14,15 @@ class Pistol
 public:
     Pistol(float x, float y) : Collectable(x, y, sf::Color{255, 165, 0, 255 }, 60, 60){
         fmt::println("pistol created");
-        pistol.setSize(sf::Vector2f(60,60));
+        pistol.scale(0.042,0.042);
+        pistol.setTexture(ResourceManager::getTexture("../graphics/pistol.png"));
         pistol.setPosition(x,y);
-        pistol.setFillColor(sf::Color{ 255, 165, 0, 255 });
     }
     Pistol(float x, float y, float width, float height) : Collectable(x, y, sf::Color{255, 165, 0, 255 }, width, height){
         fmt::println("pistol created v2 ");
-        pistol.setSize(sf::Vector2f(width,height));
+        pistol.scale(0.042,0.042);
+        pistol.setTexture(ResourceManager::getTexture("../graphics/pistol.png"));
         pistol.setPosition(x,y);
-        pistol.setFillColor(sf::Color{ 255, 165, 0, 255 });
     }
     Pistol(const Pistol& other) // copy constructor
             : Collectable(other)
@@ -62,7 +63,7 @@ public:
     }
 
 
-
+    void setPosition(float x, float y) override;
     void usage() override;
     void draw(sf::RenderWindow& window) override;
     bool operator==(const Collectable& other) const override;
@@ -76,9 +77,10 @@ public:
 private:
     void shot();
     int ID = 2;
+    int ammunition = 3;
     bool Stackable = false;
     std::vector<sf::RectangleShape> ammo;
-    sf::RectangleShape pistol;
+    sf::Sprite pistol;
     std::vector<int> am;
     bool toAdd = false;
 

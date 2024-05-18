@@ -42,6 +42,10 @@ auto main() -> int {
     showLvlnumber.setPosition({1250, 200});
     showLvlnumber.setFillColor(sf::Color::Black);
 
+    sf::Text PauseText = sf::Text("Paused", font, 30);
+    PauseText.setPosition({1250, 200});
+    PauseText.setFillColor(sf::Color::Black);
+
     sf::Text fps = sf::Text("000", font, 30);
     fps.setPosition({1250, 250});
     fps.setFillColor(sf::Color::Black);
@@ -66,6 +70,8 @@ auto main() -> int {
     bool debug = false;
 
     std::vector<Map> maps = std::vector<Map>{
+//        Map(0,0, MapTypes::TESTING, 0),
+        Map(0,0, MapTypes::STARTING, 0),
         Map(0,0, MapTypes::STARTING, 0),
         Map(3,0, MapTypes::FOREST, 0),
         Map(5,1, MapTypes::FOREST, 1),
@@ -86,9 +92,6 @@ auto main() -> int {
 
     maps[0].getMapSeed();
     while (window.isOpen()) {
-//        while(pause){
-//
-//        }
         while (game) {
             sf::Time deltaTime = clock.restart();
             textX.setString("X pos: " + std::to_string(((int) player.getPosition().x)));
@@ -105,6 +108,18 @@ auto main() -> int {
                 if (event.type == sf::Event::KeyPressed) {
                     if (event.key.code == sf::Keyboard::E) {
                         eq.show();
+                    }
+                    if (event.key.code == sf::Keyboard::Escape) {
+                        if(pause){
+
+                            movable = true;
+                            pause = false;
+                        }
+                        else{
+                            movable = false;
+                            pause = true;
+                        }
+
                     }
                     if (event.key.code == sf::Keyboard::SemiColon) {
                         if (debug) {
@@ -166,7 +181,10 @@ auto main() -> int {
                 window.draw(fps);
                 window.draw(textY);
             }
-
+            if(pause){
+                PauseText.setString("Paused");
+                window.draw(PauseText);
+            }
             window.draw(health);
             player.update(deltaTime);
             player.draw(window);

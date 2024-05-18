@@ -6,7 +6,8 @@ ID for map generation:
 0 - void (not an object)
 1 - Wall
 2- Jump pad
-
+99 - Door
+101 - Bed
 ---------------------------------
 ID for items:
 0 - null (not an object)
@@ -36,6 +37,8 @@ Entity:
 
 Wall:
     -Jump Pad
+    -Door
+    -Bed
 
 ---------------------------------
 Levels:

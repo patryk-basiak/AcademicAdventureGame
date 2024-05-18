@@ -48,6 +48,10 @@ add_executable(game main.cpp
         Map.h
         MapTypes.cpp
         MapTypes.h
+        objects/Door.cpp
+        objects/Door.h
+        objects/Bed.cpp
+        objects/Bed.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

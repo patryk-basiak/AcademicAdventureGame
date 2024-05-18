@@ -12,7 +12,8 @@ void Wall::draw(sf::RenderWindow& window) const {
 }
 
 void Wall::collision(Player &player) {
-
+    player.setPosition(player.getPosition().x, wall.getPosition().y - player.getSize()[1]);
+    player.setVerticalVelocity(0);
 }
 
 sf::FloatRect Wall::getGlobalBounds() const {

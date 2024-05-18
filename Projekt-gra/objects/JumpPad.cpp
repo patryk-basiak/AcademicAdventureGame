@@ -8,7 +8,8 @@
 
 
 void JumpPad::collision(Player& player){
-    fmt::println("collision with jumpad");
+//    player.setPosition(player.getPosition().x, jumpPad.getPosition().y - player.getSize()[1]);
+    player.setVerticalVelocity(-400);
 }
 
 JumpPad::~JumpPad() = default;

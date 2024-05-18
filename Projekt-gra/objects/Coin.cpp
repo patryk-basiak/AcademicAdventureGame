@@ -26,3 +26,7 @@ std::unique_ptr<Collectable> Coin::clone() const {
 int Coin::getId() {
     return this->value;
 }
+
+void Coin::setPosition(float x, float y) {
+    this->coin.setPosition(x,y);
+}

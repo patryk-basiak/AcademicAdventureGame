@@ -13,6 +13,17 @@
 #include "objects/JumpPad.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
+#include "objects/Door.h"
+#include "objects/Bed.h"
+
+static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
+    double result = 0;
+    for (int i = 0; i < v1.size(); ++i) {
+        result += v1[i] * v2[i];
+    }
+    return result;
+}
+
 
 
 static int tempID = 0;
@@ -38,6 +49,36 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
        y = 10;
     }
     auto vec = std::vector<std::vector<std::vector<int>>>();
+
+    if(mainType == MapTypes::TESTING){
+        auto map = std::vector<std::vector<int>>();
+        map = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+
+        };
+        vec.push_back(map);
+        auto items = std::vector<std::vector<int>>();
+        items = std::vector<std::vector<int>>{      {{0}}
+        };
+        vec.push_back(items);
+        vec.push_back({{0}});
+        return vec;
+
+    }
+
     if(mainType == MapTypes::STARTING){
         auto map = std::vector<std::vector<int>>();
         map = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
@@ -46,7 +87,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                   {0, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,101, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 1, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
@@ -68,7 +109,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                   {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 3, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
                                                   {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
                                                   {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
@@ -262,7 +303,10 @@ std::vector<std::shared_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
             } if(i==2) {
                 lvl0_trans.emplace_back(std::make_shared<JumpPad>(x,y));
             } if(i == 99){
-                lvl0_trans.emplace_back(std::make_shared<Wall>(x,y, 64,64, sf::Color{64, 224, 208, 255}));
+                lvl0_trans.emplace_back(std::make_shared<Door>(x,y));
+            }
+            if(i == 101){
+                lvl0_trans.emplace_back(std::make_shared<Bed>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -312,7 +356,59 @@ void Map::draw(sf::RenderWindow& window) {
     }
 }
 
+
 void Map::checkCollision(Player& player) {
+    // Separating Axis Theorem
+    // source: https://code.tutsplus.com/collision-detection-using-the-separating-axis-theorem--gamedev-169t
+
+
+//    std::vector<float> PlayerLeftCorner = std::vector<float>{player.getPosition().x, player.getPosition().y};
+//    std::vector<double> PlayerCenter = std::vector<double>{player.getPosition().x + (player.getSize()[0]*0.5), player.getPosition().y + (player.getSize()[1]*0.5)};
+//    std::vector<float> PlayerRightCorner = std::vector<float>{player.getPosition().x + player.getSize()[0], player.getPosition().y};
+//    std::vector<float> PlayerLeftDownCorner = std::vector<float>{player.getPosition().x, player.getPosition().y + player.getSize()[1]};
+//    std::vector<float> PlayerRightDownCorner = std::vector<float>{player.getPosition().x + player.getSize()[0], player.getPosition().y + player.getSize()[1]};
+//
+//    for (const auto &wall: walls_vec){
+//
+//        std::vector<float> WallLeftCorner     = std::vector<float>{wall->getPosition().x,  wall->getPosition().y};
+//        std::vector<float> WallRightCorner    = std::vector<float>{wall->getPosition().x + wall->getSize().x,      wall->getPosition().y};
+//        std::vector<double> WallCenter    = std::vector<double>{wall->getPosition().x + (wall->getSize().x*0.5),      wall->getPosition().y + (wall->getSize().y*0.5)};
+//        std::vector<float> WallLeftDownCorner = std::vector<float>{wall->getPosition().x,  wall->getPosition().y + wall->getSize().y};
+//        std::vector<float> WallRightDownCorner= std::vector<float>{wall->getPosition().x + wall->getSize().x,      wall->getPosition().y + wall->getSize().y};
+//
+//
+//        std::vector<double> axis = std::vector<double>{
+//            1,-1
+//        };
+//
+//        std::vector<double> CenterVec = std::vector<double>{
+//            WallCenter[0] - PlayerCenter[0],
+//            WallCenter[1] - PlayerCenter[1]
+//        };
+//        std::vector<double> WallCenterToLeftUpVec = std::vector<double>{
+//            WallLeftCorner[0] - WallCenter[0],
+//            WallLeftCorner[1] - WallCenter[1]
+//        };
+//        std::vector<double> PlayerCenterToRightUpVec = std::vector<double>{
+//            PlayerRightCorner[0] - PlayerCenter[0],
+//            PlayerRightCorner[1] - PlayerCenter[1]
+//        };
+//
+//        float projC = dotProduct(CenterVec, axis);
+//        float projA = dotProduct(WallCenterToLeftUpVec, axis);
+//        float projB = dotProduct(PlayerCenterToRightUpVec, axis);
+//
+//        float gap = projC - projA + projB;
+//
+//        if(gap > 0){
+//            fmt::println("It s a big gap beetwen boxes");
+//        }
+//        else if(gap == 0){
+//            fmt::println("Boxes are touching each other");
+//        }
+//        else {
+//            fmt::println("Objects are pen each other");
+//        }
     float playerBottom = player.getPosition().y + player.getSize()[1];
     float playerTop = player.getPosition().y;
     float playerLeft = player.getPosition().x;
@@ -328,8 +424,7 @@ void Map::checkCollision(Player& player) {
             if (playerBottom > wallTop && playerTop < wallTop) {
                 wall->collision(player);
                 // Top
-                player.setPosition(player.getPosition().x, wallTop - player.getSize()[1]);
-                player.setVerticalVelocity(0);
+
             }
             if (playerTop < wallBottom && playerBottom > wallBottom){
                 // Bottom
@@ -356,6 +451,7 @@ void Map::checkCollision(Player& player) {
         }
     }
 }
+
 
 void Map::checkCollisionEntity(Entity& entity){
     float playerBottom = entity.getPosition().y + entity.getSize().y;
@@ -394,5 +490,4 @@ void Map::getMapSeed() {
     }
 
 }
-
 

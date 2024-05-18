@@ -67,8 +67,9 @@ void Equipment::update(sf::RenderWindow& window, Player& player) const {
                 itemCount.setString(std::to_string(item.second.second));
                 window.draw(itemCount);
             }
+            fmt::println("{}",item.second.first->getPosition().x);
+            item.second.first->setPosition(x,y);
             item.second.first->draw(window);
-
             x += 70.0f;
             if (y > 470) {
                 x = 320;
@@ -96,7 +97,9 @@ void Equipment::update(sf::RenderWindow& window, Player& player) const {
 
 
             }
+
         }
+
     }
 }
 
@@ -106,13 +109,17 @@ int Equipment::itemInHand() const {
     }
     return -1;
 }
-void Equipment::showInHand(Player player, sf::RenderWindow& window) const {
+void Equipment::showInHand(Player& player, sf::RenderWindow& window) const {
     if (!items.empty() && currentEq < items.size()) {
         auto& item = temp_items.at(currentEq);
         if (item == nullptr) {
             return;
         }
+        item->setPosition(player.getPosition().x + 25, player.getPosition().y + 5);
         item->draw(window);
+        item->update(window);
+
+
         }
     }
 
@@ -142,23 +149,34 @@ void Equipment::movedMouseDown() {
 }
 
 void Equipment::addItem(const std::shared_ptr<Collectable>& itemPtr) {
-    if(items.find(itemPtr->getId()) == items.end()){
-        items.insert({itemPtr->getId(), {itemPtr, 1}});
-        if(temp_items.size() < 3){
-            temp_items.push_back(itemPtr);
+    int id = itemPtr->getId();
+    if (items.find(itemPtr->getId()) == items.end()) {
+        if (id == 2) {
+            items.insert({id, {std::make_shared<Pistol>(0, 0), 1}});
+            if (temp_items.size() < 3) {
+                temp_items.push_back(std::make_unique<Pistol>(0, 0));
+            }
+
         }
-    }else{
-        if(itemPtr->isStackable()){
-                items.find(itemPtr->getId())->second.second++;
+        if (id == 3){
+            items.insert({id, {std::make_shared<Coin>(0, 0,15), 1}});
+            if (temp_items.size() < 3) {
+                temp_items.push_back(std::make_unique<Coin>(0, 0, 15));
+            }
         }
+
     }
+    else {
+            if (itemPtr->isStackable()) {
+                items.find(itemPtr->getId())->second.second++;
+            }
+        }
 }
 
 void Equipment::useItemInHand() {
-    if(!temp_items.empty()){
+    if (!temp_items.empty()) {
         this->temp_items[currentEq]->usage();
     }
-
-
 }
+
 

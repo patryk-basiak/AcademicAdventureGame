@@ -30,7 +30,7 @@ public:
     sf::RectangleShape eqRect;
     sf::RectangleShape smallEq;
     sf::RectangleShape pointer;
-    void showInHand(Player player, sf::RenderWindow& window) const;
+    void showInHand(Player& player, sf::RenderWindow& window) const;
     void update(sf::RenderWindow& window, Player& player) const;
     void show();
     void addItem(const std::shared_ptr<Collectable>& itemPtr);

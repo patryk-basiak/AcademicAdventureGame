@@ -119,7 +119,8 @@ void Player::setHealth(int n) {
 }
 
 void Player::setStartPosition() {
-    collisionRect.left = 32;
+    collisionRect.left = 100;
+    collisionRect.top = 654;
 
 }
 

@@ -16,7 +16,7 @@ public:
     virtual void draw(sf::RenderWindow& window);
     sf::Vector2<float> getPosition();
     void reColor(sf::Color color);
-    void setPosition(float x, float y);
+    virtual void setPosition(float x, float y);
     virtual void usage();
     virtual void update(sf::RenderWindow& window);
     virtual std::unique_ptr<Collectable> clone() const;

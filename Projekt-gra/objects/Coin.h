@@ -16,6 +16,7 @@ public:
         const Coin* otherCoin = dynamic_cast<const Coin*>(&other);
         return otherCoin && this->value == otherCoin->value;
     }
+    void setPosition(float x, float y) override;
     void draw(sf::RenderWindow& window) override;
     void usage() override;
     bool isStackable() const override;

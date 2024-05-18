@@ -17,32 +17,35 @@ void Pistol::shot() {
 }
 
 void Pistol::collision(Player& player) {
-    this->pistol.setPosition(2000,2000);
+
 }
 
 void Pistol::usage() {
     fmt::println("pistol was used");
-    this->am.push_back(1);
+    if(ammunition > 0){
+        auto ammoTemp = sf::RectangleShape();
+        ammoTemp.setPosition(this->pistol.getPosition().x + 1,this->pistol.getPosition().y);
+        ammoTemp.setSize(sf::Vector2f(20,20));
+        ammoTemp.setFillColor(sf::Color::Green);
+        this->ammo.push_back(ammoTemp);
+        ammunition--;
+    }
+    else{
+        fmt::println("out of ammo");
+    }
+
 }
 
 void Pistol::update(sf::RenderWindow& window){
-    for(auto i : am){
-        if(i == 1){
-            auto ammoTemp = sf::RectangleShape();
-            ammoTemp.setPosition(80,80);
-            ammoTemp.setSize(sf::Vector2f(20,20));
-            ammoTemp.setFillColor(sf::Color::Green);
-            this->ammo.push_back(ammoTemp);
-        }
-    }
+
 }
 
 void Pistol::draw(sf::RenderWindow &window) {
     window.draw(pistol);
-    fmt::println("{}", am.size());
     if(!ammo.empty()){
-        for (auto const &e: ammo) {
+        for (auto &e: ammo) {
             window.draw(e);
+            e.setPosition(e.getPosition().x + 0.5, e.getPosition().y);
 //            e.setPosition(e.getPosition().x,e.getPosition().y +1);
         }
     }
@@ -69,6 +72,10 @@ bool Pistol::operator==(const Collectable &other) const {
 bool Pistol::operator==(const Pistol &other) const {
     fmt::println("help");
     return this->ID == other.id;
+}
+
+void Pistol::setPosition(float x, float y) {
+    this->pistol.setPosition(x,y);
 }
 
 

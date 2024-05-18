@@ -8,6 +8,7 @@ public:
         CITY = 2,
         PJATK = 3,
         ENDING = 4,
+        TESTING = 5,
 
     };
 
