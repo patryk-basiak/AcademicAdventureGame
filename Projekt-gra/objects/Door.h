@@ -16,7 +16,7 @@ class Door
         Door& operator=(Door&&) noexcept = default;
         ~Door() override;
 
-        void collision(Player& player) override;
+        void collision(Player& player, sf::RenderWindow &window) override;
         bool status() const;
         void setStatus(bool status);
 

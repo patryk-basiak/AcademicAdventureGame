@@ -66,4 +66,8 @@ int Collectable::getId() {
     return this->id;
 }
 
+std::vector<sf::RectangleShape> Collectable::getAmmoList() {
+    return std::vector<sf::RectangleShape>();
+}
+
 

@@ -15,6 +15,7 @@
 #include "ResourceManager.h"
 #include "objects/Door.h"
 #include "objects/Bed.h"
+#include "objects/Computer.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -35,9 +36,10 @@ Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subty
     this->enemies_number = enemies_number;
     this->npc_number = npc_number;
     this->map_vec = this->generateMap(14,25);
-    this->entity_vec = tansformEntities(map_vec[2]);
+    this->entity_vec = transformEntities(map_vec[2]);
     this->items_vec = transformObjects(map_vec[1]);
     this->walls_vec = transformWalls(map_vec[0]);
+    this->interactable_vec = transformInteractable(map_vec[3]);
     this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/CountrySide.png"));
 
 }
@@ -70,10 +72,8 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
 
         };
         vec.push_back(map);
-        auto items = std::vector<std::vector<int>>();
-        items = std::vector<std::vector<int>>{      {{0}}
-        };
-        vec.push_back(items);
+        vec.push_back({{0}});
+        vec.push_back({{0}});
         vec.push_back({{0}});
         return vec;
 
@@ -87,7 +87,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                   {0, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,101, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 1, 0, 0, 0, 102, 0, 0, 0, 0,101, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 1, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
@@ -101,11 +101,11 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
         auto items = std::vector<std::vector<int>>();
         items = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,3,0,0,0,0,0,0},
                                                   {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3,0, 0, 0, 0,0,0,0,0,0,0,3,0,0,0,0},
                                                   {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
@@ -116,7 +116,42 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                   {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
         };
         vec.push_back(items);
-        vec.push_back({{0}});
+        auto entity = std::vector<std::vector<int>>();
+        entity = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,3,0,0},
+                                                    {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+        };
+        vec.push_back(entity);
+        auto interact = std::vector<std::vector<int>>();
+        interact = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                     {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                     {0, 0, 0, 0, 102, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                     {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,3,0,0},
+                                                     {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+        };
+        vec.push_back(interact);
         return vec;
 
     }
@@ -246,7 +281,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
 
 }
 
-std::vector<std::shared_ptr<Entity>> Map::tansformEntities(const std::vector<std::vector<int>>& vec) {
+std::vector<std::shared_ptr<Entity>> Map::transformEntities(const std::vector<std::vector<int>>& vec) {
     auto trans = std::vector<std::shared_ptr<Entity>>();
     float x = 0;
     float y = 4;
@@ -255,10 +290,8 @@ std::vector<std::shared_ptr<Entity>> Map::tansformEntities(const std::vector<std
             if (i == 3) {
                 trans.push_back(std::make_shared<Entity>(x,y));
             }
-            if (i == 2) {
-            }
             x += 64;
-            if (x >= 2000) {
+            if (x >= 1600) {
                 x = 0;
                 y += 64;
             }
@@ -308,6 +341,8 @@ std::vector<std::shared_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
             if(i == 101){
                 lvl0_trans.emplace_back(std::make_shared<Bed>(x,y));
             }
+            if(i == 102){
+            }
             x += 64;
             if (x >= 1600) {
                 x = 0;
@@ -320,10 +355,11 @@ std::vector<std::shared_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
 
 
 void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipment& eq){
-    this->checkCollision(player);
-    for(auto &e: entity_vec){
-        this->checkCollisionEntity(reinterpret_cast<Entity &>(e));
-    }
+    this->checkCollision(player, window);
+    this->checkCollisionInteract(player, window);
+//    for(auto &e: entity_vec){
+//        this->checkCollisionEntity(reinterpret_cast<Entity &>(e));
+//    }
     for (auto it = items_vec.begin(); it != items_vec.end(); it++) {
         (*it)->update(window);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
@@ -340,6 +376,16 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
             it = entity_vec.erase(it);
             it--;
         }
+//        else if(!eq.getStatus() and eq.getItemInHand()->getId() == 2){
+//            for (const auto& am: eq.getItemInHand()->getAmmoList()) {
+//                if(am.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+//                    (*it)->collision(player);
+//                    it = entity_vec.erase(it);
+//                    it--;
+////                    delete reinterpret_cast<Entity &>((*it));
+//                }
+//            }
+//        }
     }
 }
 
@@ -354,10 +400,14 @@ void Map::draw(sf::RenderWindow& window) {
     for (auto const &e: walls_vec) {
         e->draw(window);
     }
+    for (auto const &e: interactable_vec) {
+        e->update(window);
+        e->draw(window);
+    }
 }
 
 
-void Map::checkCollision(Player& player) {
+void Map::checkCollision(Player& player, sf::RenderWindow &window) {
     // Separating Axis Theorem
     // source: https://code.tutsplus.com/collision-detection-using-the-separating-axis-theorem--gamedev-169t
 
@@ -422,7 +472,8 @@ void Map::checkCollision(Player& player) {
 
         if (playerRight > wallLeft && playerLeft < wallRight && playerBottom > wallTop && playerTop < wallBottom) {
             if (playerBottom > wallTop && playerTop < wallTop) {
-                wall->collision(player);
+                wall->collision(player, window);
+//                player.setSurface(wallTop);
                 // Top
 
             }
@@ -490,4 +541,76 @@ void Map::getMapSeed() {
     }
 
 }
+
+std::vector<std::shared_ptr<Interactable>> Map::transformInteractable(std::vector<std::vector<int>> vec) {
+    auto lvl0_trans = std::vector<std::shared_ptr<Interactable>>{};
+    float x = 0;
+    float y = 4;
+    for(auto & j : vec) {
+        for (int i : j) {
+            if (i == 0) {
+                ;
+            }
+            if(i == 102){
+                lvl0_trans.emplace_back(std::make_shared<Computer>(x,y));
+            }
+            x += 64;
+            if (x >= 1600) {
+                x = 0;
+                y += 64;
+            }
+        }
+    }
+    return lvl0_trans;
+}
+
+void Map::checkCollisionInteract(Player &player, sf::RenderWindow &window) {
+    float playerBottom = player.getPosition().y + player.getSize()[1];
+    float playerTop = player.getPosition().y;
+    float playerLeft = player.getPosition().x;
+    float playerRight = player.getPosition().x + player.getSize()[0];
+    for (const auto &interact: interactable_vec) {
+
+        float interactTop = interact->getPosition().y;
+        float interactLeft = interact->getPosition().x;
+        float interactRight = interact->getPosition().x + interact->getSize()[0];
+        float interactBottom = interact->getPosition().y + interact->getSize()[1];
+
+        if (playerRight > interactLeft && playerLeft < interactRight && playerBottom > interactTop && playerTop < interactBottom) {
+            if (playerBottom > interactTop && playerTop < interactTop) {
+                interact->collision(player, window);
+//                player.setSurface(interactTop);
+                // Top
+
+            }
+            if (playerTop < interactBottom && playerBottom > interactBottom){
+                // Bottom
+                player.setVerticalVelocity(0);
+                player.setPosition(player.getPosition().x, interactBottom);
+                interact->collision(player, window);
+                fmt::print("Collision with the bottom ({}, {})\n", interact->getPosition().x,
+                           interact->getPosition().y);
+            }
+            if (playerRight > interactLeft && playerLeft < interactLeft && playerBottom < interactTop && playerTop > interactTop ) {
+                interact->collision(player, window);
+                // Left
+                player.setVelocity(0);
+                player.setPosition(interactLeft - player.getSize()[0], player.getPosition().y);
+                fmt::print("Collision with the left ({}, {}) ({},{})\n", interactRight,
+                           interactLeft, playerRight, playerLeft);
+            }
+            if (playerLeft < interactRight && playerRight > interactRight && playerBottom < interactTop && playerTop > interactTop ) {
+                interact->collision(player, window);
+                // Right
+                player.setVelocity(0);
+                player.setPosition(interactRight + 10, player.getPosition().y);
+                fmt::print("Collision with the right ({}, {})\n", interact->getPosition().x,
+                           interact->getPosition().y);
+            }
+
+        }
+    }
+
+}
+
 

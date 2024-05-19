@@ -52,6 +52,13 @@ add_executable(game main.cpp
         objects/Door.h
         objects/Bed.cpp
         objects/Bed.h
+        objects/Computer.cpp
+        objects/Computer.h
+        objects/Interactable.cpp
+        objects/Interactable.h
+        FPS.h
+        objects/Icons.cpp
+        objects/Icons.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

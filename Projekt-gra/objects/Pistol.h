@@ -65,6 +65,7 @@ public:
 
     void setPosition(float x, float y) override;
     void usage() override;
+    std::vector<sf::RectangleShape> getAmmoList() override;
     void draw(sf::RenderWindow& window) override;
     bool operator==(const Collectable& other) const override;
     bool operator==(const Pistol& other) const;

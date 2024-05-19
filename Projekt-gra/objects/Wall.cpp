@@ -11,7 +11,7 @@ void Wall::draw(sf::RenderWindow& window) const {
     window.draw(this->wall);
 }
 
-void Wall::collision(Player &player) {
+void Wall::collision(Player &player, sf::RenderWindow &window) {
     player.setPosition(player.getPosition().x, wall.getPosition().y - player.getSize()[1]);
     player.setVerticalVelocity(0);
 }
@@ -30,6 +30,10 @@ sf::Vector2<float> Wall::getPosition() {
 
 sf::Vector2<float> Wall::getSize() {
     return this->wall.getSize();
+}
+
+void Wall::update() {
+
 }
 
 Wall::~Wall() = default;

@@ -14,6 +14,7 @@
 #include "Equipment.h"
 #include "ResourceManager.h"
 #include "Map.h"
+#include "FPS.h"
 
 auto transform(std::vector<std::vector<int>>) -> std::vector<std::unique_ptr<Wall>>;
 auto block_until_gained_focus(sf::Window& window) -> void;
@@ -63,6 +64,7 @@ auto main() -> int {
     worldBack.setTexture(ResourceManager::getTexture("../graphics/backgroundCity.png"));
     worldBack.scale(0.78125, 0.78125);
 
+    FPS fps1;
     // initialize player and eq
     Player player;
     Equipment eq;
@@ -97,7 +99,7 @@ auto main() -> int {
             textX.setString("X pos: " + std::to_string(((int) player.getPosition().x)));
             showLvlnumber.setString("Current lvl: " + std::to_string(((int)current_Lvl)));
             health.setString("Health: " + std::to_string(player.getHealth()));
-            fps.setString("FPS: " + std::to_string((int)std::round(1/deltaTime.asSeconds())));
+            fps.setString("FPS: " + std::to_string((int)std::round(fps1.getFPS())));
             textY.setString("Y pos: " + std::to_string(((int) player.getPosition().y)));
             sf::Event event = sf::Event();
             while (window.pollEvent(event)) {
@@ -111,7 +113,6 @@ auto main() -> int {
                     }
                     if (event.key.code == sf::Keyboard::Escape) {
                         if(pause){
-
                             movable = true;
                             pause = false;
                         }
@@ -189,6 +190,7 @@ auto main() -> int {
             player.update(deltaTime);
             player.draw(window);
             eq.update(window, player);
+            fps1.update();
             window.display();
         }
     }

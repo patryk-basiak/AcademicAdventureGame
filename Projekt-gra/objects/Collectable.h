@@ -17,6 +17,7 @@ public:
     sf::Vector2<float> getPosition();
     void reColor(sf::Color color);
     virtual void setPosition(float x, float y);
+    virtual std::vector<sf::RectangleShape> getAmmoList();
     virtual void usage();
     virtual void update(sf::RenderWindow& window);
     virtual std::unique_ptr<Collectable> clone() const;

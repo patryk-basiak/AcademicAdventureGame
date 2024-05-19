@@ -8,6 +8,7 @@ ID for map generation:
 2- Jump pad
 99 - Door
 101 - Bed
+102 -
 ---------------------------------
 ID for items:
 0 - null (not an object)
@@ -22,6 +23,7 @@ ID for entities:
 1 -
 2 -
 3 - Entity
+
 Classes:
 main.cpp
 player.cpp
@@ -39,7 +41,10 @@ Wall:
     -Jump Pad
     -Door
     -Bed
+Interactable:
+    -Computer
 
+Icon
 ---------------------------------
 Levels:
 

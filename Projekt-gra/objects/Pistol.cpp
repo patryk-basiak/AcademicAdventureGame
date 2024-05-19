@@ -78,6 +78,10 @@ void Pistol::setPosition(float x, float y) {
     this->pistol.setPosition(x,y);
 }
 
+std::vector<sf::RectangleShape> Pistol::getAmmoList() {
+    return this->ammo;
+}
+
 
 
 

@@ -5,7 +5,7 @@
 #include "Bed.h"
 #include "fmt/core.h"
 
-void Bed::collision(Player &player) {
+void Bed::collision(Player &player, sf::RenderWindow &window) {
     fmt::println("There is no time to go to sleep");
 }
 

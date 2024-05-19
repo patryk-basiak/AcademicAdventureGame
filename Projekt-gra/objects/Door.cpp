@@ -5,7 +5,7 @@
 #include "Door.h"
 #include "fmt/core.h"
 
-void Door::collision(Player &player) {
+void Door::collision(Player &player, sf::RenderWindow &window) {
     if(!isOpen){
         fmt::println("door is locked");
         player.setPosition(player.getPosition().x, jumpPad.getPosition().y - player.getSize()[1]);

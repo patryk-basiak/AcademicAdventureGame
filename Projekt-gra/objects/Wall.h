@@ -13,8 +13,9 @@ public:
 
     virtual sf::Vector2<float> getPosition();
     virtual sf::Vector2<float> getSize();
+    virtual void update();
     virtual void draw(sf::RenderWindow &window) const;
-    virtual void collision(Player& player);
+    virtual void collision(Player& player, sf::RenderWindow &window);
     sf::FloatRect getGlobalBounds() const;
     virtual bool isCollision() const;
 

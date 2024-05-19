@@ -151,6 +151,7 @@ void Equipment::movedMouseDown() {
 void Equipment::addItem(const std::shared_ptr<Collectable>& itemPtr) {
     int id = itemPtr->getId();
     if (items.find(itemPtr->getId()) == items.end()) {
+        isEmpty = false;
         if (id == 2) {
             items.insert({id, {std::make_shared<Pistol>(0, 0), 1}});
             if (temp_items.size() < 3) {
@@ -173,10 +174,26 @@ void Equipment::addItem(const std::shared_ptr<Collectable>& itemPtr) {
         }
 }
 
+
+
 void Equipment::useItemInHand() {
     if (!temp_items.empty()) {
-        this->temp_items[currentEq]->usage();
+        if(currentEq < temp_items.size()){
+            this->temp_items[currentEq]->usage();
+        }
+
     }
+}
+
+std::shared_ptr<Collectable> Equipment::getItemInHand() {
+    if(currentEq < temp_items.size()){
+        return temp_items[0];//TODO napraw to gowno
+    }
+    return temp_items[currentEq];
+}
+
+bool Equipment::getStatus() {
+    return isEmpty;
 }
 
 

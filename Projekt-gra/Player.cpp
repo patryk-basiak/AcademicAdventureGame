@@ -66,8 +66,7 @@ void Player::update(sf::Time time) {
 //                    player.move(3,0);
         }
         collisionRect.left += velocity;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) or sf::Keyboard::isKeyPressed(sf::Keyboard::Up) &&
-            isGround) {
+        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) or sf::Keyboard::isKeyPressed(sf::Keyboard::Up))) {
             verticalVelocity = jumpVelocity;
             isGround = false;
         }

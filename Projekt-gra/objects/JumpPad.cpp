@@ -7,7 +7,7 @@
 #include "fmt/core.h"
 
 
-void JumpPad::collision(Player& player){
+void JumpPad::collision(Player& player, sf::RenderWindow &window){
 //    player.setPosition(player.getPosition().x, jumpPad.getPosition().y - player.getSize()[1]);
     player.setVerticalVelocity(-400);
 }

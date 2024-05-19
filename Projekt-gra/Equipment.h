@@ -18,15 +18,17 @@ private:
     std::vector<std::shared_ptr<Collectable>> temp_items;
     std::map<int, std::pair<std::shared_ptr<Collectable>, int>> items;
     std::vector<int> numberOfItems;
+
     sf::Font font;
 public:
     Equipment();
 //    static int currentPos;
     static std::vector<int> eq;
     void movedMouse();
+    std::shared_ptr<Collectable> getItemInHand();
     void movedMouseDown();
     int itemInHand() const;
-
+    bool getStatus();
     sf::RectangleShape eqRect;
     sf::RectangleShape smallEq;
     sf::RectangleShape pointer;

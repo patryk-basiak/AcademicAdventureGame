@@ -17,7 +17,7 @@ public:
     JumpPad& operator=(JumpPad&&) noexcept = default;
     ~JumpPad() override;
 
-    void collision(Player& player) override;
+    void collision(Player& player, sf::RenderWindow &window) override;
 
 private:
     sf::RectangleShape jumpPad;

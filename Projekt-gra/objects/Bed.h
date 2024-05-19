@@ -19,7 +19,7 @@ public:
     Bed& operator=(Bed&&) noexcept = default;
     ~Bed() override;
 
-    void collision(Player& player) override;
+    void collision(Player& player, sf::RenderWindow &window) override;
 
 private:
     int id = 101;

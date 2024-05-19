@@ -33,9 +33,9 @@ private:
     int val= 0;
     int health = 3;
     float jumpVelocity = -100;
-    int died = 0;
+    bool died = false;
     bool isGround = true;
-    float surface = 900000;
+    float surface = 800;
     bool isFacingRight = true;
     float maxY = surface - 100;
     float speed = 200;
