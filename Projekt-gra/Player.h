@@ -30,9 +30,12 @@ public:
 
 
 private:
+    sf::Clock clock;
+    float lastJumpTime = 0;
+    float JumpCooldown = 2;
     int val= 0;
     int health = 3;
-    float jumpVelocity = -100;
+    float jumpVelocity = -200;
     bool died = false;
     bool isGround = true;
     float surface = 800;

@@ -59,6 +59,12 @@ add_executable(game main.cpp
         FPS.h
         objects/Icons.cpp
         objects/Icons.h
+        objects/GoogleIcon.cpp
+        objects/TeamsIcons.cpp
+        HUD.cpp
+        HUD.h
+        Game.cpp
+        Game.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

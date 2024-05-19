@@ -36,9 +36,9 @@ Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subty
     this->enemies_number = enemies_number;
     this->npc_number = npc_number;
     this->map_vec = this->generateMap(14,25);
-    this->entity_vec = transformEntities(map_vec[2]);
-    this->items_vec = transformObjects(map_vec[1]);
     this->walls_vec = transformWalls(map_vec[0]);
+    this->items_vec = transformObjects(map_vec[1]);
+    this->entity_vec = transformEntities(map_vec[2]);
     this->interactable_vec = transformInteractable(map_vec[3]);
     this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/CountrySide.png"));
 

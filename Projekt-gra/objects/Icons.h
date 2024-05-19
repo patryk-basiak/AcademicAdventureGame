@@ -6,9 +6,9 @@
 class Icons {
 public:
     Icons(float x, float y);
-    void draw(sf::RenderWindow& window) const;
-    void update();
-    void collision();
+    virtual void draw(sf::RenderWindow& window);
+    virtual void update();
+    virtual void collision();
 
 
 private:

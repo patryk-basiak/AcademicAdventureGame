@@ -52,8 +52,8 @@ void Computer::draw(sf::RenderWindow &window) {
     if(inUse){
         window.draw(screen);
         window.draw(wallpaper);
-        for(auto const &e: icons){
-            e.draw(window);
+        for(auto &e: icons){
+            e->draw(window);
         }
     }
 }

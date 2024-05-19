@@ -5,6 +5,8 @@
 #include "Interactable.h"
 #include "fmt/core.h"
 #include "Icons.h"
+#include "GoogleIcons.h"
+#include "TeamsIcon.h"
 
 class Computer
     : public Interactable{
@@ -24,6 +26,10 @@ class Computer
             wallpaper.setTexture(ResourceManager::getTexture("../graphics/windowsWallpaper.png"));\
             wallpaper.setPosition(300,50);
             wallpaper.setScale(0.374,0.395);
+            icons.push_back(std::make_unique<GoogleIcons>(311.5, 161.5));
+            icons.push_back(std::make_unique<TeamsIcon>(451, 161.5));
+            //Icons(451,161.5)
+
 
         }
 
@@ -41,7 +47,7 @@ class Computer
 
 
         private:
-        std::vector<Icons> icons = std::vector<Icons>{{Icons(311.5,161.5)}, Icons(451,161.5)};
+        std::vector<std::unique_ptr<Icons>> icons = std::vector<std::unique_ptr<Icons>>();
         bool inUse = false;
         int id = 102;
         sf::Sprite computer;

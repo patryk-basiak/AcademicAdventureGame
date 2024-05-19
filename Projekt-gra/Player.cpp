@@ -43,6 +43,7 @@ void Player::update(sf::Time time) {
     float deltaTime = time.asSeconds();
 
     velocity = 0.0f;
+    float currentTime = clock.getElapsedTime().asSeconds();
 
     if (player.getPosition().y == surface) {
         isGround = true;
@@ -67,8 +68,12 @@ void Player::update(sf::Time time) {
         }
         collisionRect.left += velocity;
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) or sf::Keyboard::isKeyPressed(sf::Keyboard::Up))) {
-            verticalVelocity = jumpVelocity;
-            isGround = false;
+            if(currentTime - lastJumpTime >= JumpCooldown ){
+                verticalVelocity = jumpVelocity;
+                isGround = false;
+                lastJumpTime = currentTime;
+            }
+
         }
         if(!isGround){
             verticalVelocity += gravity * deltaTime;

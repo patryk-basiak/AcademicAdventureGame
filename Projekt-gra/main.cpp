@@ -15,6 +15,8 @@
 #include "ResourceManager.h"
 #include "Map.h"
 #include "FPS.h"
+#include "HUD.h"
+#include "Game.h"
 
 auto transform(std::vector<std::vector<int>>) -> std::vector<std::unique_ptr<Wall>>;
 auto block_until_gained_focus(sf::Window& window) -> void;
@@ -26,9 +28,9 @@ auto main() -> int {
     // set frame limit
 //    window.setFramerateLimit(144);
     // game initialize bool
-    bool game = true;
+    bool game = false;
     // lvl
-    bool menu = false;
+    bool menu = true;
     bool pause = false;
     //background image
     sf::Font font;
@@ -68,6 +70,8 @@ auto main() -> int {
     // initialize player and eq
     Player player;
     Equipment eq;
+    HUD hud;
+    Game gameClass;
 
     bool debug = false;
 
@@ -91,9 +95,21 @@ auto main() -> int {
     Map currentMap = maps[current_Lvl];
     sf::Clock clock;
     sf::Clock timer;
-
     maps[0].getMapSeed();
+
     while (window.isOpen()) {
+        while(menu){
+            sf::Event event = sf::Event();
+            while (window.pollEvent(event)) {
+                if(event.type == sf::Event::KeyPressed){
+                    if(event.key.code == sf::Keyboard::Enter){
+                        game = true;
+                        menu = false;
+                    }
+                }
+            }
+            window.display();
+        }
         while (game) {
             sf::Time deltaTime = clock.restart();
             textX.setString("X pos: " + std::to_string(((int) player.getPosition().x)));
@@ -101,106 +117,18 @@ auto main() -> int {
             health.setString("Health: " + std::to_string(player.getHealth()));
             fps.setString("FPS: " + std::to_string((int)std::round(fps1.getFPS())));
             textY.setString("Y pos: " + std::to_string(((int) player.getPosition().y)));
-            sf::Event event = sf::Event();
-            while (window.pollEvent(event)) {
-                if (event.type == sf::Event::Closed) {
-                    window.close();
-                    game = false;
-                }
-                if (event.type == sf::Event::KeyPressed) {
-                    if (event.key.code == sf::Keyboard::E) {
-                        eq.show();
-                    }
-                    if (event.key.code == sf::Keyboard::Escape) {
-                        if(pause){
-                            movable = true;
-                            pause = false;
-                        }
-                        else{
-                            movable = false;
-                            pause = true;
-                        }
-
-                    }
-                    if (event.key.code == sf::Keyboard::SemiColon) {
-                        if (debug) {
-                            debug = false;
-                        } else {
-                            debug = true;
-                        }
-                    }
-                }
-//                if(event.type == sf::Event::LostFocus){
-//                    // source https://stackoverflow.com/questions/73884580/sfml-lostfocus-gainedfocus-cpu-usage
-////                    block_until_gained_focus(window);
-//                }
-                if(event.type == sf::Event::GainedFocus){
-                    // resume
-                }
-                if(event.type == sf::Event::MouseWheelScrolled){
-                    if (event.mouseWheelScroll.delta > 0)
-                    {
-                        eq.movedMouse();
-                    }
-                    else if (event.mouseWheelScroll.delta < 0)
-                    {
-                        eq.movedMouseDown();
-                    }
-
-                }
-                if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-                    eq.useItemInHand();
-                }
-
-            }
-            if (player.getPosition().x >=  (float)(window.getSize().x - 30)) {
-                player.setPosition(0.f, player.getSurface());
-                if (current_Lvl != lastLvl)
-                    player.setStartPosition();
-                    current_Lvl += 1;
-                    currentMap = maps[current_Lvl];
-
-
-            }
-            if (player.getPosition().x < -40) {
-                player.setPosition((float)(window.getSize().x - 30), player.getSurface());
-                if (current_Lvl != 0)
-                    player.setEndPosition();
-                    current_Lvl -= 1;
-                    currentMap = maps[current_Lvl];
-
-                if (current_Lvl == 0) {
-                    player.setPosition(-10.f, player.getSurface());
-                }
-            }
             window.clear(sf::Color::White);
+            gameClass.update(window,player,eq,deltaTime, hud);
             currentMap.update(window,deltaTime, player, eq);
             currentMap.draw(window);
-            if(debug){
-                window.draw(textX);
-                window.draw(showLvlnumber);
-                window.draw(fps);
-                window.draw(textY);
-            }
-            if(pause){
-                PauseText.setString("Paused");
-                window.draw(PauseText);
-            }
             window.draw(health);
             player.update(deltaTime);
             player.draw(window);
-            eq.update(window, player);
+            hud.draw(window,eq,player);
             fps1.update();
             window.display();
+
         }
     }
 }
 
-void block_until_gained_focus(sf::Window& window) {
-    sf::Event event{};
-    while (true) {
-        if (window.waitEvent(event) && event.type == sf::Event::GainedFocus) {
-            return;
-        }
-    }
-}
