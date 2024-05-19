@@ -65,6 +65,8 @@ add_executable(game main.cpp
         HUD.h
         Game.cpp
         Game.h
+        DialogElement.cpp
+        DialogElement.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

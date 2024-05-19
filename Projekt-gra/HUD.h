@@ -5,6 +5,7 @@
 #include "Equipment.h"
 #include "fmt/core.h"
 #include "FPS.h"
+#include "DialogElement.h"
 
 class HUD {
 
@@ -13,10 +14,11 @@ public:
         if(!font.loadFromFile("../graphics/PIXELAR REGULAR.OTF")) {
             fmt::println("font loading error");
         }
-        mission.setPosition(800,100);
-        mission.setFont(font);
-        mission.setString("Mission:");
-        mission.setCharacterSize(30);
+
+//        mission.setPosition(800,750);
+//        mission.setFont(font);
+//        mission.setString("Mission:");
+//        mission.setCharacterSize(30);
         positionX.setPosition(1250,150);
         positionX.setFont(font);
         positionX.setCharacterSize(30);
@@ -30,14 +32,14 @@ public:
         lvlNumber.setPosition(1250,200);
         lvlNumber.setCharacterSize(30);
         health.setFont(font);
-        health.setPosition(1280,150);
+        health.setPosition(100,800);
         health.setCharacterSize(30);
 
     }
 
     void draw(sf::RenderWindow& window, Equipment& eq, Player& player);
     void update(Player& player, FPS& fps, int lvl);
-
+    void lvls(int roomlvl);
 
     void showDebug();
 
@@ -45,6 +47,8 @@ public:
 
 private:
     bool debug = false;
+    bool dialogShow = true;
+    sf::Clock clock;
     sf::Text health;
     sf::Text lvlNumber;
     sf::Font font;
@@ -52,4 +56,6 @@ private:
     sf::Text positionX;
     sf::Text positionY;
     sf::Text mission;
+    std::vector<DialogElement> dialog = std::vector<DialogElement>{DialogElement("What a lovely day!")};
+    DialogElement mess = DialogElement("What a lovely day");
 };

@@ -76,6 +76,7 @@ auto main() -> int {
                 player.draw(window);
                 hud.update(player, fps1, gameClass.getCurrentLvl());
                 hud.draw(window, eq, player);
+                hud.lvls(gameClass.getCurrentLvl());
                 eq.update(window, player);
                 fps1.update();
                 window.display();

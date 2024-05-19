@@ -77,8 +77,13 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
                 player.setPosition(-10.f, player.getSurface());
             }
         }
+
         currentMap.draw(window);
         currentMap.update(window,deltaTime,player,eq);
+//        for(auto &e: dialog){
+//            e.update(player);
+//            e.draw(window);
+//        }
 
 
 }
@@ -110,13 +115,13 @@ int Game::getCurrentLvl() const {
 }
 
 void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud) {
-
     if(currentLvl == 0){
         float currentTime = clockLvl0.getElapsedTime().asSeconds();
-        if(currentTime <= 6){
+        if(currentTime <= 10){
             movable = false;
             player.setPosition(player.getPosition().x - 0.03, player.getPosition().y);
-        } if(currentTime >= 6 and currentTime <= 7){
+        } if(currentTime >= 10 and currentTime <= 12){
+//            dialog.clear();
             movable = true;
         }
     }

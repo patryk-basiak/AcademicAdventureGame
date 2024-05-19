@@ -14,6 +14,11 @@ public:
         this->icon.scale(0.13, 0.13);
         this->centerX = icon.getPosition().x + 64;
         this->centerY = icon.getPosition().y + 64;
+        this->windowScreen.setSize(sf::Vector2f(750, 450));
+        this->windowScreen.setOutlineThickness(10);
+        this->windowScreen.setOutlineColor(sf::Color::Black);
+        this->windowScreen.setFillColor(sf::Color::White);
+        this->windowScreen.setPosition(425, 125);
     }
     void draw(sf::RenderWindow& window) override;
     void update(sf::RenderWindow& window) override;
@@ -25,6 +30,7 @@ public:
 private:
     float centerX;
     float centerY;
+    sf::RectangleShape windowScreen;
     sf::Sprite icon;
     int id = 2;
     bool active = false;

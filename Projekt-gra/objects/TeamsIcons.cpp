@@ -13,8 +13,10 @@ void TeamsIcon::update(sf::RenderWindow& window) {
             active = true;
         }
     }
-    if(std::pow(vec.x - 1175, 2) + std::pow(vec.y - 125, 2) <= 1500 and active){
-        active = false;
+    if(std::pow(vec.x - 1175, 2) + std::pow(vec.y - 125, 2) <=800 and active){
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+            active = false;
+        }
     }
 
 }
@@ -28,5 +30,6 @@ bool TeamsIcon::isActive() {
 }
 
 void TeamsIcon::drawApp(sf::RenderWindow &window) {
-
+    window.draw(this->windowScreen);
+//    window.draw(teams);
 }
