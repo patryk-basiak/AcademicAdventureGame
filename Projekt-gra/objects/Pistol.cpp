@@ -22,7 +22,7 @@ void Pistol::collision(Player& player) {
 
 void Pistol::usage() {
     fmt::println("pistol was used");
-    if(ammunition > 0){
+    if(ammunition > 0 and movable){
         if(ready) {
             auto ammoTemp = sf::RectangleShape();
             ammoTemp.setPosition(this->pistol.getPosition().x + 1, this->pistol.getPosition().y);

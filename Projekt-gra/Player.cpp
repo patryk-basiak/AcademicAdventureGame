@@ -27,10 +27,12 @@ void Player::setY(float y){
 //    this->velocity.y = y;
 }
 void Player::draw(sf::RenderWindow& window) {
-    isFacingRight ? player.setTexture(ResourceManager::getTexture("../graphics/player.png")) : player.setTexture(ResourceManager::getTexture("../graphics/player1.png"))
-    ;
-    this->player.setPosition(collisionRect.left,collisionRect.top);
-    window.draw(this->player);
+    if(isShown) {
+        isFacingRight ? player.setTexture(ResourceManager::getTexture("../graphics/player.png")) : player.setTexture(
+                ResourceManager::getTexture("../graphics/player1.png"));
+        this->player.setPosition(collisionRect.left, collisionRect.top);
+        window.draw(this->player);
+    }
 }
 void Player::jump(){
     if(isGround) {
@@ -47,6 +49,9 @@ void Player::update(sf::Time time) {
 
     if (player.getPosition().y == surface) {
         isGround = true;
+    }
+    if(health <= 0){
+        game = false;
     }
 
     if (movable) {
@@ -143,6 +148,19 @@ void Player::setVerticalVelocity(float i) {
 
 void Player::isGroundCheck(bool boolean) {
     isGround = boolean;
+}
+
+void Player::hide() {
+    isShown = false;
+}
+
+void Player::showPlayer() {
+    isShown = true;
+
+}
+
+bool Player::isSeen() {
+    return isShown;
 }
 
 

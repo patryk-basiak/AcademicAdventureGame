@@ -110,7 +110,7 @@ int Equipment::itemInHand() const {
     return -1;
 }
 void Equipment::showInHand(Player& player, sf::RenderWindow& window) const {
-    if (!items.empty() && currentEq < items.size()) {
+    if (!items.empty() && currentEq < items.size() and player.isSeen()) {
         auto& item = temp_items.at(currentEq);
         if (item == nullptr) {
             return;

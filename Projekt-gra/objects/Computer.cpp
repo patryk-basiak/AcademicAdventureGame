@@ -25,7 +25,13 @@ void Computer::collision(Player &player, sf::RenderWindow& window) {
     }
 }
 
-void Computer::update(sf::RenderWindow& window) {
+void Computer::update(sf::RenderWindow& window, Player& player) {
+    if(inUse){
+        player.hide();
+    }
+    else{
+        player.showPlayer();
+    }
     for(auto &e: icons){
         e->update(window);
     }

@@ -11,7 +11,7 @@ public:
     virtual sf::Vector2<float> getPosition();
     virtual std::vector<float> getSize();
     virtual ~Interactable();
-    virtual void update(sf::RenderWindow& window);
+    virtual void update(sf::RenderWindow& window, Player& player);
     virtual void collision(Player& player, sf::RenderWindow &window) ;
     virtual bool getStatus();
 

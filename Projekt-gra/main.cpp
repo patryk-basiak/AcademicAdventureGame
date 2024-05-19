@@ -1,26 +1,14 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/System/Clock.hpp"
 #include "fmt/core.h"
-#include "fmt/ostream.h"
-#include "fmt/ranges.h"
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-#include <fstream>
-#include <random>
 #include <thread>
 #include "Player.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
-#include "Map.h"
 #include "FPS.h"
 #include "HUD.h"
 #include "Game.h"
 
-auto transform(std::vector<std::vector<int>>) -> std::vector<std::unique_ptr<Wall>>;
-auto block_until_gained_focus(sf::Window& window) -> void;
 
 auto main() -> int {
     sf::RenderWindow window = sf::RenderWindow(
@@ -29,7 +17,7 @@ auto main() -> int {
     // set frame limit
 //    window.setFramerateLimit(144);
     // game initialize bool
-    bool game = false;
+    game = false;
     // lvl
     bool menu = true;
     bool pause = false;
@@ -39,27 +27,11 @@ auto main() -> int {
         fmt::println("font loading error");
     }
     sf::Text textX = sf::Text("000", font, 30);
-    textX.setPosition({1250, 150});
-    textX.setFillColor(sf::Color::Black);
-
     sf::Text showLvlnumber = sf::Text("000", font, 30);
-    showLvlnumber.setPosition({1250, 200});
-    showLvlnumber.setFillColor(sf::Color::Black);
-
     sf::Text PauseText = sf::Text("Paused", font, 30);
-    PauseText.setPosition({1250, 200});
-    PauseText.setFillColor(sf::Color::Black);
-
     sf::Text fps = sf::Text("000", font, 30);
-    fps.setPosition({1250, 250});
-    fps.setFillColor(sf::Color::Black);
-
     sf::Text textY = sf::Text("000", font, 30);
-    textY.setPosition({1250, 100});
-    textY.setFillColor(sf::Color::Black);
     sf::Text health = sf::Text("Health: 000", font, 30);
-    health.setPosition({150, 150});
-    health.setFillColor(sf::Color::Black);
 
     // creating background image
     sf::Texture worldBackground = sf::Texture();
@@ -94,12 +66,12 @@ auto main() -> int {
                 }
                 window.clear(sf::Color::Black);
                 window.display();
-
             }
             while (game) {
                 sf::Time deltaTime = clock.restart();
                 window.clear(sf::Color::White);
                 gameClass.update(window, player, eq, deltaTime, hud);
+                gameClass.gameRules(window,player,eq,deltaTime,hud);
                 player.update(deltaTime);
                 player.draw(window);
                 hud.update(player, fps1, gameClass.getCurrentLvl());

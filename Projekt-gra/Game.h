@@ -14,10 +14,11 @@ public:
     }
     void loadGraphics();
     void update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud);
-
+    void gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud);
     int getCurrentLvl() const;
 
 private:
+    sf::Clock clockLvl0;
     bool loaded;
     bool game;
     bool debug = false;

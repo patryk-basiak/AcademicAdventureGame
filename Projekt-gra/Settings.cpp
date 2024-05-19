@@ -5,3 +5,4 @@
 #include "Settings.h"
 
 bool movable = true;
+bool game = false;

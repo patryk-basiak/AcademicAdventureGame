@@ -39,7 +39,7 @@ class Computer
         Computer& operator=(Computer&&) noexcept = default;
         ~Computer() override;
         void draw(sf::RenderWindow& window) override;
-        void update(sf::RenderWindow& window) override;
+        void update(sf::RenderWindow& window, Player& player) override;
         void collision(Player& player, sf::RenderWindow &window) override;
         bool getStatus() override;
         sf::Vector2<float> getPosition() override;

@@ -108,3 +108,17 @@ void Game::loadGraphics() {
 int Game::getCurrentLvl() const {
     return currentLvl;
 }
+
+void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud) {
+
+    if(currentLvl == 0){
+        float currentTime = clockLvl0.getElapsedTime().asSeconds();
+        if(currentTime <= 6){
+            movable = false;
+            player.setPosition(player.getPosition().x - 0.03, player.getPosition().y);
+        } if(currentTime >= 6 and currentTime <= 7){
+            movable = true;
+        }
+    }
+
+}

@@ -377,6 +377,9 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
             it--;
         }
     }
+    for (auto const &e: interactable_vec) {
+        e->update(window,player);
+    }
 }
 
 void Map::draw(sf::RenderWindow& window) {
@@ -391,7 +394,6 @@ void Map::draw(sf::RenderWindow& window) {
         e->draw(window);
     }
     for (auto const &e: interactable_vec) {
-        e->update(window);
         e->draw(window);
     }
 }

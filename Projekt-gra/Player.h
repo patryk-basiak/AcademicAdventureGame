@@ -29,8 +29,15 @@ public:
     void setVerticalVelocity(float i);
 
 
+    void hide();
+
+    void showPlayer();
+
+    bool isSeen();
+
 private:
     sf::Clock clock;
+    bool isShown = true;
     int strength = 3;
     float lastJumpTime = 0;
     float JumpCooldown = 2;
