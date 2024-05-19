@@ -11,10 +11,18 @@ void Icons::draw(sf::RenderWindow &window) {
 
 }
 
-void Icons::update() {
+void Icons::update(sf::RenderWindow& window) {
 
 }
 
 void Icons::collision() {
+
+}
+
+bool Icons::isActive() {
+    return active;
+}
+
+void Icons::drawApp(sf::RenderWindow &window) {
 
 }

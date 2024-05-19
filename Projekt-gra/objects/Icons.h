@@ -7,14 +7,16 @@ class Icons {
 public:
     Icons(float x, float y);
     virtual void draw(sf::RenderWindow& window);
-    virtual void update();
+    virtual void update(sf::RenderWindow& window);
     virtual void collision();
+    virtual bool isActive();
+    virtual void drawApp(sf::RenderWindow& window);
 
 
 private:
     sf::Sprite icon;
     int id = 1;
-    bool isActive = false;
+    bool active = false;
 
 
 };

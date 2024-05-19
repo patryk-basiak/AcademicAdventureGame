@@ -365,7 +365,7 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             eq.addItem(*it);
             (*it)->collision(player);
-            it = items_vec.erase(it);
+            items_vec.erase(it);
             it--;
         }
     }
@@ -373,19 +373,9 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
         (*it)->update(time);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             (*it)->collision(player);
-            it = entity_vec.erase(it);
+            entity_vec.erase(it);
             it--;
         }
-//        else if(!eq.getStatus() and eq.getItemInHand()->getId() == 2){
-//            for (const auto& am: eq.getItemInHand()->getAmmoList()) {
-//                if(am.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
-//                    (*it)->collision(player);
-//                    it = entity_vec.erase(it);
-//                    it--;
-////                    delete reinterpret_cast<Entity &>((*it));
-//                }
-//            }
-//        }
     }
 }
 

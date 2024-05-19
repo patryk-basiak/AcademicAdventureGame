@@ -26,6 +26,9 @@ void Computer::collision(Player &player, sf::RenderWindow& window) {
 }
 
 void Computer::update(sf::RenderWindow& window) {
+    for(auto &e: icons){
+        e->update(window);
+    }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) and inUse) {
         sf::Vector2i pos = sf::Mouse::getPosition(window);
         fmt::println("{} {}", pos.x, pos.y);
@@ -39,10 +42,10 @@ void Computer::draw(sf::RenderWindow &window) {
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::F) {
                 if (inUse) {
-                    movable = false;
+                    movable = true;
                     inUse = false;
                 } else {
-                    movable = true;
+                    movable = false;
                     inUse = true;
                 }
             }
@@ -54,6 +57,11 @@ void Computer::draw(sf::RenderWindow &window) {
         window.draw(wallpaper);
         for(auto &e: icons){
             e->draw(window);
+        }
+        for(auto &e: icons){
+            if(e->isActive()){
+                e->drawApp(window);
+            }
         }
     }
 }

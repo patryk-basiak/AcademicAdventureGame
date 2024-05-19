@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <random>
+#include <thread>
 #include "Player.h"
 #include "Equipment.h"
 #include "ResourceManager.h"
@@ -75,60 +76,41 @@ auto main() -> int {
 
     bool debug = false;
 
-    std::vector<Map> maps = std::vector<Map>{
-//        Map(0,0, MapTypes::TESTING, 0),
-        Map(0,0, MapTypes::STARTING, 0),
-        Map(0,0, MapTypes::STARTING, 0),
-        Map(3,0, MapTypes::FOREST, 0),
-        Map(5,1, MapTypes::FOREST, 1),
-        Map(1,10, MapTypes::CITY, 0),
-        Map(0,6, MapTypes::CITY, 1),
-        Map(1,3, MapTypes::PJATK, 0),
-        Map(2,14, MapTypes::PJATK, 1),
-        Map(0,6, MapTypes::CITY, 2),
-        Map(2,4, MapTypes::FOREST, 2),
-        Map(2,4, MapTypes::ENDING, 0),
-        };
-
-    unsigned int lastLvl = maps.size(); //
-    int current_Lvl = 0;
-    Map currentMap = maps[current_Lvl];
+//            std::thread thread(&Game::loadGraphics, &gameClass);
+//
+//    thread.launch();
     sf::Clock clock;
     sf::Clock timer;
-    maps[0].getMapSeed();
-
     while (window.isOpen()) {
-        while(menu){
+        while (menu) {
+
             sf::Event event = sf::Event();
             while (window.pollEvent(event)) {
-                if(event.type == sf::Event::KeyPressed){
-                    if(event.key.code == sf::Keyboard::Enter){
+                if (event.type == sf::Event::KeyPressed) {
+                    if (event.key.code == sf::Keyboard::Enter) {
                         game = true;
                         menu = false;
                     }
                 }
-            }
-            window.display();
-        }
-        while (game) {
-            sf::Time deltaTime = clock.restart();
-            textX.setString("X pos: " + std::to_string(((int) player.getPosition().x)));
-            showLvlnumber.setString("Current lvl: " + std::to_string(((int)current_Lvl)));
-            health.setString("Health: " + std::to_string(player.getHealth()));
-            fps.setString("FPS: " + std::to_string((int)std::round(fps1.getFPS())));
-            textY.setString("Y pos: " + std::to_string(((int) player.getPosition().y)));
-            window.clear(sf::Color::White);
-            gameClass.update(window,player,eq,deltaTime, hud);
-            currentMap.update(window,deltaTime, player, eq);
-            currentMap.draw(window);
-            window.draw(health);
-            player.update(deltaTime);
-            player.draw(window);
-            hud.draw(window,eq,player);
-            fps1.update();
-            window.display();
+                window.clear(sf::Color::Black);
+                window.display();
 
+            }
+            while (game) {
+                sf::Time deltaTime = clock.restart();
+                window.clear(sf::Color::White);
+                gameClass.update(window, player, eq, deltaTime, hud);
+                player.update(deltaTime);
+                player.draw(window);
+                hud.update(player, fps1, gameClass.getCurrentLvl());
+                hud.draw(window, eq, player);
+                eq.update(window, player);
+                fps1.update();
+                window.display();
+
+            }
         }
     }
+
 }
 

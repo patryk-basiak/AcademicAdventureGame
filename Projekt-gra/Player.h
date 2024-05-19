@@ -31,6 +31,7 @@ public:
 
 private:
     sf::Clock clock;
+    int strength = 3;
     float lastJumpTime = 0;
     float JumpCooldown = 2;
     int val= 0;

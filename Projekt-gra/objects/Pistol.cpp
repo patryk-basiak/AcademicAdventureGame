@@ -23,12 +23,18 @@ void Pistol::collision(Player& player) {
 void Pistol::usage() {
     fmt::println("pistol was used");
     if(ammunition > 0){
-        auto ammoTemp = sf::RectangleShape();
-        ammoTemp.setPosition(this->pistol.getPosition().x + 1,this->pistol.getPosition().y);
-        ammoTemp.setSize(sf::Vector2f(20,20));
-        ammoTemp.setFillColor(sf::Color::Green);
-        this->ammo.push_back(ammoTemp);
-        ammunition--;
+        if(ready) {
+            auto ammoTemp = sf::RectangleShape();
+            ammoTemp.setPosition(this->pistol.getPosition().x + 1, this->pistol.getPosition().y);
+            ammoTemp.setSize(sf::Vector2f(20, 20));
+            ammoTemp.setFillColor(sf::Color::Green);
+            this->ammo.push_back(ammoTemp);
+            ammunition--;
+            ready = false;
+        }
+        else {
+            fmt::println("not ready to shot");
+        }
     }
     else{
         fmt::println("out of ammo");
@@ -37,6 +43,28 @@ void Pistol::usage() {
 }
 
 void Pistol::update(sf::RenderWindow& window){
+    float currentTime = clock.getElapsedTime().asSeconds();
+    sf::Event event = sf::Event();
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::R and ammunition <= 0) {
+                fmt::println("reload started");
+                reloading = true;
+                reloadStart = clock.getElapsedTime().asSeconds();
+
+            }
+        }
+        if(reloading) {
+            if (currentTime - reloadStart >= reloadTime) {
+                fmt::println("reloaded");
+                ammunition += 3;
+                reloading = false;
+            }
+        }
+    }
+    if(currentTime - lastShotTime >= shotCooldown){
+        ready = true;
+    }
 
 }
 

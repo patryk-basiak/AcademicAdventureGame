@@ -76,9 +76,16 @@ public:
     int getId() override;
 
 private:
+    sf::Clock clock;
+    float lastShotTime = 0;
+    float shotCooldown = 2;
+    float reloadTime = 4;
+    float reloadStart = 0;
+    bool reloading = false;
+    bool ready = true;
     void shot();
     int ID = 2;
-    int ammunition = 3;
+    int ammunition = 7;
     bool Stackable = false;
     std::vector<sf::RectangleShape> ammo;
     sf::Sprite pistol;

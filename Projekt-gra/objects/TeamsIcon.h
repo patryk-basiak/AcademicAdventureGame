@@ -12,16 +12,22 @@ public:
         this->icon.setPosition(x, y);
         this->icon.setTexture(ResourceManager::getTexture("../graphics/microsoftTeamsIcon.png"));
         this->icon.scale(0.13, 0.13);
+        this->centerX = icon.getPosition().x + 64;
+        this->centerY = icon.getPosition().y + 64;
     }
     void draw(sf::RenderWindow& window) override;
-    void update() override;
+    void update(sf::RenderWindow& window) override;
     void collision() override;
+    bool isActive() override;
+    void drawApp(sf::RenderWindow& window) override;
 
 
 private:
+    float centerX;
+    float centerY;
     sf::Sprite icon;
     int id = 2;
-    bool isActive = false;
+    bool active = false;
 
 
 };
