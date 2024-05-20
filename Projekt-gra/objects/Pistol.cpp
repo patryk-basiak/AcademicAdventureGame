@@ -68,6 +68,7 @@ void Pistol::draw(sf::RenderWindow &window) {
         for (auto &e: ammo) {
             window.draw(e);
             e.setPosition(e.getPosition().x + 0.5, e.getPosition().y);
+//            e.setPosition(e.getPosition().x,e.getPosition().y +1);
         }
     }
 
