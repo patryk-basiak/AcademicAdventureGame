@@ -31,6 +31,9 @@ public:
         lvlNumber.setFont(font);
         lvlNumber.setPosition(1250,200);
         lvlNumber.setCharacterSize(30);
+        roomAvail.setFont(font);
+        roomAvail.setPosition(1250,300);
+        roomAvail.setCharacterSize(30);
         health.setFont(font);
         health.setPosition(100,800);
         health.setCharacterSize(30);
@@ -38,7 +41,7 @@ public:
     }
 
     void draw(sf::RenderWindow& window, Equipment& eq, Player& player);
-    void update(Player& player, FPS& fps, int lvl);
+    void update(Player& player, FPS& fps, int lvl, bool nextRoomAvailable);
     void lvls(int roomlvl);
 
     void showDebug();
@@ -52,6 +55,7 @@ private:
     sf::Text health;
     sf::Text lvlNumber;
     sf::Font font;
+    sf::Text roomAvail;
     sf::Text fps;
     sf::Text positionX;
     sf::Text positionY;

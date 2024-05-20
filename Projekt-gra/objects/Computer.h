@@ -15,7 +15,7 @@ class Computer
         Computer(float x, float y) : Interactable(x,y){
             computer.setTexture(ResourceManager::getTexture("../graphics/computer.png"));
             computer.setScale(0.05,0.05);
-            computer.setPosition(x,y);
+            computer.setPosition(x,y - 5);
             screen.setSize(sf::Vector2f{1000,600});
             screen.setPosition(800 - 500, 450 - 400);
             screen.setFillColor(sf::Color::White);
@@ -39,7 +39,7 @@ class Computer
         Computer& operator=(Computer&&) noexcept = default;
         ~Computer() override;
         void draw(sf::RenderWindow& window) override;
-        void update(sf::RenderWindow& window, Player& player) override;
+        void update(sf::RenderWindow& window, Player& player, Equipment& eq) override;
         void collision(Player& player, sf::RenderWindow &window) override;
         bool getStatus() override;
         sf::Vector2<float> getPosition() override;

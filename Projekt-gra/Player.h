@@ -46,7 +46,7 @@ private:
     float jumpVelocity = -200;
     bool died = false;
     bool isGround = true;
-    float surface = 800;
+    float surface = 1000;
     bool isFacingRight = true;
     float maxY = surface - 100;
     float speed = 200;

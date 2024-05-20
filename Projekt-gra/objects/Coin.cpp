@@ -30,3 +30,7 @@ int Coin::getId() {
 void Coin::setPosition(float x, float y) {
     this->coin.setPosition(x,y);
 }
+
+sf::Vector2<float> Coin::getSize() {
+    return sf::Vector2f{radius,radius};
+}

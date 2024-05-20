@@ -55,7 +55,7 @@ auto main() -> int {
     sf::Clock timer;
     while (window.isOpen()) {
         while (menu) {
-
+            gameClass.loadGraphics();
             sf::Event event = sf::Event();
             while (window.pollEvent(event)) {
                 if (event.type == sf::Event::KeyPressed) {
@@ -74,7 +74,7 @@ auto main() -> int {
                 gameClass.gameRules(window,player,eq,deltaTime,hud);
                 player.update(deltaTime);
                 player.draw(window);
-                hud.update(player, fps1, gameClass.getCurrentLvl());
+                hud.update(player, fps1, gameClass.getCurrentLvl(), gameClass.getNextRoomAvailability());
                 hud.draw(window, eq, player);
                 hud.lvls(gameClass.getCurrentLvl());
                 eq.update(window, player);

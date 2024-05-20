@@ -6,3 +6,12 @@
 
 bool movable = true;
 bool game = false;
+bool stage_0 = false;
+bool stage_1 = false;
+bool stage_2 = false;
+bool stage_3 = false;
+
+
+//--------------------
+bool achievement_0 = false;
+//bool achievement_1;

@@ -67,6 +67,12 @@ add_executable(game main.cpp
         Game.h
         DialogElement.cpp
         DialogElement.h
+        objects/Wardrobe.cpp
+        objects/Wardrobe.h
+        objects/Chest.h
+        objects/Chest.cpp
+        objects/OakTree.cpp
+        objects/OakTree.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

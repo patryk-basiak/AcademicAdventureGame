@@ -34,4 +34,5 @@ bool GoogleIcons::isActive() {
 void GoogleIcons::drawApp(sf::RenderWindow &window) {
         window.draw(this->windowScreen);
         window.draw(google);
+
 }

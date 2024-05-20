@@ -3,6 +3,7 @@
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "../Player.h"
+#include "../Equipment.h"
 
 class Interactable {
 public:
@@ -11,7 +12,7 @@ public:
     virtual sf::Vector2<float> getPosition();
     virtual std::vector<float> getSize();
     virtual ~Interactable();
-    virtual void update(sf::RenderWindow& window, Player& player);
+    virtual void update(sf::RenderWindow& window, Player& player, Equipment& eq);
     virtual void collision(Player& player, sf::RenderWindow &window) ;
     virtual bool getStatus();
 

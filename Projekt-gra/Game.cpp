@@ -58,20 +58,20 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
     }
 
         if (player.getPosition().x >=  (float)(window.getSize().x - 30)) {
-            player.setPosition(0.f, player.getSurface());
-            if (currentLvl != lastLvl)
-                player.setStartPosition();
-            currentLvl += 1;
-            currentMap = maps[currentLvl];
-
-
+//
+            fmt::println("next lvl");
+            if (currentLvl != lastLvl and nextRoomAvailable) {
+                this->nextLvl();
+                player.setPosition(0.f, player.getSurface());
+            }
+            else{
+                player.setPosition((float)window.getSize().x-35, player.getPosition().y);
+            }
         }
         if (player.getPosition().x < -40) {
             player.setPosition((float)(window.getSize().x - 30), player.getSurface());
             if (currentLvl != 0)
                 player.setEndPosition();
-            currentLvl -= 1;
-            currentMap = maps[currentLvl];
 
             if (currentLvl == 0) {
                 player.setPosition(-10.f, player.getSurface());
@@ -89,9 +89,9 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
 }
 
 void Game::loadGraphics() {
-//    if(!loaded) {
-////        maps.emplace_back(0, 0, MapTypes::STARTING, 0);
-////        Map(0,0, MapTypes::TESTING, 0),
+    if(!loaded) {
+        maps.emplace_back(0, 0, MapTypes::FOREST, 0);
+//        maps.emplace_back(0, 0, MapTypes::TESTING, 0);
 ////                Map(0, 0, MapTypes::STARTING, 0),
 ////
 ////                Map(3, 0, MapTypes::FOREST, 0),
@@ -104,15 +104,17 @@ void Game::loadGraphics() {
 ////                Map(2, 4, MapTypes::FOREST, 2),
 ////                Map(2, 4, MapTypes::ENDING, 0),
 ////        };
-//        currentLvl = 0;
-//        currentMap = maps[currentLvl];
-//        loaded = true;
-//    }
+        currentLvl = 0;
+        currentMap = maps[currentLvl];
+        lastLvl = maps.size();
+        loaded = true;
+    }
 }
 
 int Game::getCurrentLvl() const {
     return currentLvl;
 }
+
 
 void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud) {
     if(currentLvl == 0){
@@ -123,7 +125,26 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
         } if(currentTime >= 10 and currentTime <= 12){
 //            dialog.clear();
             movable = true;
+
         }
+        if(stage_0 and stage_1){
+            nextRoomAvailable = true;
+        }
+
     }
 
+}
+
+void Game::nextLvl() {
+    this->nextRoomAvailable = false;
+    stage_0 = false;
+    stage_1 = false;
+    stage_2 = false;
+    stage_3 = false;
+    currentLvl += 1;
+    currentMap = maps[currentLvl];
+}
+
+bool Game::getNextRoomAvailability() const {
+    return nextRoomAvailable;
 }

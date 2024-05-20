@@ -16,6 +16,9 @@
 #include "objects/Door.h"
 #include "objects/Bed.h"
 #include "objects/Computer.h"
+#include "objects/Wardrobe.h"
+#include "objects/Chest.h"
+#include "objects/OakTree.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -35,7 +38,7 @@ Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subty
     this->id = tempID++;
     this->enemies_number = enemies_number;
     this->npc_number = npc_number;
-    this->map_vec = this->generateMap(14,25);
+    this->map_vec = this->generateMap(25,14);
     this->walls_vec = transformWalls(map_vec[0]);
     this->items_vec = transformObjects(map_vec[1]);
     this->entity_vec = transformEntities(map_vec[2]);
@@ -101,11 +104,11 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
         auto items = std::vector<std::vector<int>>();
         items = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,3,0,0,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3,0, 0, 0, 0,0,0,0,0,0,0,3,0,0,0,0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
@@ -127,7 +130,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                     {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,3,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                     {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
@@ -145,7 +148,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                      {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
                                                      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,3,0,0},
+                                                     {0, 0, 0, 103, 0, 0, 0, 0, 0, 0,5, 0, 99, 0,0,0,0,0,0,0,0,0,3,0,0},
                                                      {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
                                                      {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
                                                      {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
@@ -159,9 +162,133 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
 
 
 
-//    if(mainType == MapTypes::FOREST){
-//
-//    }
+    if(mainType == MapTypes::FOREST){
+
+        int ground = 2;
+        // source: https://stackoverflow.com/questions/22923551/generating-number-0-1-using-mersenne-twister-c
+        std::random_device rd;
+        std::mt19937 gen(rd()); // Mersenne Twister engine
+
+        std::uniform_int_distribution<> dist(2, 5);
+
+        std::uniform_int_distribution<> treeNumbers(5, 11);
+        std::uniform_int_distribution<> distanceBeetwenTrees(3, 5);
+        std::uniform_int_distribution<> treeSize(0, 2);
+        std::uniform_int_distribution<> jumpPadRespawn(1, 6);
+
+
+        int amountOfThrees = treeNumbers(gen);
+        std::vector<int> treeTrunks = std::vector<int>();
+        int start = 3;
+        for(int i = 0; i<amountOfThrees; i++){
+            if(start < 22){
+                treeTrunks.push_back(start);
+            }
+            start += distanceBeetwenTrees(gen);
+        }
+        int door = dist(gen);
+        fmt::println("door is {}", door);
+
+        int currentTree = 0;
+        auto tempDistance = 0;
+        auto map = std::vector<std::vector<int>>();
+        for(int i = 0; i<y; ++i){
+            std::vector temp = std::vector<int>();
+            for(int j = 0; j<x; ++j) {
+                auto it = std::find(treeTrunks.begin(),treeTrunks.end(),j);
+                if(it != treeTrunks.end()){
+                    tempDistance++;
+                }
+                auto distance =  std::distance(treeTrunks.begin(), it);
+                if(j >= x - 3 and i == door + 1){
+                    temp.push_back(1);
+                }
+                else if(j == x -1 and  i != door and i!=door -1){
+                    temp.push_back(1);
+                }
+                else if( i >= y -4 - distance - treeSize(gen) and i <= y - 3 and it != treeTrunks.end()){
+                    temp.push_back(200);
+                }
+                else if( i > y -3 and it == treeTrunks.end() and tempDistance > 3){
+                    temp.push_back(0);
+                }
+                else if( i == y -2 and it == treeTrunks.end() and tempDistance <= 3  and tempDistance > 1 ){
+                    temp.push_back(2);
+                }
+                else if(i == y - 3 and j < 3){
+                    temp.push_back(1);
+                }
+                else if(i > y -3){
+                    temp.push_back(1);
+                }
+                else{
+                    temp.push_back(0);
+                }
+            }
+            map.push_back(temp);
+            tempDistance = 0;
+        }
+
+
+
+        vec.push_back(map);
+        auto items = std::vector<std::vector<int>>();
+        items = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,3,0,0,0,0,0,0},
+                                                    {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 3,0, 0, 0, 0,0,0,0,0,0,0,3,0,0,0,0},
+                                                    {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {0, 0, 0, 3, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
+                                                    {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+        };
+        vec.push_back(items);
+//        auto entity = std::vector<std::vector<int>>();
+//        entity = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                     {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                     {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,3,0,0},
+//                                                     {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+//                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+//                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+//                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+//        };
+        vec.push_back({{0}});
+        auto interact = std::vector<std::vector<int>>();
+//        interact = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+//                                                       {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+//                                                       {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+//                                                       {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+//                                                       {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+//        };
+        vec.push_back({{0}});
+        return vec;
+
+    }
 //
 //    if(mainType == MapTypes::CITY){
 //
@@ -341,7 +468,33 @@ std::vector<std::shared_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
             if(i == 101){
                 lvl0_trans.emplace_back(std::make_shared<Bed>(x,y));
             }
+            if(i == 200){
+                lvl0_trans.emplace_back(std::make_shared<OakTree>(x,y));
+            }
+            x += 64;
+            if (x >= 1600) {
+                x = 0;
+                y += 64;
+            }
+        }
+    }
+    return lvl0_trans;
+}
+
+std::vector<std::shared_ptr<Interactable>> Map::transformInteractable(std::vector<std::vector<int>> vec) {
+    auto lvl0_trans = std::vector<std::shared_ptr<Interactable>>{};
+    float x = 0;
+    float y = 4;
+    for(auto & j : vec) {
+        for (int i : j) {
+            if (i == 5) {
+                lvl0_trans.emplace_back(std::make_shared<Chest>(x,y));
+            }
             if(i == 102){
+                lvl0_trans.emplace_back(std::make_shared<Computer>(x,y));
+            }
+            if(i == 103){
+                lvl0_trans.emplace_back(std::make_shared<Wardrobe>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -378,7 +531,7 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
         }
     }
     for (auto const &e: interactable_vec) {
-        e->update(window,player);
+        e->update(window,player, eq);
     }
 }
 
@@ -534,28 +687,6 @@ void Map::getMapSeed() {
 
 }
 
-std::vector<std::shared_ptr<Interactable>> Map::transformInteractable(std::vector<std::vector<int>> vec) {
-    auto lvl0_trans = std::vector<std::shared_ptr<Interactable>>{};
-    float x = 0;
-    float y = 4;
-    for(auto & j : vec) {
-        for (int i : j) {
-            if (i == 0) {
-                ;
-            }
-            if(i == 102){
-                lvl0_trans.emplace_back(std::make_shared<Computer>(x,y));
-            }
-            x += 64;
-            if (x >= 1600) {
-                x = 0;
-                y += 64;
-            }
-        }
-    }
-    return lvl0_trans;
-}
-
 void Map::checkCollisionInteract(Player &player, sf::RenderWindow &window) {
     float playerBottom = player.getPosition().y + player.getSize()[1];
     float playerTop = player.getPosition().y;
@@ -577,8 +708,6 @@ void Map::checkCollisionInteract(Player &player, sf::RenderWindow &window) {
             }
             if (playerTop < interactBottom && playerBottom > interactBottom){
                 // Bottom
-                player.setVerticalVelocity(0);
-                player.setPosition(player.getPosition().x, interactBottom);
                 interact->collision(player, window);
                 fmt::print("Collision with the bottom ({}, {})\n", interact->getPosition().x,
                            interact->getPosition().y);
@@ -586,16 +715,12 @@ void Map::checkCollisionInteract(Player &player, sf::RenderWindow &window) {
             if (playerRight > interactLeft && playerLeft < interactLeft && playerBottom < interactTop && playerTop > interactTop ) {
                 interact->collision(player, window);
                 // Left
-                player.setVelocity(0);
-                player.setPosition(interactLeft - player.getSize()[0], player.getPosition().y);
                 fmt::print("Collision with the left ({}, {}) ({},{})\n", interactRight,
                            interactLeft, playerRight, playerLeft);
             }
             if (playerLeft < interactRight && playerRight > interactRight && playerBottom < interactTop && playerTop > interactTop ) {
                 interact->collision(player, window);
                 // Right
-                player.setVelocity(0);
-                player.setPosition(interactRight + 10, player.getPosition().y);
                 fmt::print("Collision with the right ({}, {})\n", interact->getPosition().x,
                            interact->getPosition().y);
             }

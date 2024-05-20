@@ -10,6 +10,7 @@ public:
         this->coin.setPosition(x,y);
         this->coin.setRadius(r);
         this->coin.setFillColor(sf::Color{255,215,0,255});
+        this->radius = r;
     }
     void collision(Player& player) override;
     bool operator==(const Collectable& other) const override {
@@ -19,12 +20,14 @@ public:
     void setPosition(float x, float y) override;
     void draw(sf::RenderWindow& window) override;
     void usage() override;
+    sf::Vector2<float> getSize() override;
     bool isStackable() const override;
     std::unique_ptr<Collectable> clone() const override;
     int getId() override;
 
 
 private:
+    float radius;
     sf::CircleShape coin;
     bool Stackable = true;
     int value = 3;

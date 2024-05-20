@@ -18,12 +18,14 @@ if(debug) {
     window.draw(positionY);
     window.draw(fps);
     window.draw(lvlNumber);
+    window.draw(roomAvail);
 }
     window.draw(health);
 
 }
 
-void HUD::update(Player &player, FPS& fps1, int lvl) {
+void HUD::update(Player &player, FPS& fps1, int lvl, bool nextRoomAvailable ) {
+    health.setString("Health: " + std::to_string(player.getHealth()));
     if(dialogShow) {
         mess.update(player);
     }
@@ -32,7 +34,7 @@ void HUD::update(Player &player, FPS& fps1, int lvl) {
         positionY.setString("Position Y:" + std::to_string(player.getPosition().y));
         fps.setString("FPS: " + std::to_string((int) std::round(fps1.getFPS())));
         lvlNumber.setString("Current Lvl: " + std::to_string(lvl));
-        health.setString("Health: " + std::to_string(player.getHealth()));
+        roomAvail.setString("Next room available: " + std::to_string(nextRoomAvailable));
     }
 }
 void HUD::hideDebug() {

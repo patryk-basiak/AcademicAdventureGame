@@ -70,4 +70,9 @@ std::vector<sf::RectangleShape> Collectable::getAmmoList() {
     return std::vector<sf::RectangleShape>();
 }
 
+sf::Vector2<float> Collectable::getSize() {
+    return this->collect.getSize();
+
+}
+
 

@@ -8,7 +8,7 @@ Interactable::Interactable(float x, float y) {
 
 }
 
-void Interactable::update(sf::RenderWindow& window, Player& player) {
+void Interactable::update(sf::RenderWindow& window, Player& player, Equipment& eq) {
 
 }
 

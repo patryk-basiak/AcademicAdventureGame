@@ -14,10 +14,10 @@ void Computer::collision(Player &player, sf::RenderWindow& window) {
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::F) {
                 if (inUse) {
-                    movable = false;
+                    movable = true;
                     inUse = false;
                 } else {
-                    movable = true;
+                    movable = false;
                     inUse = true;
                 }
             }
@@ -25,7 +25,7 @@ void Computer::collision(Player &player, sf::RenderWindow& window) {
     }
 }
 
-void Computer::update(sf::RenderWindow& window, Player& player) {
+void Computer::update(sf::RenderWindow& window, Player& player, Equipment& eq) {
     if(inUse){
         player.hide();
     }
@@ -43,20 +43,6 @@ void Computer::update(sf::RenderWindow& window, Player& player) {
 }
 
 void Computer::draw(sf::RenderWindow &window) {
-    sf::Event event = sf::Event();
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::F) {
-                if (inUse) {
-                    movable = true;
-                    inUse = false;
-                } else {
-                    movable = false;
-                    inUse = true;
-                }
-            }
-        }
-    }
     window.draw(computer);
     if(inUse){
         window.draw(screen);

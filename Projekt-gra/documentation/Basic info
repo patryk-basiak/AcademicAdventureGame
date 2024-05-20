@@ -6,9 +6,18 @@ ID for map generation:
 0 - void (not an object)
 1 - Wall
 2- Jump pad
+
 99 - Door
 101 - Bed
-102 -
+
+200 - Oak wood
+--------------------------------
+ID for Interactable generation:
+5 - Chest
+102 - Computer
+103 - Wardrobe
+
+
 ---------------------------------
 ID for items:
 0 - null (not an object)
@@ -43,6 +52,8 @@ Wall:
     -Bed
 Interactable:
     -Computer
+    -Wardrobe
+    -Chest
 
 Icon
 ---------------------------------

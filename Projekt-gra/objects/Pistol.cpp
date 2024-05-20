@@ -44,22 +44,16 @@ void Pistol::usage() {
 
 void Pistol::update(sf::RenderWindow& window){
     float currentTime = clock.getElapsedTime().asSeconds();
-    sf::Event event = sf::Event();
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::R and ammunition <= 0) {
-                fmt::println("reload started");
-                reloading = true;
-                reloadStart = clock.getElapsedTime().asSeconds();
-
-            }
-        }
-        if(reloading) {
-            if (currentTime - reloadStart >= reloadTime) {
-                fmt::println("reloaded");
-                ammunition += 3;
-                reloading = false;
-            }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) and ammunition <= 0) {
+        fmt::println("reload started");
+        reloading = true;
+        reloadStart = clock.getElapsedTime().asSeconds();
+    }
+    if(reloading) {
+        if (currentTime - reloadStart >= reloadTime) {
+            fmt::println("reloaded");
+            ammunition = 3;
+            reloading = false;
         }
     }
     if(currentTime - lastShotTime >= shotCooldown){
@@ -74,7 +68,6 @@ void Pistol::draw(sf::RenderWindow &window) {
         for (auto &e: ammo) {
             window.draw(e);
             e.setPosition(e.getPosition().x + 0.5, e.getPosition().y);
-//            e.setPosition(e.getPosition().x,e.getPosition().y +1);
         }
     }
 
