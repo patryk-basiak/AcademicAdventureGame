@@ -12,7 +12,7 @@ void Wall::draw(sf::RenderWindow& window) const {
 }
 
 void Wall::collision(Player &player, sf::RenderWindow &window) {
-    player.setPosition(player.getPosition().x, wall.getPosition().y - player.getSize()[1]);
+    player.setPosition(player.getPosition().x, wall.getPosition().y - player.getSize()[1] - 0.18);
     player.setVerticalVelocity(0);
 }
 

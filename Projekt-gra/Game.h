@@ -21,7 +21,7 @@ public:
     bool getNextRoomAvailability() const;
 
 private:
-    void nextLvl();
+    void nextLvl(Player & player);
     sf::Clock clockLvl0;
 //    std::vector<DialogElement> dialog = std::vector<DialogElement>{DialogElement("What a lovely sunday!")};
     bool loaded;
@@ -32,7 +32,7 @@ private:
     bool menu;
     int currentLvl = 0;
     std::vector<Map> maps = {Map(0, 0, MapTypes::STARTING, 0)};
-    Map currentMap = Map(0, 0, MapTypes::FOREST, 0);
+    Map currentMap = Map(0, 0, MapTypes::STARTING, 0);
     unsigned int lastLvl = maps.size();
 
 };

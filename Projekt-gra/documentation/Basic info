@@ -11,6 +11,7 @@ ID for map generation:
 101 - Bed
 
 200 - Oak wood
+201 - Oak Leaves
 --------------------------------
 ID for Interactable generation:
 5 - Chest
@@ -47,9 +48,10 @@ Entity:
     -
 
 Wall:
-    -Jump Pad
-    -Door
-    -Bed
+    - Jump Pad
+    - Door
+    - Bed
+    - Oak Leaves
 Interactable:
     -Computer
     -Wardrobe

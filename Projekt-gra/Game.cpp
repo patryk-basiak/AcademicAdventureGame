@@ -58,11 +58,9 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
     }
 
         if (player.getPosition().x >=  (float)(window.getSize().x - 30)) {
-//
-            fmt::println("next lvl");
             if (currentLvl != lastLvl and nextRoomAvailable) {
-                this->nextLvl();
-                player.setPosition(0.f, player.getSurface());
+                this->nextLvl(player);
+                player.setPosition(0.f, 500);
             }
             else{
                 player.setPosition((float)window.getSize().x-35, player.getPosition().y);
@@ -70,20 +68,10 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
         }
         if (player.getPosition().x < -40) {
             player.setPosition((float)(window.getSize().x - 30), player.getSurface());
-            if (currentLvl != 0)
-                player.setEndPosition();
-
-            if (currentLvl == 0) {
-                player.setPosition(-10.f, player.getSurface());
-            }
         }
 
         currentMap.draw(window);
         currentMap.update(window,deltaTime,player,eq);
-//        for(auto &e: dialog){
-//            e.update(player);
-//            e.draw(window);
-//        }
 
 
 }
@@ -91,6 +79,7 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
 void Game::loadGraphics() {
     if(!loaded) {
         maps.emplace_back(0, 0, MapTypes::FOREST, 0);
+        maps.emplace_back(15, 0, MapTypes::FOREST, 1);
 //        maps.emplace_back(0, 0, MapTypes::TESTING, 0);
 ////                Map(0, 0, MapTypes::STARTING, 0),
 ////
@@ -132,10 +121,13 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
         }
 
     }
+    if(currentLvl == 1){
+        nextRoomAvailable = true;
+    }
 
 }
 
-void Game::nextLvl() {
+void Game::nextLvl(Player & player) {
     this->nextRoomAvailable = false;
     stage_0 = false;
     stage_1 = false;
@@ -143,6 +135,7 @@ void Game::nextLvl() {
     stage_3 = false;
     currentLvl += 1;
     currentMap = maps[currentLvl];
+    player.setStartPosition();
 }
 
 bool Game::getNextRoomAvailability() const {

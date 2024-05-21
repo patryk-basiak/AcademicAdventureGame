@@ -19,6 +19,7 @@
 #include "objects/Wardrobe.h"
 #include "objects/Chest.h"
 #include "objects/OakTree.h"
+#include "objects/OakLeaves.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -49,29 +50,29 @@ Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subty
 
 std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const {
 
-    if(x < 2 or y < 2){
-       x = 10;
-       y = 10;
+    if (x < 2 or y < 2) {
+        x = 10;
+        y = 10;
     }
     auto vec = std::vector<std::vector<std::vector<int>>>();
 
-    if(mainType == MapTypes::TESTING){
+    if (mainType == MapTypes::TESTING) {
         auto map = std::vector<std::vector<int>>();
-        map = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
+        map = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 
         };
         vec.push_back(map);
@@ -82,77 +83,77 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
 
     }
 
-    if(mainType == MapTypes::STARTING){
+    if (mainType == MapTypes::STARTING) {
         auto map = std::vector<std::vector<int>>();
-        map = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 1, 0, 0, 0, 102, 0, 0, 0, 0,101, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 1, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1},
-    };
+        map = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 1, 0, 0, 0, 102, 0, 0, 0, 0, 101, 0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 1, 0, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {1, 1, 2, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                            {1, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                            {1, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                            {1, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        };
         vec.push_back(map);
         auto items = std::vector<std::vector<int>>();
-        items = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {0, 0, 0, 3, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                  {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+        items = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                              {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                              {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                              {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
         };
         vec.push_back(items);
         auto entity = std::vector<std::vector<int>>();
-        entity = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+        entity = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                               {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                               {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                               {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
         };
         vec.push_back(entity);
         auto interact = std::vector<std::vector<int>>();
-        interact = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 0, 0, 102, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                     {0, 0, 0, 103, 0, 0, 0, 0, 0, 0,5, 0, 99, 0,0,0,0,0,0,0,0,0,3,0,0},
-                                                     {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
+        interact = std::vector<std::vector<int>>{{0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 0,   102, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 1,   1,   1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 103, 0,   0, 0, 0, 0, 0, 5, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0},
+                                                 {1, 1, 2, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                 {1, 1, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                 {1, 1, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                 {1, 1, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
         };
         vec.push_back(interact);
         return vec;
@@ -160,135 +161,145 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
     }
 
 
+    if (mainType == MapTypes::FOREST) {
+
+        if (subType == 0) {
+            // source: https://stackoverflow.com/questions/22923551/generating-number-0-1-using-mersenne-twister-c
+            std::random_device rd;
+            std::mt19937 gen(rd()); // Mersenne Twister engine
+
+            std::uniform_int_distribution<> dist(3, 6);
+            std::uniform_int_distribution<> treeNumbers(5, 11);
+            std::uniform_int_distribution<> distanceBeetwenTrees(3, 5);
+            std::uniform_int_distribution<> treeSize(0, 2);
+            std::uniform_int_distribution<> jumpPadRespawn(1, 6);
 
 
-    if(mainType == MapTypes::FOREST){
-
-        int ground = 2;
-        // source: https://stackoverflow.com/questions/22923551/generating-number-0-1-using-mersenne-twister-c
-        std::random_device rd;
-        std::mt19937 gen(rd()); // Mersenne Twister engine
-
-        std::uniform_int_distribution<> dist(2, 5);
-
-        std::uniform_int_distribution<> treeNumbers(5, 11);
-        std::uniform_int_distribution<> distanceBeetwenTrees(3, 5);
-        std::uniform_int_distribution<> treeSize(0, 2);
-        std::uniform_int_distribution<> jumpPadRespawn(1, 6);
-
-
-        int amountOfThrees = treeNumbers(gen);
-        std::vector<int> treeTrunks = std::vector<int>();
-        int start = 3;
-        for(int i = 0; i<amountOfThrees; i++){
-            if(start < 22){
-                treeTrunks.push_back(start);
+            int amountOfThrees = treeNumbers(gen);
+            std::vector<int> treeTrunks = std::vector<int>();
+            int start = 3;
+            for (int i = 0; i < amountOfThrees; i++) {
+                if (start < 22) {
+                    treeTrunks.push_back(start);
+                }
+                start += distanceBeetwenTrees(gen);
             }
-            start += distanceBeetwenTrees(gen);
-        }
-        int door = dist(gen);
-        fmt::println("door is {}", door);
+            int door = dist(gen);
+            fmt::println("door is {}", door);
 
-        int currentTree = 0;
-        auto tempDistance = 0;
-        auto map = std::vector<std::vector<int>>();
-        for(int i = 0; i<y; ++i){
-            std::vector temp = std::vector<int>();
-            for(int j = 0; j<x; ++j) {
-                auto it = std::find(treeTrunks.begin(),treeTrunks.end(),j);
-                if(it != treeTrunks.end()){
-                    tempDistance++;
+            auto tempDistance = 0;
+            auto map = std::vector<std::vector<int>>();
+            for (int i = 0; i < y; ++i) {
+                std::vector temp = std::vector<int>();
+                for (int j = 0; j < x; ++j) {
+                    auto it = std::find(treeTrunks.begin(), treeTrunks.end(), j);
+                    auto before = std::find(treeTrunks.begin(), treeTrunks.end(), j + 1);
+                    auto after = std::find(treeTrunks.begin(), treeTrunks.end(), j - 1);
+                    if (it != treeTrunks.end()) {
+                        tempDistance++;
+                    }
+                    auto distance = std::distance(treeTrunks.begin(), it);
+                    if (j >= x - 3 and i == door + 1) {
+                        temp.push_back(1);
+                    } else if (j == x - 1 and i != door and i != door - 1) {
+                        temp.push_back(1);
+                    } else if (i == y - 4 - distance - 1 and it != treeTrunks.end()) {
+                        temp.push_back(201);
+                    } else if (i >= y - 4 - distance and i <= y - 3 and it != treeTrunks.end()) {
+                        temp.push_back(200);
+                    }
+//                else if (i >= y - distance - 3 and  i < y - distance - tempDistance  and (before != treeTrunks.end() or after != treeTrunks.end()) and tempDistance > 2){
+//                    temp.push_back(201);
+//                } // TODO
+                    else if (i > y - 3 and it == treeTrunks.end() and tempDistance > 3) {
+                        temp.push_back(0);
+                    } else if (i == y - 2 and it == treeTrunks.end() and tempDistance <= 3 and tempDistance > 1) {
+                        temp.push_back(2);
+                    } else if (i == y - 3 and j < 3) {
+                        temp.push_back(1);
+                    } else if (i > y - 3) {
+                        temp.push_back(1);
+                    } else {
+                        temp.push_back(0);
+                    }
                 }
-                auto distance =  std::distance(treeTrunks.begin(), it);
-                if(j >= x - 3 and i == door + 1){
-                    temp.push_back(1);
-                }
-                else if(j == x -1 and  i != door and i!=door -1){
-                    temp.push_back(1);
-                }
-                else if( i >= y -4 - distance - treeSize(gen) and i <= y - 3 and it != treeTrunks.end()){
-                    temp.push_back(200);
-                }
-                else if( i > y -3 and it == treeTrunks.end() and tempDistance > 3){
-                    temp.push_back(0);
-                }
-                else if( i == y -2 and it == treeTrunks.end() and tempDistance <= 3  and tempDistance > 1 ){
-                    temp.push_back(2);
-                }
-                else if(i == y - 3 and j < 3){
-                    temp.push_back(1);
-                }
-                else if(i > y -3){
-                    temp.push_back(1);
-                }
-                else{
-                    temp.push_back(0);
-                }
+                map.push_back(temp);
+                tempDistance = 0;
             }
-            map.push_back(temp);
-            tempDistance = 0;
+
+            vec.push_back(map);
+            auto items = std::vector<std::vector<int>>();
+            items = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
+                                                  {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            };
+            vec.push_back(items);
+//        };
+            vec.push_back({{0}});
+//
+//        };
+            vec.push_back({{0}});
+            return vec;
         }
+        if (subType == 1) {
+            std::random_device rd;
+            std::mt19937 gen(rd()); // Mersenne Twister engine
+            std::uniform_int_distribution<> enemy(5, 20);
+
+            int positionOfEnemy = enemy(gen);
+            int copyNumbersEnemy = 5;
+            auto map = std::vector<std::vector<int>>();
+            auto items = std::vector<std::vector<int>>();
+            auto ENEMY = std::vector<std::vector<int>>();
+            auto inter = std::vector<std::vector<int>>();
+            for (int i = 0; i < y; ++i) {
+                std::vector temp = std::vector<int>();
+                std::vector enemies = std::vector<int>();
+                for (int j = 0; j < x; ++j) { // TODO zrob to lepiej
+                    if (i % 3 == 0){
+                        temp.push_back(1);
+                        enemies.push_back(0);
+                    }
+                    else if(j == x -1){
+                        temp.push_back(1);
+                        enemies.push_back(0);
+                    }
+                    else if( j == positionOfEnemy and i % 3 and i < y - 3){
+                            enemies.push_back(3);
+                            temp.push_back(0);
+                    }
+                    else if (i > y - 3) {
+                        temp.push_back(1);
+                        enemies.push_back(0);
+                    } else {
+                        temp.push_back(0);
+                        enemies.push_back(0);
+                    }
+                }
+                map.push_back(temp);
+                ENEMY.push_back(enemies);
+            }
+            vec.push_back(map);
+            vec.push_back({{0}});
+            vec.push_back(ENEMY);
+            vec.push_back({{0}});
 
 
-
-        vec.push_back(map);
-        auto items = std::vector<std::vector<int>>();
-        items = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,3,0,0,0,0,0,0},
-                                                    {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 3,0, 0, 0, 0,0,0,0,0,0,0,3,0,0,0,0},
-                                                    {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {0, 0, 0, 3, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-                                                    {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-                                                    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-        };
-        vec.push_back(items);
-//        auto entity = std::vector<std::vector<int>>();
-//        entity = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                     {0, 0, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                     {0, 0, 0, 1, 1, 1, 1, 1, 1, 1,1, 1, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 99, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,2, 0, 99, 0,0,0,0,0,0,0,0,0,3,0,0},
-//                                                     {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-//                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-//                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-//                                                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-//        };
-        vec.push_back({{0}});
-        auto interact = std::vector<std::vector<int>>();
-//        interact = std::vector<std::vector<int>>{      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0},
-//                                                       {1, 1, 2, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-//                                                       {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-//                                                       {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-//                                                       {1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,0},
-//        };
-        vec.push_back({{0}});
-        return vec;
-
-    }
+            fmt::println("vec {}" ,vec);
+            return vec;
+        }
 //
 //    if(mainType == MapTypes::CITY){
 //
@@ -300,112 +311,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
 //
 //    }
 
-    int ground = 2;
-    // source: https://stackoverflow.com/questions/22923551/generating-number-0-1-using-mersenne-twister-c
-    std::random_device rd;
-    std::mt19937 gen(rd()); // Mersenne Twister engine
-
-    std::uniform_int_distribution<> dist(0, 3);
-
-    std::uniform_int_distribution<> distDoor(ground + 1, y - 3);
-    std::uniform_int_distribution<> xoidGen(3, y-5);
-    std::uniform_int_distribution<> platformLength(2, 4);
-    std::uniform_int_distribution<> spawn(0, 5);
-    std::uniform_int_distribution<> enemy(0, 4);
-
-    int random = dist(gen);
-    int platfLength = platformLength(gen);
-
-    int column = distDoor(gen);
-    int platform = distDoor(gen);
-    int platformY = distDoor(gen);
-    int platformN = distDoor(gen);
-    int platformY2 = distDoor(gen);
-    if(platform == platformN){
-        platformN = distDoor(gen);
     }
-
-    int xoid = xoidGen(gen);
-    int door = distDoor(gen);
-    std::vector<std::vector<int>> walls = std::vector<std::vector<int>>();
-    int items = 4;
-    std::vector<std::vector<int>> vec_items = std::vector<std::vector<int>>();
-    std::vector<std::vector<int>> vec_enemies = std::vector<std::vector<int>>();
-    for(int i = 0; i<y; ++i){
-        std::vector temp = std::vector<int>();
-        std::vector temporaryItems = std::vector<int>();
-        std::vector temporaryEnemy = std::vector<int>();
-        for(int j = 0; j<x; ++j){
-            if(j == x -1 and (i == door or i == door -1)){
-                temp.push_back(99);
-                temporaryItems.push_back(0);
-                temporaryEnemy.push_back(0);
-            }
-            else if( (i == door + 3 and j == x - 6) or (i == door + 4 and j > x - 8 and j <= x - dist(gen))){
-                temp.push_back(1);
-            }
-            else if(j == 0 or j == x-1){
-                temp.push_back(1);
-                temporaryItems.push_back(0);
-                temporaryEnemy.push_back(0);
-            }else if(j >= x-3 and i == door +1) {
-                temp.push_back(1);
-                temporaryItems.push_back(0);
-                temporaryEnemy.push_back(0);
-            }
-            else if(j >= xoid and j < xoid + 4 and i >= y - ground){
-                temp.push_back(0);
-                temporaryItems.push_back(3);
-                temporaryEnemy.push_back(0);
-            }
-            else if(j >= xoid and j < xoid + platfLength and i == y - ground - 3){
-                temp.push_back(1);
-                temporaryItems.push_back(0);
-                temporaryEnemy.push_back(0);
-            }
-            else if(i == y - ground - 2){
-                temporaryItems.push_back(0);
-                temp.push_back(0);
-                temporaryEnemy.push_back(enemy(gen));
-            }
-            else if(j >= platform and j <platform + platfLength and i == platformY){
-                temp.push_back(0);
-                temporaryItems.push_back(3);
-                temporaryEnemy.push_back(0);
-            }
-            else if(j == column and i <= y - ground - 1 and i >= y - ground - platfLength){
-                temp.push_back(1);
-                temporaryItems.push_back(0);
-                temporaryEnemy.push_back(0);
-            }
-            else if(i >= y - ground){
-                temp.push_back(1);
-                temporaryItems.push_back(0);
-                temporaryEnemy.push_back(0);
-            }
-            else{
-                temporaryEnemy.push_back(0);
-                temp.push_back(0);
-                int rand = spawn(gen);
-                if( rand != 0 and items > 0 and j % 6 == 0){
-                    temporaryItems.push_back(rand);
-                    items--;
-                }
-
-            }
-
-        }
-        if(!temporaryItems.empty()){
-            vec_items.push_back(temporaryItems);
-        }
-        vec_enemies.push_back(temporaryEnemy);
-        walls.push_back(temp);
-    }
-    vec.push_back(walls);
-    vec.push_back(vec_items);
-    vec.push_back(vec_enemies);
-    return vec;
-
 }
 
 std::vector<std::shared_ptr<Entity>> Map::transformEntities(const std::vector<std::vector<int>>& vec) {
@@ -470,6 +376,8 @@ std::vector<std::shared_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
             }
             if(i == 200){
                 lvl0_trans.emplace_back(std::make_shared<OakTree>(x,y));
+            }if(i == 201){
+                lvl0_trans.emplace_back(std::make_shared<OakLeaves>(x,y));
             }
             x += 64;
             if (x >= 1600) {

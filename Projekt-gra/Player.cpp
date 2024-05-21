@@ -169,6 +169,6 @@ bool Player::isSeen() {
 //}
 
 //void Player::itemInHand(Collectable& collactable) {
-//    // kiedys to zrobie
+//    // TODO kiedys to zrobie
 //}
 
