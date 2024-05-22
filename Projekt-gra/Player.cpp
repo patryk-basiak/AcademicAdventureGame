@@ -5,7 +5,6 @@
 #include "Settings.h"
 
 
-
 Player::Player() {
     collisionRect = sf::FloatRect(1230,654, 46.88, 71.76);
     player.setPosition(1230,654);
@@ -166,13 +165,4 @@ bool Player::isSeen() {
 bool Player::getFacingRight() {
     return isFacingRight;
 }
-
-
-//void Player::itemInHand(Collectable &collactable) {
-//
-//}
-
-//void Player::itemInHand(Collectable& collactable) {
-//    // TODO kiedys to zrobie
-//}
 

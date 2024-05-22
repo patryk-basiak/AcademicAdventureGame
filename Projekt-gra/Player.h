@@ -39,6 +39,10 @@ private:
     sf::Clock clock;
     bool isShown = true;
     int strength = 3;
+    int intelligence = 3;
+    int luck = 3;
+    int agile = 3;
+    int endurance = 3;
     float lastJumpTime = 0;
     float JumpCooldown = 2;
     int val= 0;

@@ -30,7 +30,6 @@ public:
         for (const auto& shape : other.ammo) {
             ammo.push_back(shape);
         }
-
         pistol = other.pistol;
     }
 
@@ -42,7 +41,7 @@ public:
     bool operator==(const Collectable& other) const override;
     bool operator==(const Pistol& other) const;
     void collision(Player& player) override;
-    void update(sf::RenderWindow& window) override;
+    void update(sf::RenderWindow& window, Player& player) override;
     bool isStackable() const override;
     std::unique_ptr<Collectable> clone() const override;
     int getId() override;

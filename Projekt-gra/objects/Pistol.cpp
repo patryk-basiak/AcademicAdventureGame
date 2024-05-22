@@ -35,8 +35,14 @@ void Pistol::usage(Player& player) {
 
 }
 
-void Pistol::update(sf::RenderWindow& window){
+void Pistol::update(sf::RenderWindow& window, Player& player){
     float currentTime = clock.getElapsedTime().asSeconds();
+    if(!player.getFacingRight()){
+        pistol.setTexture(ResourceManager::getTexture("../graphics/pistolReversed.png"));
+    }
+    else{
+        pistol.setTexture(ResourceManager::getTexture("../graphics/pistol.png"));
+    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) and ammunition <= 0) {
         fmt::println("reload started");
         reloading = true;

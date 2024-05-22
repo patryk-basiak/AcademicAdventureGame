@@ -122,9 +122,15 @@ void Equipment::showInHand(Player& player, sf::RenderWindow& window) const {
         if (item == nullptr) {
             return;
         }
-        item->setPosition(player.getPosition().x + 25, player.getPosition().y + 5);
+        if(player.getFacingRight()){
+            item->setPosition(player.getPosition().x + 25, player.getPosition().y + 5);
+        }
+        else{
+            item->setPosition(player.getPosition().x - 25, player.getPosition().y + 5);
+        }
+
         item->draw(window);
-        item->update(window);
+        item->update(window, player);
 
 
         }

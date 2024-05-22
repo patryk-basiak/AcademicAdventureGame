@@ -23,7 +23,7 @@ void Entity::draw(sf::RenderWindow &window) {
 
 }
 
-void Entity::update(sf::Time time) {
+void Entity::update(sf::Time time, Player& player) {
     if (toRight) {
         entity.move(sf::Vector2f(100*time.asSeconds(), 0));
         if (std::abs(entity.getPosition().x - this->startPosition.x) > 50) {
@@ -56,6 +56,11 @@ void Entity::setPosition(float d, float d1) {
 }
 
 Entity::~Entity() {
+
+}
+
+void Entity::setVerticalVelocity(int i) {
+
 
 }
 

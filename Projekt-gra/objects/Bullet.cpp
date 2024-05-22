@@ -12,7 +12,7 @@ void Bullet::draw(sf::RenderWindow &window) {
     window.draw(bullet);
 }
 
-void Bullet::update(sf::RenderWindow &window) {
+void Bullet::update(sf::RenderWindow &window, Player& player) {
     bullet.setPosition(bullet.getPosition().x + velocity*direction, bullet.getPosition().y);
 }
 

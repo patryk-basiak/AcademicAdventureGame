@@ -79,6 +79,8 @@ add_executable(game main.cpp
         DecisionElement.h
         objects/UniCard.cpp
         objects/UniCard.h
+        objects/WildBoar.cpp
+        objects/WildBoar.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

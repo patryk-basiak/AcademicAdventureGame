@@ -21,6 +21,7 @@
 #include "objects/OakTree.h"
 #include "objects/OakLeaves.h"
 #include "objects/UniCard.h"
+#include "objects/WildBoar.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -131,8 +132,8 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                               {1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
                                                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
                                                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
                                                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
@@ -235,7 +236,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                   {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 5, 0,  0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
                                                   {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -257,6 +258,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
             std::random_device rd;
             std::mt19937 gen(rd()); // Mersenne Twister engine
             std::uniform_int_distribution<> enemy(5, 20);
+            std::uniform_int_distribution<> isEnemy(0, 2);
 
             int positionOfEnemy = enemy(gen);
             int copyNumbersEnemy = 5;
@@ -277,7 +279,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                         enemies.push_back(0);
                     }
                     else if( j == positionOfEnemy and i % 3 and i < y - 3){
-                            enemies.push_back(3);
+                            enemies.push_back(isEnemy(gen));
                             temp.push_back(0);
                     }
                     else if (i > y - 3) {
@@ -285,6 +287,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                         enemies.push_back(0);
                     } else {
                         temp.push_back(0);
+//                        enemies.push_back(isEnemy(gen));
                         enemies.push_back(0);
                     }
                 }
@@ -320,7 +323,9 @@ std::vector<std::shared_ptr<Entity>> Map::transformEntities(const std::vector<st
     float y = 4;
     for(auto & j : vec) {
         for (int i : j) {
-            if (i == 3) {
+            if (i == 2) {
+                trans.push_back(std::make_shared<WildBoar>(x,y));
+            }if (i == 3) {
                 trans.push_back(std::make_shared<Entity>(x,y));
             }
             x += 64;
@@ -424,10 +429,13 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
     }
     this->checkCollision(player, window);
     this->checkCollisionInteract(player, window);
+    for(auto const &e: entity_vec){
+        checkCollisionEntity(e);
+    }
 
 
     for (auto it = items_vec.begin(); it != items_vec.end(); it++) {
-        (*it)->update(window);
+        (*it)->update(window, player);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             eq.addItem(*it);
             (*it)->collision(player);
@@ -436,7 +444,7 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
         }
     }
     for( auto it = entity_vec.begin(); it != entity_vec.end(); it++) {
-        (*it)->update(time);
+        (*it)->update(time, player);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             (*it)->collision(player);
             entity_vec.erase(it);
@@ -464,6 +472,9 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
     for (auto const &e: interactable_vec) {
         e->update(window,player, eq);
     }
+    for (auto const &e: throwable) {
+        e->update(window,player);
+    }
 }
 
 void Map::draw(sf::RenderWindow& window) {
@@ -481,8 +492,7 @@ void Map::draw(sf::RenderWindow& window) {
         e->draw(window);
     }
     for (auto const &e: throwable) {
-        e->draw(window);
-        e->update(window);
+        e->draw(window);\
     }
 }
 
@@ -584,11 +594,12 @@ void Map::checkCollision(Player& player, sf::RenderWindow &window) {
 }
 
 
-void Map::checkCollisionEntity(Entity& entity){
-    float playerBottom = entity.getPosition().y + entity.getSize().y;
-    float playerTop = entity.getPosition().y;
-    float playerLeft = entity.getPosition().x;
-    float playerRight = entity.getPosition().x + entity.getSize().x;
+void Map::checkCollisionEntity(std::shared_ptr<Entity> entity){
+    float entityBottom = entity->getPosition().y + entity->getSize().y;
+    float entityTop = entity->getPosition().y;
+    float entityLeft = entity->getPosition().x;
+    float entityRight = entity->getPosition().x + entity->getSize().x;
+
     for (const auto &wall: walls_vec) {
 
         float wallTop = wall->getPosition().y;
@@ -596,16 +607,26 @@ void Map::checkCollisionEntity(Entity& entity){
         float wallRight = wall->getPosition().x + wall->getSize().x;
         float wallBottom = wall->getPosition().y + wall->getSize().y;
 
-        if (playerRight > wallLeft && playerLeft < wallRight && playerBottom > wallTop && playerTop < wallBottom) {
-            if (playerRight > wallLeft && playerLeft < wallLeft && playerBottom < wallTop && playerTop > wallTop ) {
-                // Left
-                entity.setPosition(wallLeft - entity.getSize().x, entity.getPosition().y);
-                fmt::print("Collision with the left ({}, {}) ({},{})\n", wallRight,
-                           wallLeft, playerRight, playerLeft);
+        if (entityRight > wallLeft && entityLeft < wallRight && entityBottom > wallTop && entityTop < wallBottom) {
+            if (entityBottom > wallTop && entityTop < wallTop) {
+                entity->setVerticalVelocity(0);
+                entity->setPosition(entity->getPosition().x, wall->getPosition().y - entity->getSize().y);
             }
-            if (playerLeft < wallRight && playerRight > wallRight && playerBottom < wallTop && playerTop > wallTop ) {
+            if (entityTop < wallBottom && entityBottom > wallBottom){
+                // Bottom
+                entity->setVerticalVelocity(0);
+
+                fmt::print("Collision with the bottom ({}, {})\n", wall->getPosition().x,
+                           wall->getPosition().y);
+            }
+            if (entityRight > wallLeft && entityLeft < wallLeft && entityBottom < wallTop && entityTop > wallTop ) {
+                // Left
+
+                fmt::print("Collision with the left ({}, {}) ({},{})\n", wallRight,
+                           wallLeft, entityRight, entityLeft);
+            }
+            if (entityLeft < wallRight && entityRight > wallRight && entityBottom < wallTop && entityTop > wallTop ) {
                 // Right
-                entity.setPosition(wallRight + 10, entity.getPosition().y);
                 fmt::print("Collision with the right ({}, {})\n", wall->getPosition().x,
                            wall->getPosition().y);
             }
@@ -613,6 +634,7 @@ void Map::checkCollisionEntity(Entity& entity){
         }
     }
 }
+
 
 void Map::getMapSeed() {
     for(auto i : map_vec){

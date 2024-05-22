@@ -11,10 +11,7 @@ void Computer::collision(Player &player, sf::RenderWindow& window) {
     if(!inUse) {
         window.draw(text);
     }
-    sf::Event event = sf::Event();
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::F) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
                 if (inUse) {
                     movable = true;
                     inUse = false;
@@ -24,8 +21,8 @@ void Computer::collision(Player &player, sf::RenderWindow& window) {
                 }
             }
         }
-    }
-}
+
+
 
 void Computer::update(sf::RenderWindow& window, Player& player, Equipment& eq) {
     if(inUse){

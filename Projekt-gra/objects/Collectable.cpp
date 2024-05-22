@@ -52,7 +52,7 @@ void Collectable::usage(Player& player) {
 
 }
 
-void Collectable::update(sf::RenderWindow &window) {
+void Collectable::update(sf::RenderWindow &window, Player& player) {
 
 }
 

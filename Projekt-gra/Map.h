@@ -22,7 +22,7 @@ public:
 
     void checkCollision(Player& player, sf::RenderWindow &window);
     void checkCollisionInteract(Player& player, sf::RenderWindow &window);
-    void checkCollisionEntity(Entity& entity);
+    void checkCollisionEntity(std::shared_ptr<Entity> entity);
     void draw(sf::RenderWindow& window);
 
     void update(sf::RenderWindow& window, sf::Time time, Player& player, Equipment& eq);
