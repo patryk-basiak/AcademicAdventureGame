@@ -5,6 +5,9 @@ Interactable::Interactable(float x, float y) {
     graphic.setPosition(x,y);
     fmt::println("Interact created");
     size = std::vector<float>{0,1};
+    if(!font.loadFromFile("../graphics/PIXELAR REGULAR.OTF")) {
+        fmt::println("font loading error");
+    }
 
 }
 

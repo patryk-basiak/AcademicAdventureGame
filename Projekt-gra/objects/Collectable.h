@@ -26,9 +26,13 @@ public:
     virtual int getId();
     int id = 0;
 
+protected:
+    sf::Font font;
+
 private:
     sf::RectangleShape collect;
     bool Stackable = false;
+
 
 
 };

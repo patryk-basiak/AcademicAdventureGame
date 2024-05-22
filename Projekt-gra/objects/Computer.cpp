@@ -8,7 +8,9 @@
 
 
 void Computer::collision(Player &player, sf::RenderWindow& window) {
-    fmt::println("collison with computer");
+    if(!inUse) {
+        window.draw(text);
+    }
     sf::Event event = sf::Event();
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::KeyPressed) {

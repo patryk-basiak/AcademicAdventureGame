@@ -21,23 +21,22 @@ void Pistol::collision(Player& player) {
 }
 
 void Pistol::usage() {
-    fmt::println("pistol was used");
-    if(ammunition > 0 and movable){
-        if(ready) {
-            auto ammoTemp = sf::RectangleShape();
-            ammoTemp.setPosition(this->pistol.getPosition().x + 1, this->pistol.getPosition().y);
-            ammoTemp.setSize(sf::Vector2f(20, 20));
-            ammoTemp.setFillColor(sf::Color::Green);
-            this->ammo.push_back(ammoTemp);
-            ammunition--;
-            ready = false;
+    if(combat) {
+        if (ammunition > 0) {
+            if (ready) {
+                auto ammoTemp = sf::RectangleShape();
+                ammoTemp.setPosition(this->pistol.getPosition().x + 1, this->pistol.getPosition().y);
+                ammoTemp.setSize(sf::Vector2f(20, 20));
+                ammoTemp.setFillColor(sf::Color::Green);
+                this->ammo.push_back(ammoTemp);
+                ammunition--;
+                ready = false;
+            } else {
+                fmt::println("not ready to shot");
+            }
+        } else {
+            fmt::println("out of ammo");
         }
-        else {
-            fmt::println("not ready to shot");
-        }
-    }
-    else{
-        fmt::println("out of ammo");
     }
 
 }

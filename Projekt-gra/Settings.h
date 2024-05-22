@@ -3,6 +3,7 @@
 
 extern bool movable;
 extern bool game;
+extern bool combat;
 
 extern bool stage_0;
 extern bool stage_1;

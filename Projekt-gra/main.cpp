@@ -70,13 +70,10 @@ auto main() -> int {
             while (game) {
                 sf::Time deltaTime = clock.restart();
                 window.clear(sf::Color::White);
-                gameClass.update(window, player, eq, deltaTime, hud);
+                gameClass.update(window, player, eq, deltaTime, hud, fps1);
                 gameClass.gameRules(window,player,eq,deltaTime,hud);
                 player.update(deltaTime);
                 player.draw(window);
-                hud.update(player, fps1, gameClass.getCurrentLvl(), gameClass.getNextRoomAvailability());
-                hud.draw(window, eq, player);
-                hud.lvls(gameClass.getCurrentLvl());
                 eq.update(window, player);
                 fps1.update();
                 window.display();

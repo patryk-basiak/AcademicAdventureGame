@@ -3,15 +3,20 @@
 //
 
 #include <cmath>
+#include <utility>
 #include "HUD.h"
 
 void HUD::draw(sf::RenderWindow &window, Equipment &eq, Player& player) {
-    window.draw(mission);
+
     if(dialogShow) {
         mess.draw(window);
     }
-//    lvlNumber.setString("Current lvl: " + std::to_string(current_Lvl))
+    window.draw(objective);
+    if(decisionShow){
+        decisionElement.draw(window);
+        decisionElement.update(player, window); // TODO zrobic to w update
 
+    }
 
 if(debug) {
     window.draw(positionX);
@@ -25,6 +30,7 @@ if(debug) {
 }
 
 void HUD::update(Player &player, FPS& fps1, int lvl, bool nextRoomAvailable ) {
+
     health.setString("Health: " + std::to_string(player.getHealth()));
     if(dialogShow) {
         mess.update(player);
@@ -36,6 +42,7 @@ void HUD::update(Player &player, FPS& fps1, int lvl, bool nextRoomAvailable ) {
         lvlNumber.setString("Current Lvl: " + std::to_string(lvl));
         roomAvail.setString("Next room available: " + std::to_string(nextRoomAvailable));
     }
+
 }
 void HUD::hideDebug() {
      debug = false;
@@ -47,20 +54,39 @@ void HUD::showDebug() {
 
 void HUD::lvls(int roomlvl) {
 
-    if(roomlvl == 0 ){
-        float currentTime = clock.getElapsedTime().asSeconds();
-        if(currentTime >= 6){
-            dialogShow = false;
+}
 
-            // choose option
-        }
-        if(currentTime >= 12){
-            mess.setText("Should I go on a walk or ride a bike with friends?");
-            dialogShow = true;
-        }
-        if(currentTime >= 16){
-            dialogShow = false;
+bool HUD::dialogGet() const {
+    return dialogShow;
+}
 
-        }
+void HUD::dialogSet(bool state) {
+    dialogShow = state;
+}
+
+void HUD::setMessage(std::string newText) {
+    mess.setText(std::move(newText));
+
+}
+
+void HUD::setObjective(std::string newObjective) {
+    if(newObjective.size() > 25) {
+        objective.setString("\tCurrent objective: \n" + std::move(newObjective));
+    }else{
+        objective.setString("\tCurrent objective: \n\t" + std::move(newObjective));
     }
+}
+
+void HUD::setDecision(std::vector<std::string> newDec, float x, float y) {
+    decisionElement.setDecisions(newDec);
+    decisionElement.setPosition(x,y);
+
+}
+
+void HUD::setDecisionVisibility(bool visible) {
+    decisionShow = visible;
+}
+
+int HUD::getDecision() {
+    return decisionElement.getDecision();
 }

@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Settings.h"
 #include "objects/Coin.h"
+#include <algorithm>
 
 std::vector<int> Equipment::eq;
 
@@ -43,8 +44,8 @@ void Equipment::update(sf::RenderWindow& window, Player& player) const {
         window.draw(smallEq);
         window.draw(pointer);
         float x = smallEq.getPosition().x + padding, y = smallEq.getPosition().y + padding;
-
-        for (auto &item: items) {
+        auto copyOfItems = items;
+        for (auto &item: items) { //TODO
             if (item.second.first->isStackable() and item.second.second > 1) {
                 auto itemCount = sf::Text("000", font, 12);
                 itemCount.setPosition({x + 20, y + 30});
@@ -150,6 +151,7 @@ void Equipment::movedMouseDown() {
 
 void Equipment::addItem(const std::shared_ptr<Collectable>& itemPtr) {
     int id = itemPtr->getId();
+    fmt::println("item added id: {}", id);
     if (items.find(itemPtr->getId()) == items.end()) {
         isEmpty = false;
         if (id == 2) {
@@ -160,12 +162,12 @@ void Equipment::addItem(const std::shared_ptr<Collectable>& itemPtr) {
 
         }
         if (id == 3){
-            items.insert({id, {std::make_shared<Coin>(0, 0,15), 1}});
+            items.insert({id, {std::make_shared<Coin>(0, 0), 1}});
             if (temp_items.size() < 3) {
-                temp_items.push_back(std::make_unique<Coin>(0, 0, 15));
+                temp_items.push_back(std::make_unique<Coin>(0, 0));
             }
         }
-
+    std::ranges::reverse(temp_items);
     }
     else {
             if (itemPtr->isStackable()) {

@@ -8,6 +8,12 @@ void Coin::collision(Player &player) {
 }
 
 void Coin::draw(sf::RenderWindow &window) {
+    sf::Vector2 mouse = sf::Mouse::getPosition(window);
+    if(mouse.x > coin.getPosition().x and mouse.x < coin.getPosition().x + this->getSize().x and
+            mouse.y > coin.getPosition().x and mouse.y < coin.getPosition().y + this->getSize().y){
+        window.draw(popUp);
+    }
+
     window.draw(this->coin);
 }
 
@@ -32,5 +38,5 @@ void Coin::setPosition(float x, float y) {
 }
 
 sf::Vector2<float> Coin::getSize() {
-    return sf::Vector2f{radius,radius};
+    return sf::Vector2f{32,32};
 }

@@ -20,8 +20,11 @@ public:
         std::mt19937 gen(rd()); // Mersenne Twister engine
         std::uniform_int_distribution<> dist(1, 5);
         int numberOfItems = dist(gen);
-        this->itemsInside.insert({std::make_shared<Coin>(x, y, 15), numberOfItems});
+        this->itemsInside.insert({std::make_shared<Coin>(x, y), numberOfItems});
         //TODO jakie inne itemy
+        popUp.setString("Press F to open chest");
+        popUp.setFont(Interactable::font);
+        popUp.setPosition(chestTexture.getPosition().x, chestTexture.getPosition().y - this->size[1]);
 
     }
      void draw(sf::RenderWindow& window) override;
@@ -33,11 +36,13 @@ public:
      bool getStatus() override;
 
 private:
+    sf::Text popUp;
     sf::Sprite chestTexture;
     std::map<std::shared_ptr<Collectable>, int> itemsInside;
     sf::Sprite content;
     int id=103;
     bool isOpen = false;
+    bool active = false;
     std::vector<float> position;
     std::vector<float> size;
 };

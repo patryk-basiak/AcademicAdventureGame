@@ -29,7 +29,9 @@ class Computer
             icons.push_back(std::make_unique<GoogleIcons>(311.5, 161.5));
             icons.push_back(std::make_unique<TeamsIcon>(451, 161.5));
             //Icons(451,161.5)
-
+            text.setString("Press F to use computer");
+            text.setFont(Interactable::font);
+            text.setPosition(computer.getPosition().x, computer.getPosition().y - this->size[1]);
 
         }
 
@@ -50,6 +52,7 @@ class Computer
         std::vector<std::unique_ptr<Icons>> icons = std::vector<std::unique_ptr<Icons>>();
         bool inUse = false;
         int id = 102;
+        sf::Text text;
         sf::Sprite computer;
         sf::Sprite wallpaper;
         std::vector<float> size;

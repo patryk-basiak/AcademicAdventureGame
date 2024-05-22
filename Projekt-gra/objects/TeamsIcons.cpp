@@ -45,7 +45,7 @@ void TeamsIcon::update(sf::RenderWindow& window) {
                     fmt::println("assignments clicked");
                     teams_Assignments = true;
                     playerSawAssignment = true;
-                    stage_0 = true;
+                    stage_1 = true;
                 }
             }
         }

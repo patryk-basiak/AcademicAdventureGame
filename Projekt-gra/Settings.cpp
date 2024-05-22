@@ -6,6 +6,7 @@
 
 bool movable = true;
 bool game = false;
+bool combat = false;
 bool stage_0 = false;
 bool stage_1 = false;
 bool stage_2 = false;

@@ -25,6 +25,9 @@ std::vector<float> Wardrobe::getSize() {
 }
 
 void Wardrobe::update(sf::RenderWindow &window, Player &player, Equipment& eq) {
+    if(stage_1){
+        active = true;
+    }
     sf::Vector2 mouse = sf::Mouse::getPosition(window);
     std::map<std::shared_ptr<Collectable>, int>::iterator();
     for(auto it = itemsInside.begin(); it!= itemsInside.end(); it++){
@@ -35,7 +38,7 @@ void Wardrobe::update(sf::RenderWindow &window, Player &player, Equipment& eq) {
                     eq.addItem((*it).first);
                 }
                 itemsInside.erase(it);
-                stage_1 = true;
+                stage_2 = true;
 
 
 
@@ -45,7 +48,11 @@ void Wardrobe::update(sf::RenderWindow &window, Player &player, Equipment& eq) {
 }
 
 void Wardrobe::collision(Player &player, sf::RenderWindow &window) {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F) and stage_0){
+    if(active and !isOpen){
+        window.draw(popUp);
+    }
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F) and stage_1){
         fmt::println("wardrobe open");
         if(!isOpen){
             isOpen = true;

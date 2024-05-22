@@ -75,6 +75,8 @@ add_executable(game main.cpp
         objects/OakTree.h
         objects/OakLeaves.cpp
         objects/OakLeaves.h
+        DecisionElement.cpp
+        DecisionElement.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

@@ -5,6 +5,7 @@
 #include "Collectable.h"
 #include "../ResourceManager.h"
 #include "Coin.h"
+#include "Pistol.h"
 
 class Wardrobe
         : public Interactable{
@@ -21,8 +22,13 @@ public:
         std::uniform_int_distribution<> dist(1, 3);
         int numberOfItems = dist(gen);
         if(numberOfItems > 0) {
-            this->itemsInside.insert({std::make_shared<Coin>(x + 15, y, 15), numberOfItems});
+            this->itemsInside.insert({std::make_shared<Coin>(x + 15, y), numberOfItems});
+
         }
+        this->itemsInside.insert({std::make_shared<Pistol>(x + 30, y), 1});
+        popUp.setString("Press F to open wardrobe");
+        popUp.setFont(Interactable::font);
+        popUp.setPosition(wardrobeTexture.getPosition().x, wardrobeTexture.getPosition().y - this->size[1]);
     }
      void draw(sf::RenderWindow& window) override;
      sf::Vector2<float> getPosition()override;
@@ -32,9 +38,11 @@ public:
      void collision(Player& player, sf::RenderWindow &window) override;
      bool getStatus() override;
 private:
+    sf::Text popUp;
     sf::Sprite wardrobeTexture;
     std::map<std::shared_ptr<Collectable>, int> itemsInside;
     sf::Sprite shelf;
+    bool active = false;
     int id=103;
     bool isOpen = false;
     std::vector<float> position;

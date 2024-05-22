@@ -16,6 +16,9 @@ public:
     virtual void collision(Player& player, sf::RenderWindow &window) ;
     virtual bool getStatus();
 
+protected:
+    sf::Font font;
+
 private:
     sf::Sprite graphic;
     std::vector<float>size;

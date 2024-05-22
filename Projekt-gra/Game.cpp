@@ -4,7 +4,12 @@
 
 #include "Game.h"
 
-void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud) {
+void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud, FPS& fps) {
+    if(!started){
+        clockLvl0.restart();
+        started = true;
+    }
+
     sf::Event event = sf::Event();
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
@@ -72,6 +77,8 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
 
         currentMap.draw(window);
         currentMap.update(window,deltaTime,player,eq);
+        hud.update(player, fps, currentLvl, nextRoomAvailable);
+        hud.draw(window,eq,player);
 
 
 }
@@ -106,18 +113,48 @@ int Game::getCurrentLvl() const {
 
 
 void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud) {
-    if(currentLvl == 0){
+    if(currentLvl == 0 and game){
         float currentTime = clockLvl0.getElapsedTime().asSeconds();
-        if(currentTime <= 10){
+        if(currentTime <= 3){
             movable = false;
+            hud.dialogSet(true);
             player.setPosition(player.getPosition().x - 0.03, player.getPosition().y);
-        } if(currentTime >= 10 and currentTime <= 12){
-//            dialog.clear();
-            movable = true;
-
         }
-        if(stage_0 and stage_1){
+        if(currentTime > 3 and currentTime <= 6){
+            hud.dialogSet(true);
+            hud.setMessage("Should I go on a walk or ride a bike with friends?");
+        }
+        if(currentTime > 6 and currentTime <= 7){
+            // decision window
+            hud.dialogSet(true);
+            hud.setDecision(std::vector<std::string>{"Go on for a walk", "Go ride a bike with friends"}, player.getPosition().x - (player.getSize()[0]*1.5), player.getPosition().y - (player.getSize()[1]) ); //
+        }
+        if(currentTime > 8 and currentTime <=12){
+            hud.dialogSet(false);
+            hud.setDecisionVisibility(true);
+            hud.setMessage("Wait, What's that sounds?");
+        }
+        if(stage_0 and currentTime <= 14){
+            hud.dialogSet(true);
+            hud.setDecisionVisibility(false);
+        }
+        if(stage_0 and currentTime >= 14 and currentTime <= 22){
+            hud.dialogSet(false);
+            movable = true;
+        }
+        if(stage_0 and !hud.dialogGet()){
+            hud.dialogSet(false);
+            int tempDecision = hud.getDecision();
+            // TODO resultat decyzji
+            decisions.push_back(tempDecision);
+            hud.setObjective("Check computer");
+        }
+        if(stage_1){
+            hud.setObjective("Look for disk");
+        }
+        if(stage_1 and stage_2){
             nextRoomAvailable = true;
+            hud.setObjective("Go back to Uni and find your files");
         }
 
     }

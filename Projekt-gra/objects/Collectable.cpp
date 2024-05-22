@@ -10,11 +10,17 @@ Collectable::Collectable(float x, float y, sf::Color color) {
     collect.setPosition(x,y);
     collect.setSize(sf::Vector2f(100.f,50.f));
     collect.setFillColor(color);
+    if(!font.loadFromFile("../graphics/PIXELAR REGULAR.OTF")) {
+        fmt::println("font loading error");
+    }
 }
 Collectable::Collectable(float x, float y, sf::Color color, float d, float d1) {
     collect.setPosition(x,y);
     collect.setSize(sf::Vector2f(d,d1));
     collect.setFillColor(color);
+    if(!font.loadFromFile("../graphics/PIXELAR REGULAR.OTF")) {
+        fmt::println("font loading error");
+    }
 }
 void Collectable::setPosition(float x, float y){
     collect.setPosition(x,y);

@@ -19,7 +19,7 @@ public:
 
 private:
     std::string Sentences;
-    bool isShown;
+    bool isShown = false;
     sf::Font font;
     sf::Text message;
     sf::RectangleShape base;

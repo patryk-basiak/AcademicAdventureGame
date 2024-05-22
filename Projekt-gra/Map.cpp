@@ -103,22 +103,21 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
         };
         vec.push_back(map);
         auto items = std::vector<std::vector<int>>();
-        items = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                              {1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-                                              {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-                                              {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-                                              {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-        };
+        items = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 1, 0, 0, 0, 3, 0, 0, 0, 0, 13, 0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 1, 0, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 1, 0, 0, 3, 0,   0, 0, 0, 0, 0,   0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 99, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0},
+                                              {1, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                              {1, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                              {1, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                              {1, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},};
         vec.push_back(items);
         auto entity = std::vector<std::vector<int>>();
         entity = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -205,19 +204,19 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                         temp.push_back(1);
                     } else if (i == y - 4 - distance - 1 and it != treeTrunks.end()) {
                         temp.push_back(201);
-                    } else if (i >= y - 4 - distance and i <= y - 3 and it != treeTrunks.end()) {
+                    } else if (i >= y - 4 - distance and i <= y - 4 and it != treeTrunks.end()) {
                         temp.push_back(200);
                     }
 //                else if (i >= y - distance - 3 and  i < y - distance - tempDistance  and (before != treeTrunks.end() or after != treeTrunks.end()) and tempDistance > 2){
 //                    temp.push_back(201);
 //                } // TODO
-                    else if (i > y - 3 and it == treeTrunks.end() and tempDistance > 3) {
+                    else if (i > y - 4 and it == treeTrunks.end() and tempDistance > 3) {
                         temp.push_back(0);
-                    } else if (i == y - 2 and it == treeTrunks.end() and tempDistance <= 3 and tempDistance > 1) {
+                    } else if (i == y - 4 and it == treeTrunks.end() and tempDistance <= 3 and tempDistance > 1) {
                         temp.push_back(2);
-                    } else if (i == y - 3 and j < 3) {
+                    } else if (i == y - 4 and j < 4) {
                         temp.push_back(1);
-                    } else if (i > y - 3) {
+                    } else if (i > y - 4) {
                         temp.push_back(1);
                     } else {
                         temp.push_back(0);
@@ -340,7 +339,7 @@ std::vector<std::shared_ptr<Collectable>> Map::transformObjects(std::vector<std:
     for(auto & j : vec) {
         for (int i : j) {
             if (i == 3) {
-                trans.push_back(std::make_shared<Coin>(x,y, 20));
+                trans.push_back(std::make_shared<Coin>(x,y));
             }
             if (i == 2) {
                 trans.push_back(std::make_shared<Pistol>(x,y));
