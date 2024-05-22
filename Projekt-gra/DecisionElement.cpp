@@ -4,11 +4,13 @@
 
 void DecisionElement::setPosition(float x, float y) {
         base.setPosition(x,y);
+        time.setPosition(x,y);
 }
 
 void DecisionElement::draw(sf::RenderWindow &window) {
     if(!decided) {
         window.draw(base);
+        window.draw(time);
         for (auto &e: decisionFrame) {
             window.draw(e);
         }
@@ -19,6 +21,13 @@ void DecisionElement::draw(sf::RenderWindow &window) {
 void DecisionElement::update(Player &player, sf::RenderWindow &window ) {
     sf::Vector2 mouse = sf::Mouse::getPosition(window);
     if(!decided) { // TODO stage
+        time.setPosition(time.getPosition().x + 0.003, time.getPosition().y);
+        time.setSize(sf::Vector2f{static_cast<float>(time.getSize().x - 0.005), time.getSize().y});
+        if(time.getSize().x < 1){
+            decision = 1;
+            decided = true;
+            stage_0 = true;
+        }
         for (int i = 0; i < decisionFrame.size(); ++i) {
             line.setPosition(decisionFrame.at(i).getPosition().x, decisionFrame.at(i).getPosition().y + 20);
             if (mouse.x > decisionFrame.at(i).getPosition().x and mouse.x < decisionFrame.at(i).getPosition().x + 100 and
@@ -47,6 +56,7 @@ void DecisionElement::setDecisions(std::vector<std::string> newDec) {
     float width = decisions.at(0).size() * 10;
     float height = decisions.size()* 30;
     base.setSize(sf::Vector2f {width,height});
+    time.setSize(sf::Vector2f {width,3});
     for(const auto& e: decisions){
         decisionFrame.push_back({sf::Text(e,font,15)});
     }

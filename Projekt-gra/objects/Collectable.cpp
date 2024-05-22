@@ -48,7 +48,7 @@ void Collectable::collision(Player& player) {
     fmt::println("base");
 }
 
-void Collectable::usage() {
+void Collectable::usage(Player& player) {
 
 }
 
@@ -79,6 +79,10 @@ std::vector<sf::RectangleShape> Collectable::getAmmoList() {
 sf::Vector2<float> Collectable::getSize() {
     return this->collect.getSize();
 
+}
+
+std::vector<std::shared_ptr<Collectable>> Collectable::getThrowable() const {
+    return  throwable;
 }
 
 

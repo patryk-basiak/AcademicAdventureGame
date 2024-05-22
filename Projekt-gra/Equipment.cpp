@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Settings.h"
 #include "objects/Coin.h"
+#include "objects/UniCard.h"
 #include <algorithm>
 
 std::vector<int> Equipment::eq;
@@ -38,13 +39,18 @@ void Equipment::show() {
 
 
 
-void Equipment::update(sf::RenderWindow& window, Player& player) const {
+void Equipment::update(sf::RenderWindow& window, Player& player)  {
+    for(auto &e: temp_items){
+        if(!e->getThrowable().empty()){
+            throwable = e->getThrowable();
+            fmt::println("eq");
+        }
+    }
     Equipment::showInHand(player, window);
     if (!this->isShown) {
         window.draw(smallEq);
         window.draw(pointer);
         float x = smallEq.getPosition().x + padding, y = smallEq.getPosition().y + padding;
-        auto copyOfItems = items;
         for (auto &item: items) { //TODO
             if (item.second.first->isStackable() and item.second.second > 1) {
                 auto itemCount = sf::Text("000", font, 12);
@@ -161,13 +167,19 @@ void Equipment::addItem(const std::shared_ptr<Collectable>& itemPtr) {
             }
 
         }
-        if (id == 3){
+        if (id == 3) {
             items.insert({id, {std::make_shared<Coin>(0, 0), 1}});
             if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<Coin>(0, 0));
             }
         }
-    std::ranges::reverse(temp_items);
+        if (id == 5) {
+            items.insert({id, {std::make_shared<UniCard>(0, 0), 1}});
+            if (temp_items.size() < 3) {
+                temp_items.push_back(std::make_unique<UniCard>(0, 0));
+            }
+        }
+        std::ranges::reverse(temp_items);
     }
     else {
             if (itemPtr->isStackable()) {
@@ -178,10 +190,10 @@ void Equipment::addItem(const std::shared_ptr<Collectable>& itemPtr) {
 
 
 
-void Equipment::useItemInHand() {
+void Equipment::useItemInHand(Player& player) {
     if (!temp_items.empty()) {
         if(currentEq < temp_items.size()){
-            this->temp_items[currentEq]->usage();
+            this->temp_items[currentEq]->usage(player);
         }
 
     }

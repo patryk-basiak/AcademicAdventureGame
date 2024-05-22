@@ -12,22 +12,25 @@ public:
     virtual bool operator==(const Collectable& other) const;
     virtual void collision(Player& player);
 
-    sf::FloatRect getGlobalBounds();
+    virtual sf::FloatRect getGlobalBounds();
     virtual void draw(sf::RenderWindow& window);
     sf::Vector2<float> getPosition();
     void reColor(sf::Color color);
     virtual sf::Vector2<float> getSize();
     virtual void setPosition(float x, float y);
     virtual std::vector<sf::RectangleShape> getAmmoList();
-    virtual void usage();
+    virtual void usage(Player& player);
     virtual void update(sf::RenderWindow& window);
     virtual std::unique_ptr<Collectable> clone() const;
     virtual bool isStackable() const;
     virtual int getId();
     int id = 0;
+    std::vector<std::shared_ptr<Collectable>> getThrowable() const;
+
 
 protected:
     sf::Font font;
+    std::vector<std::shared_ptr<Collectable>> throwable;
 
 private:
     sf::RectangleShape collect;

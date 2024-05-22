@@ -5,11 +5,14 @@
 #include "Collectable.h"
 #include "../ResourceManager.h"
 #include "Coin.h"
+#include "UniCard.h"
 
+static int idnum = 0;
 class Chest
         : public Interactable{
 public:
     Chest(float x, float y) : Interactable(x,y){
+        xID = idnum++;
         this->chestTexture.setTexture(ResourceManager::getTexture("../graphics/chest.png"));
         this->chestTexture.setPosition(x, y);
         this->chestTexture.scale(0.1, 0.1);
@@ -22,6 +25,9 @@ public:
         int numberOfItems = dist(gen);
         this->itemsInside.insert({std::make_shared<Coin>(x, y), numberOfItems});
         //TODO jakie inne itemy
+        if(xID == 0){
+            this->itemsInside.insert({std::make_shared<UniCard>(x + 30, y), 1});
+        }
         popUp.setString("Press F to open chest");
         popUp.setFont(Interactable::font);
         popUp.setPosition(chestTexture.getPosition().x, chestTexture.getPosition().y - this->size[1]);
@@ -41,6 +47,7 @@ private:
     std::map<std::shared_ptr<Collectable>, int> itemsInside;
     sf::Sprite content;
     int id=103;
+    int xID;
     bool isOpen = false;
     bool active = false;
     std::vector<float> position;

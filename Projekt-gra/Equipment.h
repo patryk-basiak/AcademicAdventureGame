@@ -9,6 +9,8 @@
 
 class Equipment {
 
+protected:
+
 private:
     int size = 9;
     float padding = 10;
@@ -19,8 +21,10 @@ private:
     std::map<int, std::pair<std::shared_ptr<Collectable>, int>> items;
     std::vector<int> numberOfItems;
 
+
     sf::Font font;
 public:
+
     Equipment();
 //    static int currentPos;
     static std::vector<int> eq;
@@ -33,12 +37,12 @@ public:
     sf::RectangleShape smallEq;
     sf::RectangleShape pointer;
     void showInHand(Player& player, sf::RenderWindow& window) const;
-    void update(sf::RenderWindow& window, Player& player) const;
+    void update(sf::RenderWindow& window, Player& player);
     void show();
     void addItem(const std::shared_ptr<Collectable>& itemPtr);
+    std::vector<std::shared_ptr<Collectable>> throwable;
 
-
-    void useItemInHand();
+    void useItemInHand(Player& player);
 };
 
 

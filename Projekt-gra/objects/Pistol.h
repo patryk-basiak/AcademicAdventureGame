@@ -18,12 +18,7 @@ public:
         pistol.setTexture(ResourceManager::getTexture("../graphics/pistol.png"));
         pistol.setPosition(x,y);
     }
-    Pistol(float x, float y, float width, float height) : Collectable(x, y, sf::Color{255, 165, 0, 255 }, width, height){
-        fmt::println("pistol created v2 ");
-        pistol.scale(0.042,0.042);
-        pistol.setTexture(ResourceManager::getTexture("../graphics/pistol.png"));
-        pistol.setPosition(x,y);
-    }
+
     Pistol(const Pistol& other) // copy constructor
             : Collectable(other)
     {
@@ -39,32 +34,9 @@ public:
         pistol = other.pistol;
     }
 
-    Pistol& operator=(const Pistol& other) {
-        if (this != &other) { // Check for self-assignment
-            // Assign base class members
-            Collectable::operator=(other);
-
-            // Assign member variables
-            ID = other.ID;
-            Stackable = other.Stackable;
-            am = other.am;
-            toAdd = other.toAdd;
-
-            // Assign the ammo vector
-            ammo.clear(); // Clear existing content
-            for (const auto& shape : other.ammo) {
-                ammo.push_back(shape);
-            }
-
-            // Assign the pistol shape
-            pistol = other.pistol;
-        }
-        return *this;
-    }
-
 
     void setPosition(float x, float y) override;
-    void usage() override;
+    void usage(Player& player) override;
     std::vector<sf::RectangleShape> getAmmoList() override;
     void draw(sf::RenderWindow& window) override;
     bool operator==(const Collectable& other) const override;
@@ -85,7 +57,7 @@ private:
     bool ready = true;
     void shot();
     int ID = 2;
-    int ammunition = 7;
+    int ammunition = 15;
     bool Stackable = false;
     std::vector<sf::RectangleShape> ammo;
     sf::Sprite pistol;

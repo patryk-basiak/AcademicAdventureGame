@@ -20,6 +20,7 @@
 #include "objects/Chest.h"
 #include "objects/OakTree.h"
 #include "objects/OakLeaves.h"
+#include "objects/UniCard.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -140,7 +141,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
         auto interact = std::vector<std::vector<int>>();
         interact = std::vector<std::vector<int>>{{0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                  {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                 {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 0,   0,   0, 0, 5, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                  {0, 0, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                  {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                  {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -234,7 +235,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                   {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 5, 0,  0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
                                                   {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -344,6 +345,9 @@ std::vector<std::shared_ptr<Collectable>> Map::transformObjects(std::vector<std:
             if (i == 2) {
                 trans.push_back(std::make_shared<Pistol>(x,y));
             }
+            if(i == 5){
+                trans.push_back(std::make_shared<UniCard>(x,y));
+            }
             x += 64;
             if (x >= 1600) {
                 x = 0;
@@ -415,11 +419,13 @@ std::vector<std::shared_ptr<Interactable>> Map::transformInteractable(std::vecto
 
 
 void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipment& eq){
+    if(!eq.throwable.empty()){
+        this->throwable = eq.throwable;
+    }
     this->checkCollision(player, window);
     this->checkCollisionInteract(player, window);
-//    for(auto &e: entity_vec){
-//        this->checkCollisionEntity(reinterpret_cast<Entity &>(e));
-//    }
+
+
     for (auto it = items_vec.begin(); it != items_vec.end(); it++) {
         (*it)->update(window);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
@@ -429,14 +435,32 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
             it--;
         }
     }
-    for( auto it = entity_vec.begin(); it != entity_vec.end(); it++){
+    for( auto it = entity_vec.begin(); it != entity_vec.end(); it++) {
         (*it)->update(time);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             (*it)->collision(player);
             entity_vec.erase(it);
             it--;
         }
+        for (auto its = throwable.begin(); its != throwable.end(); its++) {
+            if ((*its)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+                throwable.erase(its);
+                its--;
+                entity_vec.erase(it);
+                it--;
+            }
+        }
+
     }
+
+        for( auto its = throwable.begin(); its != throwable.end(); its++) {
+            if ((*its)->getPosition().x > window.getSize().x) {
+                (*its)->collision(player);
+                throwable.erase(its);
+                its--;
+
+            }
+        }
     for (auto const &e: interactable_vec) {
         e->update(window,player, eq);
     }
@@ -455,6 +479,10 @@ void Map::draw(sf::RenderWindow& window) {
     }
     for (auto const &e: interactable_vec) {
         e->draw(window);
+    }
+    for (auto const &e: throwable) {
+        e->draw(window);
+        e->update(window);
     }
 }
 

@@ -81,6 +81,7 @@ void HUD::setDecision(std::vector<std::string> newDec, float x, float y) {
     decisionElement.setDecisions(newDec);
     decisionElement.setPosition(x,y);
 
+
 }
 
 void HUD::setDecisionVisibility(bool visible) {

@@ -56,7 +56,7 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
         }
         if (event.type == sf::Event::MouseButtonPressed) {
             if(event.mouseButton.button == sf::Mouse::Left){
-                eq.useItemInHand();
+                eq.useItemInHand(player);
             }
 
         }
@@ -132,15 +132,15 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
         if(currentTime > 8 and currentTime <=12){
             hud.dialogSet(false);
             hud.setDecisionVisibility(true);
-            hud.setMessage("Wait, What's that sounds?");
+            hud.setMessage("Wait, What's that sound?");
         }
-        if(stage_0 and currentTime <= 14){
+        if(stage_0){
             hud.dialogSet(true);
             hud.setDecisionVisibility(false);
-        }
-        if(stage_0 and currentTime >= 14 and currentTime <= 22){
-            hud.dialogSet(false);
             movable = true;
+        }
+        if(stage_0 and movable){
+            hud.dialogSet(false);
         }
         if(stage_0 and !hud.dialogGet()){
             hud.dialogSet(false);

@@ -22,7 +22,7 @@ public:
     const std::vector<float> &getSize();
 
     void setStartPosition();
-
+    bool getFacingRight();
     void setEndPosition();
     void isGroundCheck(bool boolean);
     void setVelocity(float i);

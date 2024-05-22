@@ -13,7 +13,7 @@ class DecisionElement {
 public:
     explicit DecisionElement(std::vector<std::string> choices, float x, float y){
         decisions = std::move(choices);
-        base.setSize(sf::Vector2f{(float)decisions.size()*30, (float)decisions.at(0).size()*50});
+        base.setSize(sf::Vector2f{(float)decisions.size()*30, (float)decisions.at(0).size()*55});
         base.setPosition(x,y);
         base.setFillColor(sf::Color::White);
         id = tempID++;
@@ -32,6 +32,8 @@ public:
         }
         line = sf::RectangleShape(sf::Vector2f(150, 3));
         line.setFillColor((sf::Color{255,215,0,255}));
+        time.setFillColor(sf::Color::Red);
+        time.setSize(sf::Vector2f(base.getSize().x, 3));
 
     }
     void setPosition(float x, float y);
@@ -52,6 +54,7 @@ private:
     bool decided = false;
     int decision = 0 ;
     int id;
+    sf::RectangleShape time;
     sf::Font font;
     sf::RectangleShape line;
     std::vector<sf::Text> decisionFrame;

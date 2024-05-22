@@ -17,9 +17,6 @@ void Coin::draw(sf::RenderWindow &window) {
     window.draw(this->coin);
 }
 
-void Coin::usage() {
-    Collectable::usage();
-}
 
 bool Coin::isStackable() const {
     return this->Stackable;

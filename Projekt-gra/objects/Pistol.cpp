@@ -1,16 +1,13 @@
-//
-// Created by UseR on 18.04.2024.
-//
 #include <iostream>
 #include "jumpPad.h"
 #include "../Player.h"
 #include "Pistol.h"
 #include "../Equipment.h"
+#include "Bullet.h"
 #include <fmt/core.h>
 
 
 // constructor created in Pistol.h file
-
 
 void Pistol::shot() {
     ;
@@ -20,15 +17,12 @@ void Pistol::collision(Player& player) {
 
 }
 
-void Pistol::usage() {
+void Pistol::usage(Player& player) {
     if(combat) {
         if (ammunition > 0) {
             if (ready) {
-                auto ammoTemp = sf::RectangleShape();
-                ammoTemp.setPosition(this->pistol.getPosition().x + 1, this->pistol.getPosition().y);
-                ammoTemp.setSize(sf::Vector2f(20, 20));
-                ammoTemp.setFillColor(sf::Color::Green);
-                this->ammo.push_back(ammoTemp);
+                int n = player.getFacingRight() ? 1: -1;
+                Collectable::throwable.push_back(std::make_shared<Bullet>(pistol.getPosition().x,pistol.getPosition().y,n));
                 ammunition--;
                 ready = false;
             } else {
@@ -63,14 +57,6 @@ void Pistol::update(sf::RenderWindow& window){
 
 void Pistol::draw(sf::RenderWindow &window) {
     window.draw(pistol);
-    if(!ammo.empty()){
-        for (auto &e: ammo) {
-            window.draw(e);
-            e.setPosition(e.getPosition().x + 0.5, e.getPosition().y);
-//            e.setPosition(e.getPosition().x,e.getPosition().y +1);
-        }
-    }
-
 }
 
 bool Pistol::isStackable() const {

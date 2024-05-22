@@ -163,6 +163,10 @@ bool Player::isSeen() {
     return isShown;
 }
 
+bool Player::getFacingRight() {
+    return isFacingRight;
+}
+
 
 //void Player::itemInHand(Collectable &collactable) {
 //

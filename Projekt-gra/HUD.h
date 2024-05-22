@@ -38,6 +38,7 @@ public:
         health.setPosition(100,800);
         health.setCharacterSize(30);
 
+
     }
 
     void draw(sf::RenderWindow& window, Equipment& eq, Player& player);
@@ -68,6 +69,7 @@ private:
     sf::Text positionX;
     sf::Text positionY;
     sf::Text objective;
+    sf::RectangleShape time;
     DecisionElement decisionElement = DecisionElement(std::vector<std::string>{"im","default", "frame"}, 0,0);
     std::vector<DialogElement> dialog = std::vector<DialogElement>{DialogElement("What a lovely day!")};
     DialogElement mess = DialogElement("What a lovely day");
