@@ -11,7 +11,9 @@ class Game {
 public:
     Game(){
         loaded = false;
+        maps.emplace_back(0, 0, MapTypes::STARTING, 0);
         fmt::println("game constructed");
+
     }
 
     void loadGraphics();
@@ -30,7 +32,7 @@ private:
     bool pause;
     bool started;
     int currentLvl = 0;
-    std::vector<Map> maps = {Map(0, 0, MapTypes::STARTING, 0)};
+    std::vector<Map> maps;
     Map currentMap = Map(0, 0, MapTypes::STARTING, 0);
     unsigned int lastLvl = maps.size();
     std::vector<int> decisions = std::vector<int>();

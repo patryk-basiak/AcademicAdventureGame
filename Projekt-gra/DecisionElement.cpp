@@ -1,6 +1,7 @@
 #include "DecisionElement.h"
 #include "Settings.h"
 #include <algorithm>
+#include <fmt/ranges.h>
 
 void DecisionElement::setPosition(float x, float y) {
         base.setPosition(x,y);
@@ -52,8 +53,10 @@ void DecisionElement::setDecisions(std::vector<std::string> newDec) {
     float copyX = base.getPosition().x;
     float copyY = base.getPosition().y;
     decisions = newDec;
+    std::ranges::sort(newDec.begin(),newDec.end(), std::ranges::greater());
+    fmt::println("{}", newDec);
     decisionFrame.clear();
-    float width = decisions.at(0).size() * 10;
+    float width = newDec.at(0).size() * 8;
     float height = decisions.size()* 30;
     base.setSize(sf::Vector2f {width,height});
     time.setSize(sf::Vector2f {width,3});

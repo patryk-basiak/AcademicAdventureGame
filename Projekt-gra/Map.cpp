@@ -169,11 +169,12 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
             std::random_device rd;
             std::mt19937 gen(rd()); // Mersenne Twister engine
 
-            std::uniform_int_distribution<> dist(3, 6);
+            std::uniform_int_distribution<> dist(3, 5);
             std::uniform_int_distribution<> treeNumbers(5, 11);
             std::uniform_int_distribution<> distanceBeetwenTrees(3, 5);
             std::uniform_int_distribution<> treeSize(0, 2);
             std::uniform_int_distribution<> jumpPadRespawn(1, 6);
+            std::uniform_int_distribution<> spawnCoins(0,1);
 
 
             int amountOfThrees = treeNumbers(gen);
@@ -186,12 +187,13 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                 start += distanceBeetwenTrees(gen);
             }
             int door = dist(gen);
-            fmt::println("door is {}", door);
 
             auto tempDistance = 0;
             auto map = std::vector<std::vector<int>>();
+            auto collect = std::vector<std::vector<int>>();
             for (int i = 0; i < y; ++i) {
                 std::vector temp = std::vector<int>();
+                std::vector items = std::vector<int>();
                 for (int j = 0; j < x; ++j) {
                     auto it = std::find(treeTrunks.begin(), treeTrunks.end(), j);
                     auto before = std::find(treeTrunks.begin(), treeTrunks.end(), j + 1);
@@ -202,65 +204,63 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                     auto distance = std::distance(treeTrunks.begin(), it);
                     if (j >= x - 3 and i == door + 1) {
                         temp.push_back(1);
+                        items.push_back(0);
                     } else if (j == x - 1 and i != door and i != door - 1) {
                         temp.push_back(1);
-                    } else if (i == y - 4 - distance - 1 and it != treeTrunks.end()) {
+                        items.push_back(0);
+                    }else if (i == y - 6 - distance and i <= y - 4 and it != treeTrunks.end()) {
+                        int tempCoin = spawnCoins(gen);
+                        fmt::println("coin: {}", tempCoin);
+                        if(tempCoin == 1){
+                            items.push_back(3);
+                        }else{
+                            items.push_back(0);
+                        }
+                        temp.push_back(0);
+                    }else if (i == y - 5 - distance and it != treeTrunks.end()) {
                         temp.push_back(201);
+                        items.push_back(0);
                     } else if (i >= y - 4 - distance and i <= y - 4 and it != treeTrunks.end()) {
                         temp.push_back(200);
+                        items.push_back(0);
                     }
 //                else if (i >= y - distance - 3 and  i < y - distance - tempDistance  and (before != treeTrunks.end() or after != treeTrunks.end()) and tempDistance > 2){
 //                    temp.push_back(201);
 //                } // TODO
                     else if (i > y - 4 and it == treeTrunks.end() and tempDistance > 3) {
                         temp.push_back(0);
+                        items.push_back(0);
                     } else if (i == y - 4 and it == treeTrunks.end() and tempDistance <= 3 and tempDistance > 1) {
                         temp.push_back(2);
+                        items.push_back(0);
                     } else if (i == y - 4 and j < 4) {
                         temp.push_back(1);
+                        items.push_back(0);
                     } else if (i > y - 4) {
                         temp.push_back(1);
+                        items.push_back(0);
                     } else {
                         temp.push_back(0);
+                        items.push_back(0);
                     }
                 }
                 map.push_back(temp);
+                collect.push_back(items);
                 tempDistance = 0;
             }
-
             vec.push_back(map);
-            auto items = std::vector<std::vector<int>>();
-            items = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
-                                                  {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                  {1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-            };
-            vec.push_back(items);
-//        };
+            vec.push_back(collect);
             vec.push_back({{0}});
-//
-//        };
             vec.push_back({{0}});
             return vec;
         }
         if (subType == 1) {
+            int copyEnemyNumber = enemies_number;
             std::random_device rd;
             std::mt19937 gen(rd()); // Mersenne Twister engine
             std::uniform_int_distribution<> enemy(5, 20);
             std::uniform_int_distribution<> isEnemy(0, 2);
-
-            int positionOfEnemy = enemy(gen);
+            std::uniform_int_distribution<> platform(0, 1);
             int copyNumbersEnemy = 5;
             auto map = std::vector<std::vector<int>>();
             auto items = std::vector<std::vector<int>>();
@@ -269,36 +269,55 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
             for (int i = 0; i < y; ++i) {
                 std::vector temp = std::vector<int>();
                 std::vector enemies = std::vector<int>();
-                for (int j = 0; j < x; ++j) { // TODO zrob to lepiej
-                    if (i % 3 == 0){
+                std::vector collect = std::vector<int>();
+                for (int j = 0; j < x; ++j) {
+                    if(j == x - 1 and i > y - 3){
+                        temp.push_back(101);
+                    }
+                    if(j == x -1){
                         temp.push_back(1);
                         enemies.push_back(0);
-                    }
-                    else if(j == x -1){
+                        collect.push_back(0);
+                    }else if (i > y - 3) {
                         temp.push_back(1);
                         enemies.push_back(0);
-                    }
-                    else if( j == positionOfEnemy and i % 3 and i < y - 3){
-                            enemies.push_back(isEnemy(gen));
+                        collect.push_back(0);
+                    }else if (i % 3 == 0){
+                        int n = platform(gen);
+                        if(n == 1){
+                            temp.push_back(1);
+                        }else{
                             temp.push_back(0);
-                    }
-                    else if (i > y - 3) {
-                        temp.push_back(1);
+                        }
                         enemies.push_back(0);
-                    } else {
+                        collect.push_back(0);
+                    }else {
+                        int tmp = isEnemy(gen);
+                        if(tmp > 1 and copyNumbersEnemy > 0){
+                                enemies.push_back(2);
+                                copyNumbersEnemy--;
+                        }
+                        else{
+                            enemies.push_back(0);
+                        }
                         temp.push_back(0);
-//                        enemies.push_back(isEnemy(gen));
-                        enemies.push_back(0);
+                        int ran = enemy(gen);
+                        if(ran < 7){
+                            collect.push_back(3);
+                        }
+                        else{
+                            collect.push_back(0);
+                        }
                     }
                 }
                 map.push_back(temp);
                 ENEMY.push_back(enemies);
+                items.push_back(collect);
             }
             vec.push_back(map);
-            vec.push_back({{0}});
+            vec.push_back(items);
             vec.push_back(ENEMY);
             vec.push_back({{0}});
-
 
             fmt::println("vec {}" ,vec);
             return vec;
@@ -324,6 +343,7 @@ std::vector<std::shared_ptr<Entity>> Map::transformEntities(const std::vector<st
     for(auto & j : vec) {
         for (int i : j) {
             if (i == 2) {
+                fmt::println("wild boar added");
                 trans.push_back(std::make_shared<WildBoar>(x,y));
             }if (i == 3) {
                 trans.push_back(std::make_shared<Entity>(x,y));
@@ -363,8 +383,8 @@ std::vector<std::shared_ptr<Collectable>> Map::transformObjects(std::vector<std:
     return trans;
 }
 
-std::vector<std::shared_ptr<Wall>> Map::transformWalls(std::vector<std::vector<int>> vec) {
-    auto lvl0_trans = std::vector<std::shared_ptr<Wall>>{};
+std::vector<std::unique_ptr<Wall>> Map::transformWalls(std::vector<std::vector<int>> vec) {
+    auto lvl0_trans = std::vector<std::unique_ptr<Wall>>{};
     float x = 0;
     float y = 4;
     for(auto & j : vec) {
@@ -372,20 +392,20 @@ std::vector<std::shared_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
             if (i == 0) {
                 ;
             } else if (i == 1) {
-                lvl0_trans.emplace_back(std::make_shared<Wall>(x,y , 64,64, sf::Color{150,75,0, 255}));
+                lvl0_trans.emplace_back(std::make_unique<Wall>(x,y , 64,64, sf::Color{150,75,0, 255}));
 
             } if(i==2) {
-                lvl0_trans.emplace_back(std::make_shared<JumpPad>(x,y));
+                lvl0_trans.emplace_back(std::make_unique<JumpPad>(x,y));
             } if(i == 99){
-                lvl0_trans.emplace_back(std::make_shared<Door>(x,y));
+                lvl0_trans.emplace_back(std::make_unique<Door>(x,y));
             }
             if(i == 101){
-                lvl0_trans.emplace_back(std::make_shared<Bed>(x,y));
+                lvl0_trans.emplace_back(std::make_unique<Bed>(x,y));
             }
             if(i == 200){
-                lvl0_trans.emplace_back(std::make_shared<OakTree>(x,y));
+                lvl0_trans.emplace_back(std::make_unique<OakTree>(x,y));
             }if(i == 201){
-                lvl0_trans.emplace_back(std::make_shared<OakLeaves>(x,y));
+                lvl0_trans.emplace_back(std::make_unique<OakLeaves>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -397,20 +417,20 @@ std::vector<std::shared_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
     return lvl0_trans;
 }
 
-std::vector<std::shared_ptr<Interactable>> Map::transformInteractable(std::vector<std::vector<int>> vec) {
-    auto lvl0_trans = std::vector<std::shared_ptr<Interactable>>{};
+std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vector<std::vector<int>> vec) {
+    auto lvl0_trans = std::vector<std::unique_ptr<Interactable>>{};
     float x = 0;
     float y = 4;
     for(auto & j : vec) {
         for (int i : j) {
             if (i == 5) {
-                lvl0_trans.emplace_back(std::make_shared<Chest>(x,y));
+                lvl0_trans.emplace_back(std::make_unique<Chest>(x,y));
             }
             if(i == 102){
-                lvl0_trans.emplace_back(std::make_shared<Computer>(x,y));
+                lvl0_trans.emplace_back(std::make_unique<Computer>(x,y));
             }
             if(i == 103){
-                lvl0_trans.emplace_back(std::make_shared<Wardrobe>(x,y));
+                lvl0_trans.emplace_back(std::make_unique<Wardrobe>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -685,6 +705,10 @@ void Map::checkCollisionInteract(Player &player, sf::RenderWindow &window) {
         }
     }
 
+}
+
+int Map::getNumberOfEnemies() {
+    return entity_vec.size();
 }
 
 

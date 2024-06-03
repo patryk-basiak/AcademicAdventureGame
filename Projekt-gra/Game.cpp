@@ -101,7 +101,7 @@ void Game::loadGraphics() {
 ////                Map(2, 4, MapTypes::ENDING, 0),
 ////        };
         currentLvl = 0;
-        currentMap = maps[currentLvl];
+        currentMap = std::move(maps[currentLvl]);
         lastLvl = maps.size();
         loaded = true;
     }
@@ -115,39 +115,46 @@ int Game::getCurrentLvl() const {
 void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud) {
     if(currentLvl == 0 and game){
         float currentTime = clockLvl0.getElapsedTime().asSeconds();
-        if(currentTime <= 3){
-            movable = false;
-            hud.dialogSet(true);
-            player.setPosition(player.getPosition().x - 0.03, player.getPosition().y);
+        if(!stage_0) {
+            if (currentTime <= 3) {
+                movable = false;
+                hud.dialogSet(true);
+                player.setPosition(player.getPosition().x - 0.03, player.getPosition().y);
+            }
+            if (currentTime > 3 and currentTime <= 6) {
+                hud.dialogSet(true);
+                hud.setMessage("Should I go on a walk or ride a bike with friends?");
+            }
+            if (currentTime > 6 and currentTime <= 7) {
+                // decision window
+                hud.dialogSet(true);
+                hud.setDecision(std::vector<std::string>{"Go for a walk", "Go ride a bike with friends"},
+                                player.getPosition().x - (player.getSize()[0] * 1.5),
+                                player.getPosition().y - (player.getSize()[1])); //
+            }
+            if (currentTime > 8 and currentTime <= 12) {
+                hud.dialogSet(false);
+                hud.setDecisionVisibility(true);
+                hud.setMessage("Wait, What's that sound?");
+
+            }
         }
-        if(currentTime > 3 and currentTime <= 6){
-            hud.dialogSet(true);
-            hud.setMessage("Should I go on a walk or ride a bike with friends?");
-        }
-        if(currentTime > 6 and currentTime <= 7){
-            // decision window
-            hud.dialogSet(true);
-            hud.setDecision(std::vector<std::string>{"Go on for a walk", "Go ride a bike with friends"}, player.getPosition().x - (player.getSize()[0]*1.5), player.getPosition().y - (player.getSize()[1]) ); //
-        }
-        if(currentTime > 8 and currentTime <=12){
-            hud.dialogSet(false);
-            hud.setDecisionVisibility(true);
-            hud.setMessage("Wait, What's that sound?");
-        }
-        if(stage_0){
+        if(stage_0) {
+//            clockLvl0.restart(); TODO
+            float newTime = clockLvl0.getElapsedTime().asSeconds();
             hud.dialogSet(true);
             hud.setDecisionVisibility(false);
             movable = true;
-        }
-        if(stage_0 and movable){
-            hud.dialogSet(false);
-        }
-        if(stage_0 and !hud.dialogGet()){
-            hud.dialogSet(false);
-            int tempDecision = hud.getDecision();
-            // TODO resultat decyzji
-            decisions.push_back(tempDecision);
-            hud.setObjective("Check computer");
+            if(newTime > 3) {
+                hud.dialogSet(false);
+                if (!hud.dialogGet()) {
+//                    hud.dialogSet(false);
+                    int tempDecision = hud.getDecision();
+                    // TODO resultat decyzji
+                    decisions.push_back(tempDecision);
+                    hud.setObjective("Check computer");
+                }
+            }
         }
         if(stage_1){
             hud.setObjective("Look for disk");
@@ -161,18 +168,26 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
     if(currentLvl == 1){
         nextRoomAvailable = true;
     }
+    if(currentLvl == 2){
+        if(currentMap.getNumberOfEnemies() <= 0){
+            nextRoomAvailable = true;
+        }
+    }
+
 
 }
 
 void Game::nextLvl(Player & player) {
+    player.setStartPosition();
     this->nextRoomAvailable = false;
     stage_0 = false;
     stage_1 = false;
     stage_2 = false;
     stage_3 = false;
     currentLvl += 1;
-    currentMap = maps[currentLvl];
-    player.setStartPosition();
+    currentMap = std::move(maps[currentLvl]);
+    fmt::println("Next lvl");
+
 }
 
 bool Game::getNextRoomAvailability() const {
