@@ -24,18 +24,20 @@ if(debug) {
     window.draw(fps);
     window.draw(lvlNumber);
     window.draw(roomAvail);
+    window.draw(numberOfEnemies);
 }
     window.draw(health);
 
 }
 
-void HUD::update(Player &player, FPS& fps1, int lvl, bool nextRoomAvailable ) {
+void HUD::update(Player &player, FPS& fps1, int lvl, bool nextRoomAvailable, int numOfEnemies ) {
 
     health.setString("Health: " + std::to_string(player.getHealth()));
     if(dialogShow) {
         mess.update(player);
     }
     if(debug) {
+        numberOfEnemies.setString("Number of Enemies:" + std::to_string(numOfEnemies));
         positionX.setString("Position X:" + std::to_string(player.getPosition().x));
         positionY.setString("Position Y:" + std::to_string(player.getPosition().y));
         fps.setString("FPS: " + std::to_string((int) std::round(fps1.getFPS())));

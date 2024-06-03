@@ -77,7 +77,7 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
 
         currentMap.draw(window);
         currentMap.update(window,deltaTime,player,eq);
-        hud.update(player, fps, currentLvl, nextRoomAvailable);
+        hud.update(player, fps, currentLvl, nextRoomAvailable, currentMap.getNumberOfEnemies());
         hud.draw(window,eq,player);
 
 
@@ -87,7 +87,7 @@ void Game::loadGraphics() {
     if(!loaded) {
         maps.emplace_back(0, 0, MapTypes::FOREST, 0);
         maps.emplace_back(15, 0, MapTypes::FOREST, 1);
-        maps.emplace_back(15, 0, MapTypes::FOREST, 2);
+        maps.emplace_back(0, 1, MapTypes::FOREST, 2);
 //        maps.emplace_back(0, 0, MapTypes::TESTING, 0);
 ////                Map(0, 0, MapTypes::STARTING, 0),
 ////

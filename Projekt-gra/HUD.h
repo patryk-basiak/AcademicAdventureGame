@@ -37,12 +37,15 @@ public:
         health.setFont(font);
         health.setPosition(100,800);
         health.setCharacterSize(30);
+        numberOfEnemies.setFont(font);
+        numberOfEnemies.setPosition(1250,350);
+        numberOfEnemies.setCharacterSize(30);
 
 
     }
 
     void draw(sf::RenderWindow& window, Equipment& eq, Player& player);
-    void update(Player& player, FPS& fps, int lvl, bool nextRoomAvailable);
+    void update(Player& player, FPS& fps, int lvl, bool nextRoomAvailable, int numOfEnemies);
     void lvls(int roomlvl);
 
     void showDebug();
@@ -63,6 +66,7 @@ private:
     sf::Clock clock;
     sf::Text health;
     sf::Text lvlNumber;
+    sf::Text numberOfEnemies;
     sf::Font font;
     sf::Text roomAvail;
     sf::Text fps;

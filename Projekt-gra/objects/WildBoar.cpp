@@ -31,7 +31,11 @@ void WildBoar::update(sf::Time time, Player &player) {
 
     horizontalVelocity += gravity * deltaTime;
     wild.move(velocity * deltaTime, horizontalVelocity);
-
+    if(wild.getPosition().x < 0){
+        velocity = 50;
+    }if(wild.getPosition().y > 1600){
+        velocity = -50;
+    }
     if (velocity < 0) {
         wild.setTexture(ResourceManager::getTexture("../graphics/wildboar.png"));
     } else {

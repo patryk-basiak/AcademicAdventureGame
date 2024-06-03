@@ -257,6 +257,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
             std::uniform_int_distribution<> isEnemy(0, 2);
             std::uniform_int_distribution<> platform(0, 1);
             std::uniform_int_distribution<> jumpPadPos(2, 12);
+            std::uniform_int_distribution<> randomRange(2, 4);
             int copyNumbersEnemy = 5;
             auto map = std::vector<std::vector<int>>();
             auto items = std::vector<std::vector<int>>();
@@ -264,6 +265,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
             auto inter = std::vector<std::vector<int>>();
             int jPos = jumpPadPos(gen);
             int next = 0;
+            int r = randomRange(gen);
             for (int i = 0; i < y; ++i) {
                 std::vector temp = std::vector<int>();
                 std::vector enemies = std::vector<int>();
@@ -290,7 +292,12 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                 enemies.push_back(0);
                                 collect.push_back(0);
                             }
-                        } else {
+                        }
+                        if(j == jPos + r){
+                            temp.push_back(2);
+                            enemies.push_back(0);
+                            collect.push_back(0);
+                        }else {
                             temp.push_back(1);
                             enemies.push_back(0);
                             collect.push_back(0);
@@ -299,7 +306,17 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                         temp.push_back(1);
                         enemies.push_back(0);
                         collect.push_back(0);
-                    } else if (i % 3 == 0) {
+                    }else if(i % 3 == 1){
+                        int tmp = isEnemy(gen);
+                        if (tmp > 1 and copyNumbersEnemy > 0) {
+                            enemies.push_back(2);
+                            copyNumbersEnemy--;
+                        } else {
+                            enemies.push_back(0);
+                        }
+                        temp.push_back(0);
+                        collect.push_back(0);
+                    }else if (i % 3 == 0) {
                         int n = platform(gen);
                         if (j == jPos) {
                             if (next == 0) {
@@ -309,6 +326,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                             } else {
                                 temp.push_back(0);
                             }
+                            enemies.push_back(0);
                         } else {
                             if (n == 1) {
                                 temp.push_back(1);
@@ -321,13 +339,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                         }
                     } else {
                         temp.push_back(0);
-                        int tmp = isEnemy(gen);
-                        if (tmp > 1 and copyNumbersEnemy > 0) {
-                            enemies.push_back(2);
-                            copyNumbersEnemy--;
-                        } else {
-                            enemies.push_back(0);
-                        }
+                        enemies.push_back(0);
 
                         int ran = enemy(gen);
                         if (ran < 7) {
@@ -340,6 +352,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                 map.push_back(temp);
                 ENEMY.push_back(enemies);
                 items.push_back(collect);
+                r = randomRange(gen);
                 next = 0;
             }
             vec.push_back(map);
@@ -367,23 +380,38 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
             auto inter = std::vector<std::vector<int>>();
             for (int i = 0; i < y; ++i) {
                 std::vector temp = std::vector<int>();
-                std::vector enemies = std::vector<int>();
+                std::vector interact = std::vector<int>();
                 std::vector collect = std::vector<int>();
                 for (int j = 0; j < x; ++j) {
-                    if(i > y - 3){
+                    if((j == x/2 or j == x/2 +1 or j == x/2 - 1) and i == y - 5){
                         temp.push_back(1);
+                        interact.push_back(0);
+                    }else if(j == x/2 and i == y - 6){
+                        temp.push_back(0);
+                        interact.push_back(102);
+                    }else if( i == y - 4 ){
+                        if(j == x/2 - 2 or j == x/2 +2)
+                            temp.push_back(2);
+                        else
+                            temp.push_back(0);
+                    }
+                    else if(i > y - 4){
+                        temp.push_back(1);
+                        interact.push_back(0);
                     }
                     else{
                         temp.push_back(0);
+                        interact.push_back(0);
                     }
-                    map.push_back(temp);
                 }
-                vec.push_back(map);
-                vec.push_back({{0}});
-                vec.push_back({{0}});
-                vec.push_back({{0}});
+                map.push_back(temp);
+                inter.push_back(interact);
             }
-                return  vec;
+            vec.push_back(map);
+            vec.push_back({{0}});
+            vec.push_back({{0}});
+            vec.push_back(inter);
+            return  vec;
 
         }
     }
@@ -523,6 +551,7 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
             entity_vec.erase(it);
             it--;
         }
+
         for (auto its = throwable.begin(); its != throwable.end(); its++) {
             if ((*its)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
                 throwable.erase(its);
@@ -531,6 +560,10 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
                 it--;
             }
         }
+        if( (*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610){
+            entity_vec.erase(it);
+            it--;
+        }// TODO check it
 
     }
 
@@ -763,5 +796,6 @@ void Map::checkCollisionInteract(Player &player, sf::RenderWindow &window) {
 int Map::getNumberOfEnemies() {
     return entity_vec.size();
 }
+
 
 
