@@ -20,7 +20,7 @@ sf::Vector2<float> WildBoar::getPosition() {
 }
 
 sf::Vector2<float> WildBoar::getSize() {
-    return sf::Vector2f {32,20.25};
+    return sf::Vector2f {64,40.5};
 }
 
 WildBoar::~WildBoar() = default;
@@ -30,8 +30,6 @@ void WildBoar::update(sf::Time time, Player &player) {
     float deltaTime = time.asSeconds();
 
     horizontalVelocity += gravity * deltaTime;
-
-    // Move the wild boar
     wild.move(velocity * deltaTime, horizontalVelocity);
 
     if (velocity < 0) {
@@ -41,18 +39,17 @@ void WildBoar::update(sf::Time time, Player &player) {
     }
 
     float distanceToPlayerX = player.getPosition().x - wild.getPosition().x;
-    if (std::abs(distanceToPlayerX) < 70) {
+    float distanceToPlayerY = player.getPosition().y - wild.getPosition().y;
+    if (std::abs(distanceToPlayerX) < 70 and std::abs(distanceToPlayerY) < 70 ) {
         followingPlayer = true;
         velocity = (distanceToPlayerX > 0) ? 50 : -50;
-    } else if (std::abs(distanceToPlayerX) < 100) {
+    } else if (std::abs(distanceToPlayerX) < 100 and std::abs(distanceToPlayerY) < 100 ) {
         followingPlayer = false;
     }
-
     if (!followingPlayer && std::abs(initialPositionX - wild.getPosition().x) > 250) {
         velocity *= -1;
     }
 }
-
 
 void WildBoar::setPosition(float d, float d1) {
     wild.setPosition(d,d1);

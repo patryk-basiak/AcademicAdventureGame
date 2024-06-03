@@ -9,7 +9,7 @@ class WildBoar
 public :WildBoar(float x, float y) : Entity(x, y, sf::Color::Black) {
         wild.setTexture(ResourceManager::getTexture("../graphics/0wildboarLeft.png"));
         wild.setPosition(x, y);
-        wild.scale(0.05, 0.05);
+        wild.scale(0.1, 0.1);
         initialPositionX = x;
         initialPositionY = y;
         velocity = 50; //TODO
