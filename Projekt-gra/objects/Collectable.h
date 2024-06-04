@@ -7,6 +7,7 @@
 class Collectable {
 public:
     Collectable(float x, float y, sf::Color color);
+    Collectable(float x, float y);
 
     Collectable(float x, float y, sf::Color color, float d, float d1);
     virtual bool operator==(const Collectable& other) const;
@@ -25,6 +26,7 @@ public:
     virtual bool isStackable() const;
     virtual int getId();
     int id = 0;
+    virtual bool isOneTimeUse();
     std::vector<std::shared_ptr<Collectable>> getThrowable() const;
 
 
@@ -35,6 +37,7 @@ protected:
 private:
     sf::RectangleShape collect;
     bool Stackable = false;
+    bool oneTimeUse = false;
 
 
 

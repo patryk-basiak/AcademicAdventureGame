@@ -39,10 +39,13 @@ public:
     void showInHand(Player& player, sf::RenderWindow& window) const;
     void update(sf::RenderWindow& window, Player& player);
     void show();
-    void addItem(const std::shared_ptr<Collectable>& itemPtr);
+    void addItem(int ID);
     std::vector<std::shared_ptr<Collectable>> throwable;
 
     void useItemInHand(Player& player);
+
+    int getMoney();
+    void setMoney(int n);
 };
 
 

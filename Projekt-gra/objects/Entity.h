@@ -16,7 +16,7 @@ public:
     virtual ~Entity();
 
     virtual void setPosition(float d, float d1);
-
+    virtual bool isFriendly();
     virtual void setVerticalVelocity(int i);
 
 private:
@@ -24,6 +24,7 @@ private:
     sf::RectangleShape entity;
     sf::Vector2<float> startPosition;
     bool toRight = true;
+    bool friendly = false;
 
 
 };

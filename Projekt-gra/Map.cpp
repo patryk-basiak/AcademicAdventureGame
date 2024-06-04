@@ -23,6 +23,7 @@
 #include "objects/UniCard.h"
 #include "objects/WildBoar.h"
 #include "objects/Kiosk.h"
+#include "objects/Wizard.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -57,6 +58,8 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
         x = 10;
         y = 10;
     }
+    std::random_device rd;
+    std::mt19937 gen(rd());
     auto vec = std::vector<std::vector<std::vector<int>>>();
     if (mainType == MapTypes::TESTING) {
         auto map = std::vector<std::vector<int>>();
@@ -162,9 +165,6 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
     if (mainType == MapTypes::FOREST) {
         if (subType == 0) {
             // source: https://stackoverflow.com/questions/22923551/generating-number-0-1-using-mersenne-twister-c
-            std::random_device rd;
-            std::mt19937 gen(rd()); // Mersenne Twister engine
-
             std::uniform_int_distribution<> dist(3, 5);
             std::uniform_int_distribution<> treeNumbers(5, 11);
             std::uniform_int_distribution<> distanceBeetwenTrees(3, 5);
@@ -252,8 +252,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
         }
         if (subType == 1) {
             int copyEnemyNumber = enemies_number;
-            std::random_device rd;
-            std::mt19937 gen(rd()); // Mersenne Twister engine
+             // Mersenne Twister engine
             std::uniform_int_distribution<> enemy(5, 20);
             std::uniform_int_distribution<> isEnemy(0, 2);
             std::uniform_int_distribution<> platform(0, 1);
@@ -294,11 +293,11 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                 collect.push_back(0);
                             }
                         }
-                        if(j == jPos + r){
+                        if (j == jPos + r) {
                             temp.push_back(2);
                             enemies.push_back(0);
                             collect.push_back(0);
-                        }else {
+                        } else {
                             temp.push_back(1);
                             enemies.push_back(0);
                             collect.push_back(0);
@@ -307,7 +306,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                         temp.push_back(1);
                         enemies.push_back(0);
                         collect.push_back(0);
-                    }else if(i % 3 == 1){
+                    } else if (i % 3 == 1) {
                         int tmp = isEnemy(gen);
                         if (tmp > 1 and copyNumbersEnemy > 0) {
                             enemies.push_back(2);
@@ -317,7 +316,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                         }
                         temp.push_back(0);
                         collect.push_back(0);
-                    }else if (i % 3 == 0) {
+                    } else if (i % 3 == 0) {
                         int n = platform(gen);
                         if (j == jPos) {
                             if (next == 0) {
@@ -364,17 +363,12 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
             fmt::println("vec {}", vec);
             return vec;
         }
-//
-//    if(mainType == MapTypes::CITY){
-//
-//    }
-//    if(mainType == MapTypes::PJATK){
-//
-//    }
-//    if(mainType == MapTypes::ENDING){
-//
-//    }
-        if(subType == 2){
+
+        if (subType == 2)
+        {
+            std::uniform_int_distribution<> wizardPos(x/2, x-3);
+
+            auto wizPos = wizardPos(gen);
             auto map = std::vector<std::vector<int>>();
             auto items = std::vector<std::vector<int>>();
             auto ENEMY = std::vector<std::vector<int>>();
@@ -383,52 +377,120 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                 std::vector temp = std::vector<int>();
                 std::vector interact = std::vector<int>();
                 std::vector collect = std::vector<int>();
+                std::vector entites = std::vector<int>();
                 for (int j = 0; j < x; ++j) {
-                    if((j > x/2 - 3 and  j < x/2 + 3) and i == y - 6){
+                    if ((j > x / 2 - 3 and j < x / 2 + 3) and i == y - 6) {
                         temp.push_back(1);
                         interact.push_back(0);
-                    }else if(j == x/2 and i == y - 7){
+                        entites.push_back(0);
+                    } else if (j == x / 2 and i == y - 7) {
                         temp.push_back(0);
                         interact.push_back(201);
-                    }else if( i == y - 3 ){
-                        if(j == x/2 - 3 or j == x/2 +3)
+                    }else if(i == y - 4){
+                        if(j == wizPos){
+                            entites.push_back(4);
+                            temp.push_back(0);
+                            interact.push_back(0);
+                        }else{
+                            entites.push_back(0);
+                            temp.push_back(0);
+                            interact.push_back(0);
+                        }
+                    }
+                    else if (i == y - 3) {
+                        if (j == x / 2 - 3 or j == x / 2 + 3) {
                             temp.push_back(2);
+                            entites.push_back(0);
+                            interact.push_back(0);
+                        }
                         else
+                        {
                             temp.push_back(1);
-                    }
-                    else if(i > y - 4){
+                            entites.push_back(0);
+                            interact.push_back(0);
+                        }
+                    } else if (i > y - 4) {
                         temp.push_back(1);
+                        entites.push_back(0);
                         interact.push_back(0);
-                    }
-                    else{
+                    } else {
                         temp.push_back(0);
                         interact.push_back(0);
+                        entites.push_back(0);
                     }
                 }
                 map.push_back(temp);
                 inter.push_back(interact);
+                ENEMY.push_back(entites);
             }
             vec.push_back(map);
             vec.push_back({{0}});
-            vec.push_back({{0}});
+            vec.push_back(ENEMY);
             vec.push_back(inter);
-            return  vec;
+            return vec;
 
         }
     }
+        if(mainType == MapTypes::CITY)
+        {
+            if (subType == 0) {
+                auto map = std::vector<std::vector<int>>();
+                auto items = std::vector<std::vector<int>>();
+                auto ENEMY = std::vector<std::vector<int>>();
+                auto inter = std::vector<std::vector<int>>();
+                for (int i = 0; i < y; ++i)
+                {
+                    std::vector temp = std::vector<int>();
+                    std::vector interact = std::vector<int>();
+                    std::vector collect = std::vector<int>();
+                    for (int j = 0; j < x; ++j)
+                    {
+                        if (i > y - 4) {
+                            temp.push_back(1);
+                            interact.push_back(0);
+                        } else {
+                            temp.push_back(0);
+                            interact.push_back(0);
+                        }
+                    }
+                    map.push_back(temp);
+                    inter.push_back(interact);
+                }
+                    vec.push_back(map);
+                    vec.push_back({{0}});
+                    vec.push_back({{0}});
+                    vec.push_back(inter);
+                    return vec;
+
+            }
+            if(subType == 1)
+            {
+             // TODO
+            }
+        }
+    //
+
+//    if(mainType == MapTypes::PJATK){
+//
+//    }
+//    if(mainType == MapTypes::ENDING){
+//
+//    }
 
 }
-std::vector<std::shared_ptr<Entity>> Map::transformEntities(const std::vector<std::vector<int>>& vec) {
-    auto trans = std::vector<std::shared_ptr<Entity>>();
+std::vector<std::unique_ptr<Entity>> Map::transformEntities(const std::vector<std::vector<int>>& vec) {
+    auto trans = std::vector<std::unique_ptr<Entity>>();
     float x = 0;
     float y = 4;
     for(auto & j : vec) {
         for (int i : j) {
             if (i == 2) {
                 fmt::println("wild boar added");
-                trans.push_back(std::make_shared<WildBoar>(x,y));
+                trans.push_back(std::make_unique<WildBoar>(x,y));
             }if (i == 3) {
-                trans.push_back(std::make_shared<Entity>(x,y));
+                trans.push_back(std::make_unique<Entity>(x,y));
+            }if (i == 4) {
+                trans.push_back(std::make_unique<Wizard>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -440,20 +502,20 @@ std::vector<std::shared_ptr<Entity>> Map::transformEntities(const std::vector<st
     return trans;
 }
 
-std::vector<std::shared_ptr<Collectable>> Map::transformObjects(std::vector<std::vector<int>> vec) {
-    auto trans = std::vector<std::shared_ptr<Collectable>>();
+std::vector<std::unique_ptr<Collectable>> Map::transformObjects(std::vector<std::vector<int>> vec) {
+    auto trans = std::vector<std::unique_ptr<Collectable>>();
     float x = 0;
     float y = 4;
     for(auto & j : vec) {
         for (int i : j) {
             if (i == 3) {
-                trans.push_back(std::make_shared<Coin>(x,y));
+                trans.push_back(std::make_unique<Coin>(x,y));
             }
             if (i == 2) {
-                trans.push_back(std::make_shared<Pistol>(x,y));
+                trans.push_back(std::make_unique<Pistol>(x,y));
             }
             if(i == 5){
-                trans.push_back(std::make_shared<UniCard>(x,y));
+                trans.push_back(std::make_unique<UniCard>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -533,7 +595,7 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
     }
     this->checkCollision(player, window);
     this->checkCollisionInteract(player, window);
-    for(auto const &e: entity_vec){
+    for(auto &e: entity_vec){
         checkCollisionEntity(e);
     }
 
@@ -541,7 +603,7 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
     for (auto it = items_vec.begin(); it != items_vec.end(); it++) {
         (*it)->update(window, player);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
-            eq.addItem(*it);
+            eq.addItem((*it)->getId());
             (*it)->collision(player);
             items_vec.erase(it);
             it--;
@@ -551,16 +613,19 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
         (*it)->update(time, player);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             (*it)->collision(player);
-            entity_vec.erase(it);
-            it--;
-        }
-
-        for (auto its = throwable.begin(); its != throwable.end(); its++) {
-            if ((*its)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
-//                throwable.erase(its);
-//                its--;
+            if(!(*it)->isFriendly()) {
                 entity_vec.erase(it);
                 it--;
+            }
+        }
+        if(!(*it)->isFriendly()) {
+            for (auto its = throwable.begin(); its != throwable.end(); its++) {
+                if ((*its)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+//                throwable.erase(its);
+//                its--;
+                    entity_vec.erase(it);
+                    it--;
+                }
             }
         }
         if( (*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610){
@@ -703,7 +768,7 @@ void Map::checkCollision(Player& player, sf::RenderWindow &window) {
 }
 
 
-void Map::checkCollisionEntity(std::shared_ptr<Entity> entity){
+void Map::checkCollisionEntity(std::unique_ptr<Entity>& entity){
     float entityBottom = entity->getPosition().y + entity->getSize().y;
     float entityTop = entity->getPosition().y;
     float entityLeft = entity->getPosition().x;

@@ -87,6 +87,8 @@ add_executable(game main.cpp
         objects/Health.h
         objects/TimeIncreaser.cpp
         objects/TimeIncreaser.h
+        objects/Wizard.cpp
+        objects/Wizard.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

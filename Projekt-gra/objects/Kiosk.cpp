@@ -38,12 +38,47 @@ void Kiosk::collision(Player &player, sf::RenderWindow &window)
 
 void Kiosk::update(sf::RenderWindow &window, Player &player, Equipment &eq)
 {
+    sf::Vector2 mouse = sf::Mouse::getPosition(window);
     if(inUse){
         player.hide();
+        auto it = price.begin();
+        for(auto &item : items){
+            float posX = item.first->getPosition().x;
+            float sizeX = item.first->getSize().x;
+            float posY = item.first->getPosition().y;
+            float sizeY = item.first->getSize().x;
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                if (mouse.x > posX and mouse.x < posX + sizeX and mouse.y > posY and mouse.y < posY + sizeY) {
+                    if(item.second.first < eq.getMoney())
+                    {
+                        eq.setMoney(eq.getMoney() - item.second.first);
+                        if(item.first->isOneTimeUse())
+                        {
+                            item.first->usage(player);
+                        }
+                        else
+                        {
+                            eq.addItem(item.first->getId());
+                        }
+
+                        items.erase(item.first);
+                        price.erase(it);
+
+                    }
+                    else
+                    {
+                        fmt::println("not enough money");
+
+                    }
+                }
+            }
+            it++;
+        }
     }
     else{
         player.showPlayer();
     }
+
 }
 
 void Kiosk::draw(sf::RenderWindow &window)
@@ -55,7 +90,9 @@ void Kiosk::draw(sf::RenderWindow &window)
         for(auto& item : items)
         {
             item.first->draw(window);
-            window.draw(price);
+            for(auto &e : price){
+                window.draw(e);
+            }
         }
     }
 }

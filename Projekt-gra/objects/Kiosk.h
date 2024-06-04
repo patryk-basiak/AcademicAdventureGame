@@ -3,6 +3,8 @@
 #include "Interactable.h"
 #include "../ResourceManager.h"
 #include "Coin.h"
+#include "Health.h"
+#include "TimeIncreaser.h"
 
 class Kiosk
     : public Interactable{
@@ -17,21 +19,30 @@ public:
         size = std::vector<float>{102.4,102.4};
         text.setString("Press F to use Kiosk");
         text.setFont(Interactable::font);
-        price.setFont(Interactable::font);
-        price0.setFont(Interactable::font);
-        price1.setFont(Interactable::font);
+        price.emplace_back();
+        price.emplace_back();
+        price.emplace_back();
 
         text.setPosition(kiosk.getPosition().x, kiosk.getPosition().y - (this->size[1]/2));
         tempInside.setSize(sf::Vector2f{400,400});
         tempInside.setPosition(kiosk.getPosition().x + (size[0]/2) - 200, kiosk.getPosition().y + (size[1]/2) - 200 );
         tempInside.setFillColor(sf::Color::White);
-        items.emplace(std::make_unique<Coin>(x,y), std::make_pair(5,0));
-        items.emplace(std::make_unique<Coin>(x,y), std::make_pair(3,0));
-        items.emplace(std::make_unique<Coin>(x,y), std::make_pair(3,0));
+        items.emplace(std::make_unique<Health>(x,y - 100), std::make_pair(10,0));
+        items.emplace(std::make_unique<TimeIncreaser>(x,y), std::make_pair(15,0));
+        items.emplace(std::make_unique<Coin>(x,y + 100), std::make_pair(3,0));
+        auto it = items.begin();
+        for(auto & e : price)
+        {
+            e.setFont(Interactable::font);
+            e.setFillColor(sf::Color::Black);
+            e.setString("Price: " + std::to_string(it->second.first));
+            e.setPosition(it->first->getPosition().x + 15, it->first->getPosition().y + 10);
+            it++;
+        }
 
-        price.setPosition(items.begin()->first->getPosition().x +5, items.begin()->first->getPosition().y + 5);
-        price.setString("Price: " + std::to_string(items.begin()->second.first));
-        price.setFillColor(sf::Color::Black);
+//        price.setPosition(items.begin()->first->getPosition().x +5, items.begin()->first->getPosition().y + 5);
+//        price.setString("Price: " + std::to_string(items.begin()->second.first));
+//        price.setFillColor(sf::Color::Black);
 
     }
 
@@ -50,9 +61,7 @@ private:
     bool inUse = false;
     int id = 201;
     sf::Text text;
-    sf::Text price;
-    sf::Text price0;
-    sf::Text price1;
+    std::vector<sf::Text> price;
     std::vector<float> size;
     sf::Sprite kiosk;
     sf::Sprite inside; // TODO

@@ -61,6 +61,9 @@ Entity::~Entity() {
 
 void Entity::setVerticalVelocity(int i) {
 
+}
 
+bool Entity::isFriendly() {
+    return friendly;
 }
 

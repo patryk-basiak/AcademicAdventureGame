@@ -34,10 +34,6 @@ void Computer::update(sf::RenderWindow& window, Player& player, Equipment& eq) {
     for(auto &e: icons){
         e->update(window);
     }
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) and inUse) {
-        sf::Vector2i pos = sf::Mouse::getPosition(window);
-        fmt::println("{} {}", pos.x, pos.y);
-    }
 
 }
 

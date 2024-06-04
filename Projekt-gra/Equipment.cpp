@@ -161,10 +161,9 @@ void Equipment::movedMouseDown() {
     }
 }
 
-void Equipment::addItem(const std::shared_ptr<Collectable>& itemPtr) {
-    int id = itemPtr->getId();
+void Equipment::addItem(int id) {
     fmt::println("item added id: {}", id);
-    if (items.find(itemPtr->getId()) == items.end()) {
+    if (items.find(id) == items.end()) {
         isEmpty = false;
         if (id == 2) {
             items.insert({id, {std::make_shared<Pistol>(0, 0), 1}});
@@ -188,8 +187,9 @@ void Equipment::addItem(const std::shared_ptr<Collectable>& itemPtr) {
         std::ranges::reverse(temp_items);
     }
     else {
-            if (itemPtr->isStackable()) {
-                items.find(itemPtr->getId())->second.second++;
+        auto iter = items.find(id);
+            if ((*iter).second.first->isStackable()) {
+                items.find(id)->second.second++;
             }
         }
 }
@@ -214,6 +214,23 @@ std::shared_ptr<Collectable> Equipment::getItemInHand() {
 
 bool Equipment::getStatus() {
     return isEmpty;
+}
+
+int Equipment::getMoney() {
+    auto x = items.find(3);
+    if(x == items.end()){
+        return 0;
+    }else{
+        return (*x).second.second;;
+    }
+
+}
+
+void Equipment::setMoney(int n) {
+    auto x = items.find(3);
+    if(x != items.end()){
+        x->second.second = n;
+    }
 }
 
 

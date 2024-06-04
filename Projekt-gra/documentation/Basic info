@@ -28,12 +28,15 @@ ID for items:
 3 - Coin
 4 - Bullet
 5 - ID Uni Card
+6 - Time Increaser
+7 - Health
 ---------------------------------
 ID for entities:
 0 - null (not an object)
 1 -
 2 - WildBoar
 3 - Entity
+4 - Wizard
 
 Classes:
 main.cpp

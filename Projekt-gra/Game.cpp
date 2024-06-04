@@ -88,12 +88,13 @@ void Game::loadGraphics() {
         maps.emplace_back(0, 0, MapTypes::FOREST, 0);
         maps.emplace_back(15, 0, MapTypes::FOREST, 1);
         maps.emplace_back(0, 1, MapTypes::FOREST, 2);
+        maps.emplace_back(0, 1, MapTypes::CITY, 0);
 //        maps.emplace_back(0, 0, MapTypes::TESTING, 0);
 ////                Map(0, 0, MapTypes::STARTING, 0),
 ////
 ////                Map(3, 0, MapTypes::FOREST, 0),
 ////                Map(5, 1, MapTypes::FOREST, 1),
-////                Map(1, 10, MapTypes::CITY, 0),
+
 ////                Map(0, 6, MapTypes::CITY, 1),
 ////                Map(1, 3, MapTypes::PJATK, 0),
 ////                Map(2, 14, MapTypes::PJATK, 1),

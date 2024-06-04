@@ -35,7 +35,7 @@ void Wardrobe::update(sf::RenderWindow &window, Player &player, Equipment& eq) {
                 (*it).first->getPosition().y < mouse.y and (*it).first->getPosition().y + (*it).first->getSize().y > mouse.y){
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 for(int i = 0; i < (*it).second; ++i) {
-                    eq.addItem((*it).first);
+                    eq.addItem((*it).first->getId());
                 }
                 itemsInside.erase(it);
                 stage_2 = true;
