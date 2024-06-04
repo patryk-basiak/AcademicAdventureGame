@@ -22,6 +22,7 @@
 #include "objects/OakLeaves.h"
 #include "objects/UniCard.h"
 #include "objects/WildBoar.h"
+#include "objects/Kiosk.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -383,17 +384,17 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                 std::vector interact = std::vector<int>();
                 std::vector collect = std::vector<int>();
                 for (int j = 0; j < x; ++j) {
-                    if((j == x/2 or j == x/2 +1 or j == x/2 - 1) and i == y - 5){
+                    if((j > x/2 - 3 and  j < x/2 + 3) and i == y - 6){
                         temp.push_back(1);
                         interact.push_back(0);
-                    }else if(j == x/2 and i == y - 6){
+                    }else if(j == x/2 and i == y - 7){
                         temp.push_back(0);
-                        interact.push_back(102);
-                    }else if( i == y - 4 ){
-                        if(j == x/2 - 2 or j == x/2 +2)
+                        interact.push_back(201);
+                    }else if( i == y - 3 ){
+                        if(j == x/2 - 3 or j == x/2 +3)
                             temp.push_back(2);
                         else
-                            temp.push_back(0);
+                            temp.push_back(1);
                     }
                     else if(i > y - 4){
                         temp.push_back(1);
@@ -512,6 +513,8 @@ std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vecto
             }
             if(i == 103){
                 lvl0_trans.emplace_back(std::make_unique<Wardrobe>(x,y));
+            }if(i == 201){
+                lvl0_trans.emplace_back(std::make_unique<Kiosk>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -554,8 +557,8 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
 
         for (auto its = throwable.begin(); its != throwable.end(); its++) {
             if ((*its)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
-                throwable.erase(its);
-                its--;
+//                throwable.erase(its);
+//                its--;
                 entity_vec.erase(it);
                 it--;
             }

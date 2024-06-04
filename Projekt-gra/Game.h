@@ -11,7 +11,7 @@ class Game {
 public:
     Game(){
         loaded = false;
-        maps.emplace_back(0, 0, MapTypes::STARTING, 0);
+        maps.emplace_back(0, 0, MapTypes::FOREST, 2);
         fmt::println("game constructed");
 
     }

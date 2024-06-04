@@ -81,6 +81,12 @@ add_executable(game main.cpp
         objects/UniCard.h
         objects/WildBoar.cpp
         objects/WildBoar.h
+        objects/Kiosk.cpp
+        objects/Kiosk.h
+        objects/Health.cpp
+        objects/Health.h
+        objects/TimeIncreaser.cpp
+        objects/TimeIncreaser.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

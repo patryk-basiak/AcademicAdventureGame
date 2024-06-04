@@ -4,6 +4,7 @@
 extern bool movable;
 extern bool game;
 extern bool combat;
+extern bool debugMode;
 
 extern bool stage_0;
 extern bool stage_1;

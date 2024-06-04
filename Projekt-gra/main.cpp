@@ -22,16 +22,7 @@ auto main() -> int {
     bool menu = true;
     bool pause = false;
     //background image
-    sf::Font font;
-    if (!font.loadFromFile("../graphics/arial.ttf")) {
-        fmt::println("font loading error");
-    }
-    sf::Text textX = sf::Text("000", font, 30);
-    sf::Text showLvlnumber = sf::Text("000", font, 30);
-    sf::Text PauseText = sf::Text("Paused", font, 30);
-    sf::Text fps = sf::Text("000", font, 30);
-    sf::Text textY = sf::Text("000", font, 30);
-    sf::Text health = sf::Text("Health: 000", font, 30);
+
 
     // creating background image
     sf::Texture worldBackground = sf::Texture();
@@ -47,12 +38,9 @@ auto main() -> int {
     Game gameClass;
 
     bool debug = false;
+    debugMode = true;
 
-//            std::thread thread(&Game::loadGraphics, &gameClass);
-//
-//    thread.launch();
     sf::Clock clock;
-    sf::Clock timer;
     while (window.isOpen()) {
         while (menu) {
             gameClass.loadGraphics();
