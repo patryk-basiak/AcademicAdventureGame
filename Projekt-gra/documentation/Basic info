@@ -12,12 +12,16 @@ ID for map generation:
 
 200 - Oak wood
 201 - Oak Leaves
+
+300 - Car
+
 --------------------------------
 ID for Interactable generation:
 5 - Chest
 102 - Computer
 103 - Wardrobe
 201 - Kiosk
+300 - Shop
 
 
 ---------------------------------

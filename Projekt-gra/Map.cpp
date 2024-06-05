@@ -24,6 +24,8 @@
 #include "objects/WildBoar.h"
 #include "objects/Kiosk.h"
 #include "objects/Wizard.h"
+#include "objects/Car.h"
+#include "objects/Shop.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -465,7 +467,72 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
             }
             if(subType == 1)
             {
-             // TODO
+                std::uniform_int_distribution<> chestPos(3, 11);
+                auto chP = chestPos(gen);
+                auto map = std::vector<std::vector<int>>();
+                auto items = std::vector<std::vector<int>>();
+                auto ENEMY = std::vector<std::vector<int>>();
+                auto inter = std::vector<std::vector<int>>();
+                for (int i = 0; i < y; ++i)
+                {
+                    std::vector temp = std::vector<int>();
+                    std::vector interact = std::vector<int>();
+                    std::vector collect = std::vector<int>();
+                    for (int j = 0; j < x; ++j)
+                    {
+                        if(j == x - 1)
+                        {
+                            if( i == y - 4 or i == y - 5)
+                            {
+                                temp.push_back(0);
+                                interact.push_back(0);
+                            }
+                            else
+                            {
+                                temp.push_back(1);
+                                interact.push_back(0);
+                            }
+                        }
+                        else if(i % 4 == 0 and i < y - 5 and j < x - 4 and j % 4 != 1 and i != 0 and j != 0)
+                        {
+                            temp.push_back(1);
+                            interact.push_back(0);
+                        }else if(i % 4 == 3 and i < y - 5 and j < x - 4 and j== chP)
+                        {
+                            temp.push_back(0);
+                            interact.push_back(300);
+                            chP = chestPos(gen);
+                        }
+                        else if(i == y - 3 and j % 4 == 1)
+                        {
+                            temp.push_back(2);
+                            interact.push_back(0);
+                        }
+                        else if(j == x - 4 and i == y - 5)
+                        {
+                            {
+                                temp.push_back(300);
+                                interact.push_back(0);
+                            }
+                        }
+                        else if (i > y - 4)
+                        {
+                            temp.push_back(1);
+                            interact.push_back(0);
+                        } else
+                        {
+                            temp.push_back(0);
+                            interact.push_back(0);
+                        }
+                    }
+                    map.push_back(temp);
+                    inter.push_back(interact);
+                }
+                vec.push_back(map);
+                vec.push_back({{0}});
+                vec.push_back({{0}});
+                vec.push_back(inter);
+                return vec;
             }
         }
     //
@@ -485,7 +552,6 @@ std::vector<std::unique_ptr<Entity>> Map::transformEntities(const std::vector<st
     for(auto & j : vec) {
         for (int i : j) {
             if (i == 2) {
-                fmt::println("wild boar added");
                 trans.push_back(std::make_unique<WildBoar>(x,y));
             }if (i == 3) {
                 trans.push_back(std::make_unique<Entity>(x,y));
@@ -550,6 +616,8 @@ std::vector<std::unique_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
                 lvl0_trans.emplace_back(std::make_unique<OakTree>(x,y));
             }if(i == 201){
                 lvl0_trans.emplace_back(std::make_unique<OakLeaves>(x,y));
+            }if(i == 300){
+                lvl0_trans.emplace_back(std::make_unique<Car>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -577,6 +645,8 @@ std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vecto
                 lvl0_trans.emplace_back(std::make_unique<Wardrobe>(x,y));
             }if(i == 201){
                 lvl0_trans.emplace_back(std::make_unique<Kiosk>(x,y));
+            }if(i == 300){
+                lvl0_trans.emplace_back(std::make_unique<Shop>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -861,7 +931,8 @@ void Map::checkCollisionInteract(Player &player, sf::RenderWindow &window) {
 
 }
 
-int Map::getNumberOfEnemies() {
+int Map::getNumberOfEnemies()
+{
     return entity_vec.size();
 }
 

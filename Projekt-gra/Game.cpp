@@ -182,6 +182,8 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
         hud.dialogSet(false);
         hud.setDecisionVisibility(false);
         nextRoomAvailable = true;
+        stage_0 = true;
+        stage_1 = true;
     }
 
 

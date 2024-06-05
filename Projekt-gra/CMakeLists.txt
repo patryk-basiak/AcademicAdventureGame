@@ -89,6 +89,10 @@ add_executable(game main.cpp
         objects/TimeIncreaser.h
         objects/Wizard.cpp
         objects/Wizard.h
+        objects/Car.cpp
+        objects/Car.h
+        objects/Shop.cpp
+        objects/Shop.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)
