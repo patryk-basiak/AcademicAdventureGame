@@ -93,6 +93,24 @@ add_executable(game main.cpp
         objects/Car.h
         objects/Shop.cpp
         objects/Shop.h
+        objects/CarWinch.cpp
+        objects/CarWinch.h
+        objects/Grass.cpp
+        objects/Grass.h
+        objects/Dirt.cpp
+        objects/Dirt.h
+        objects/Brick.cpp
+        objects/Brick.h
+        objects/woodBlock.cpp
+        objects/woodBlock.h
+        objects/woodSlab.cpp
+        objects/woodSlab.h
+        objects/street.cpp
+        objects/street.h
+        objects/stone.cpp
+        objects/stone.h
+        objects/CarEnemy.cpp
+        objects/CarEnemy.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

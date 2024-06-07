@@ -12,4 +12,19 @@ void JumpPad::collision(Player& player, sf::RenderWindow &window){
     player.setVerticalVelocity(-400);
 }
 
-JumpPad::~JumpPad() = default;
+sf::Vector2<float> JumpPad::getPosition() {
+    return jumpPad.getPosition();
+}
+
+sf::Vector2<float> JumpPad::getSize() {
+    return sf::Vector2f {(float)jumpPad.getTexture()->getSize().x * jumpPad.getScale().x, (float)jumpPad.getTexture()->getSize().y * jumpPad.getScale().y};
+}
+
+void JumpPad::draw(sf::RenderWindow &window) const {
+    window.draw(jumpPad);
+}
+
+void JumpPad::update() {
+
+}
+

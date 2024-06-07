@@ -36,4 +36,10 @@ void Wall::update() {
 
 }
 
+Wall::Wall(float x, float y) {
+    wall.setPosition(x,y);
+    wall.setSize(sf::Vector2f (64,64));
+
+}
+
 Wall::~Wall() = default;

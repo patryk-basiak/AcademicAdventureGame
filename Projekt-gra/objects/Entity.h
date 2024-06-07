@@ -5,6 +5,7 @@
 class Entity {
 
 public:
+
     Entity(float x, float y, sf::Color color);
     Entity(float x, float y);
     virtual void draw(sf::RenderWindow& window);
@@ -13,6 +14,7 @@ public:
     virtual void collision(Player& player);
     virtual sf::Vector2<float> getPosition();
     virtual sf::Vector2<float> getSize();
+
     virtual ~Entity();
 
     virtual void setPosition(float d, float d1);
@@ -20,11 +22,11 @@ public:
     virtual void setVerticalVelocity(int i);
 
 private:
+
     int health;
     sf::RectangleShape entity;
     sf::Vector2<float> startPosition;
     bool toRight = true;
     bool friendly = false;
-
 
 };

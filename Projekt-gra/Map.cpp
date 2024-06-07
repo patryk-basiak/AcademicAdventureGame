@@ -26,6 +26,14 @@
 #include "objects/Wizard.h"
 #include "objects/Car.h"
 #include "objects/Shop.h"
+#include "objects/Grass.h"
+#include "objects/Dirt.h"
+#include "objects/Brick.h"
+#include "objects/woodBlock.h"
+#include "objects/woodSlab.h"
+#include "objects/street.h"
+#include "objects/stone.h"
+#include "objects/CarEnemy.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -94,18 +102,18 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
         map = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 1, 0, 0, 0, 102, 0, 0, 0, 0, 101, 0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 1, 0, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 1, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {1, 1, 2, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                                            {1, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                                            {1, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                                            {1, 1, 1, 1, 1, 1,   1, 1, 1, 1, 1,   1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                            {0, 5, 5, 5, 5, 5,   5, 5, 5, 5, 5,   5, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 0, 0, 102, 0, 0, 0, 0, 101, 0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 7, 7, 7,   7, 7, 7, 7, 7,   7, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {3, 6, 2, 6, 6, 6,   6, 6, 6, 6, 6,   6, 6,  3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+                                            {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+                                            {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+                                            {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
         };
         vec.push_back(map);
         auto items = std::vector<std::vector<int>>();
@@ -201,10 +209,10 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                     }
                     auto distance = std::distance(treeTrunks.begin(), it);
                     if (j >= x - 3 and i == door + 1) {
-                        temp.push_back(1);
+                        temp.push_back(3);
                         items.push_back(0);
                     } else if (j == x - 1 and i != door and i != door - 1) {
-                        temp.push_back(1);
+                        temp.push_back(4);
                         items.push_back(0);
                     } else if (i == y - 6 - distance and i <= y - 4 and it != treeTrunks.end()) {
                         int tempCoin = spawnCoins(gen);
@@ -228,14 +236,23 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                     else if (i > y - 4 and it == treeTrunks.end() and tempDistance > 3) {
                         temp.push_back(0);
                         items.push_back(0);
-                    } else if (i == y - 4 and it == treeTrunks.end() and tempDistance <= 3 and tempDistance > 1) {
+                    } else if (i == y - 3 and it == treeTrunks.end() and tempDistance <= 3 and tempDistance > 1) {
                         temp.push_back(2);
                         items.push_back(0);
                     } else if (i == y - 4 and j < 4) {
-                        temp.push_back(1);
+                        temp.push_back(3);
                         items.push_back(0);
-                    } else if (i > y - 4) {
-                        temp.push_back(1);
+                    } else if (i == y - 3) {
+                        if(j<4){
+                            temp.push_back(4);
+                            items.push_back(0);
+                        }
+                        else{
+                            temp.push_back(3);
+                            items.push_back(0);
+                        }
+                    } else if (i > y - 3) {
+                        temp.push_back(4);
                         items.push_back(0);
                     } else {
                         temp.push_back(0);
@@ -278,7 +295,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                         enemies.push_back(0);
                         collect.push_back(0);
                     } else if (j == x - 1) {
-                        temp.push_back(1);
+                        temp.push_back(4);
                         enemies.push_back(0);
                         collect.push_back(0);
                     } else if (i == y - 2) {
@@ -290,7 +307,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                 enemies.push_back(0);
                                 collect.push_back(0);
                             } else {
-                                temp.push_back(1);
+                                temp.push_back(3);
                                 enemies.push_back(0);
                                 collect.push_back(0);
                             }
@@ -300,12 +317,12 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                             enemies.push_back(0);
                             collect.push_back(0);
                         } else {
-                            temp.push_back(1);
+                            temp.push_back(3);
                             enemies.push_back(0);
                             collect.push_back(0);
                         }
                     } else if (i > y - 2) {
-                        temp.push_back(1);
+                        temp.push_back(4);
                         enemies.push_back(0);
                         collect.push_back(0);
                     } else if (i % 3 == 1) {
@@ -331,7 +348,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                             enemies.push_back(0);
                         } else {
                             if (n == 1) {
-                                temp.push_back(1);
+                                temp.push_back(3);
                             }
                             if (n != 1) {
                                 temp.push_back(0);
@@ -382,7 +399,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                 std::vector entites = std::vector<int>();
                 for (int j = 0; j < x; ++j) {
                     if ((j > x / 2 - 3 and j < x / 2 + 3) and i == y - 6) {
-                        temp.push_back(1);
+                        temp.push_back(3);
                         interact.push_back(0);
                         entites.push_back(0);
                     } else if (j == x / 2 and i == y - 7) {
@@ -407,12 +424,12 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                         }
                         else
                         {
-                            temp.push_back(1);
+                            temp.push_back(3);
                             entites.push_back(0);
                             interact.push_back(0);
                         }
-                    } else if (i > y - 4) {
-                        temp.push_back(1);
+                    }else if (i > y - 3) {
+                        temp.push_back(4);
                         entites.push_back(0);
                         interact.push_back(0);
                     } else {
@@ -445,22 +462,41 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                     std::vector temp = std::vector<int>();
                     std::vector interact = std::vector<int>();
                     std::vector collect = std::vector<int>();
+                    std::vector enemy = std::vector<int>();
                     for (int j = 0; j < x; ++j)
                     {
-                        if (i > y - 4) {
-                            temp.push_back(1);
+                        if(i == 4 and j % 4 == 0){
+                            temp.push_back(9);
+                            enemy.push_back(0);
+                            interact.push_back(0);
+                        }
+                        else if(i == y -7 and (j == x/2  or j == x - 3)){
+                            temp.push_back(0);
+                            enemy.push_back(5);
+                            interact.push_back(0);
+                        }
+                        else if(i == y - 3){
+                            temp.push_back(8);
+                            enemy.push_back(0);
+                            interact.push_back(0);
+                        }
+                        else if (i > y - 3) {
+                            temp.push_back(9);
+                            enemy.push_back(0);
                             interact.push_back(0);
                         } else {
                             temp.push_back(0);
+                            enemy.push_back(0);
                             interact.push_back(0);
                         }
                     }
                     map.push_back(temp);
                     inter.push_back(interact);
+                    ENEMY.push_back(enemy);
                 }
                     vec.push_back(map);
                     vec.push_back({{0}});
-                    vec.push_back({{0}});
+                    vec.push_back(ENEMY);
                     vec.push_back(inter);
                     return vec;
 
@@ -489,13 +525,13 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                             }
                             else
                             {
-                                temp.push_back(1);
+                                temp.push_back(9);
                                 interact.push_back(0);
                             }
                         }
                         else if(i % 4 == 0 and i < y - 5 and j < x - 4 and j % 4 != 1 and i != 0 and j != 0)
                         {
-                            temp.push_back(1);
+                            temp.push_back(7);
                             interact.push_back(0);
                         }else if(i % 4 == 3 and i < y - 5 and j < x - 4 and j== chP)
                         {
@@ -515,9 +551,13 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                 interact.push_back(0);
                             }
                         }
-                        else if (i > y - 4)
+                        else if (i == y - 3)
                         {
-                            temp.push_back(1);
+                            temp.push_back(8);
+                            interact.push_back(0);
+                        } else if (i > y - 3)
+                        {
+                            temp.push_back(9);
                             interact.push_back(0);
                         } else
                         {
@@ -557,6 +597,8 @@ std::vector<std::unique_ptr<Entity>> Map::transformEntities(const std::vector<st
                 trans.push_back(std::make_unique<Entity>(x,y));
             }if (i == 4) {
                 trans.push_back(std::make_unique<Wizard>(x,y));
+            }if (i == 5) {
+                trans.push_back(std::make_unique<CarEnemy>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -606,6 +648,28 @@ std::vector<std::unique_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
 
             } if(i==2) {
                 lvl0_trans.emplace_back(std::make_unique<JumpPad>(x,y));
+            }
+            if(i==3)
+            {
+                lvl0_trans.emplace_back(std::make_unique<Grass>(x,y));
+            }if(i==4)
+            {
+                lvl0_trans.emplace_back(std::make_unique<Dirt>(x,y));
+            }if(i==5)
+            {
+                lvl0_trans.emplace_back(std::make_unique<Brick>(x,y));
+            }if(i==6)
+            {
+                lvl0_trans.emplace_back(std::make_unique<WoodBlock>(x,y));
+            }if(i==7)
+            {
+                lvl0_trans.emplace_back(std::make_unique<WoodSlab>(x,y));
+            }if(i==8)
+            {
+                lvl0_trans.emplace_back(std::make_unique<Street>(x,y));
+            }if(i==9)
+            {
+                lvl0_trans.emplace_back(std::make_unique<Stone>(x,y));
             } if(i == 99){
                 lvl0_trans.emplace_back(std::make_unique<Door>(x,y));
             }

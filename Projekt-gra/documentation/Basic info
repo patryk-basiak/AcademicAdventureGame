@@ -6,6 +6,14 @@ ID for map generation:
 0 - void (not an object)
 1 - Wall
 2- Jump pad
+3 - Grass
+4 - Dirt
+5 - Brick
+6 - WoodBlock (plank)
+7 - woodenSlab
+
+8 - street
+9 - stone
 
 99 - Door
 101 - Bed
@@ -22,6 +30,7 @@ ID for Interactable generation:
 103 - Wardrobe
 201 - Kiosk
 300 - Shop
+301 - CarWinch
 
 
 ---------------------------------
@@ -41,6 +50,7 @@ ID for entities:
 2 - WildBoar
 3 - Entity
 4 - Wizard
+5 - CarEnemy
 
 Classes:
 main.cpp

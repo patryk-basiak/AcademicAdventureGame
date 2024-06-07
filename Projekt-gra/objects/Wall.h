@@ -4,6 +4,7 @@
 class Wall {
 public:
     Wall(float x, float y, float sX, float sY, sf::Color color);
+    Wall(float x, float y);
 
     Wall(const Wall&) = delete;
     Wall& operator=(const Wall&) = delete;

@@ -17,7 +17,7 @@ sf::Vector2<float> Shop::getPosition() {
 }
 
 std::vector<float> Shop::getSize() {
-    return std::vector<float>{62.6, 57,4};
+    return std::vector<float>{62.6, 57.4};
 }
 
 void Shop::update(sf::RenderWindow &window, Player &player, Equipment &eq) {
