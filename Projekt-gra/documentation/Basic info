@@ -15,7 +15,7 @@ ID for map generation:
 8 - street
 9 - stone
 
-99 - Door
+
 101 - Bed
 
 200 - Oak wood
@@ -26,6 +26,9 @@ ID for map generation:
 --------------------------------
 ID for Interactable generation:
 5 - Chest
+
+99 - Door (to right)
+98 - Door (to Left)
 102 - Computer
 103 - Wardrobe
 201 - Kiosk

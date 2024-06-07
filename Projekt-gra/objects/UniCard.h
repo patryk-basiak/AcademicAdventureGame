@@ -30,7 +30,6 @@ public:
     void draw(sf::RenderWindow& window) override;
     sf::Vector2<float> getSize() override;
     bool isStackable() const override;
-    std::unique_ptr<Collectable> clone() const override;
     int getId() override;
 
 

@@ -11,7 +11,7 @@ Interactable::Interactable(float x, float y) {
 
 }
 
-void Interactable::update(sf::RenderWindow& window, Player& player, Equipment& eq) {
+void Interactable::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time) {
 
 }
 
@@ -34,6 +34,22 @@ sf::Vector2<float> Interactable::getPosition() {
     return graphic.getPosition();
 }
 
-std::vector<float> Interactable::getSize() {
-    return size;
+void Interactable::collisionRight(Player &player, sf::RenderWindow &window) {
+    coll = true;
+}
+
+void Interactable::collisionLeft(Player &player, sf::RenderWindow &window) {
+    coll = true;
+}
+
+void Interactable::collisionBottom(Player &player, sf::RenderWindow &window) {
+    coll = true;
+}
+
+sf::Vector2<float> Interactable::getSize() {
+    return sf::Vector2<float>{graphic.getTexture()->getSize().x * graphic.getScale().x,graphic.getTexture()->getSize().y * graphic.getScale().y };
+}
+
+void Interactable::setColl(bool collide) {
+    coll = collide;
 }

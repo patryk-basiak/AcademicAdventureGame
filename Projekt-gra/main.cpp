@@ -42,6 +42,7 @@ auto main() -> int {
     debugMode = true;
 
     sf::Clock clock;
+    sf::Clock timer;
     while (window.isOpen()) {
         while (menu) {
             gameClass.loadGraphics();
@@ -56,10 +57,12 @@ auto main() -> int {
                 window.clear(sf::Color::Black);
                 window.display();
             }
+        }
             while (game) {
                 sf::Time deltaTime = clock.restart();
+                sf::Time time = timer.getElapsedTime();
                 window.clear(sf::Color::White);
-                gameClass.update(window, player, eq, deltaTime, hud, fps1);
+                gameClass.update(window, player, eq, time, hud, fps1, deltaTime);
                 gameClass.gameRules(window,player,eq,deltaTime,hud);
                 player.update(deltaTime);
                 player.draw(window);
@@ -68,7 +71,6 @@ auto main() -> int {
                 window.display();
 
             }
-        }
     }
 
 }

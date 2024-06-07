@@ -4,7 +4,7 @@
 
 #include "Game.h"
 
-void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud, FPS& fps) {
+void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time time, HUD& hud, FPS& fps, sf::Time deltaTime) {
     if(!started){
         clockLvl0.restart();
         started = true;
@@ -64,8 +64,10 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
 
         if (player.getPosition().x >=  (float)(window.getSize().x - 30)) {
             if (currentLvl != lastLvl and nextRoomAvailable) {
-                this->nextLvl(player);
-                player.setPosition(0.f, 500);
+                if(time.asSeconds() - lastLvlChanged > 5) {
+                    this->nextLvl(player);
+                    lastLvlChanged = time.asSeconds();
+                }
             }
             else{
                 player.setPosition((float)window.getSize().x-35, player.getPosition().y);
@@ -76,7 +78,7 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
         }
 
         currentMap.draw(window);
-        currentMap.update(window,deltaTime,player,eq);
+        currentMap.update(window,deltaTime,player,eq, time);
         hud.update(player, fps, currentLvl, nextRoomAvailable, currentMap.getNumberOfEnemies());
         hud.draw(window,eq,player);
 
@@ -106,6 +108,9 @@ void Game::loadGraphics() {
         currentLvl = 0;
         currentMap = std::move(maps[currentLvl]);
         lastLvl = maps.size();
+        for(auto &e : maps) {
+            spawnPoints.insert({{e.getMainType(), e.getSubType()}, e.getSpawnPoint()});
+        }
         loaded = true;
     }
 }
@@ -192,7 +197,7 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
 
 void Game::nextLvl(Player & player)
 {
-    player.setStartPosition();
+    player.setPosition(15,spawnPoints.at(std::make_pair(currentMap.getMainType(), currentMap.getSubType())));
     this->nextRoomAvailable = false;
     stage_0 = false;
     stage_1 = false;

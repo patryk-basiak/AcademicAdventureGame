@@ -20,10 +20,6 @@ bool Health::isStackable() const {
     return Stackable;
 }
 
-std::unique_ptr<Collectable> Health::clone() const {
-    return Collectable::clone();
-}
-
 int Health::getId() {
     return id;
 }

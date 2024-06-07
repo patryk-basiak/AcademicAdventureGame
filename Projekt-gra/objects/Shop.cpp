@@ -16,11 +16,11 @@ sf::Vector2<float> Shop::getPosition() {
     return shop.getPosition();
 }
 
-std::vector<float> Shop::getSize() {
-    return std::vector<float>{62.6, 57.4};
+sf::Vector2<float> Shop::getSize() {
+    return sf::Vector2<float>{62.6, 57.4};
 }
 
-void Shop::update(sf::RenderWindow &window, Player &player, Equipment &eq) {
+void Shop::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Time) {
 //    Interactable::update(window, player, eq);
 }
 

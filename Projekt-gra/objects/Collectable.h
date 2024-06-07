@@ -22,7 +22,6 @@ public:
     virtual std::vector<sf::RectangleShape> getAmmoList();
     virtual void usage(Player& player);
     virtual void update(sf::RenderWindow& window, Player& player);
-    virtual std::unique_ptr<Collectable> clone() const;
     virtual bool isStackable() const;
     virtual int getId();
     int id = 0;

@@ -1,28 +1,33 @@
 #pragma once
 
-#include "Wall.h"
+
+#include "../ResourceManager.h"
+#include "Interactable.h"
 
 class Door
-            : public Wall{
+            : public Interactable{
 
     public:
-        Door(float x, float y) : Wall(x,y, 64,64, sf::Color{ 0, 191, 255, 255 }){
-            isOpen = true;
+        Door(float x, float y) : Interactable(x,y){
+            isOpen = false;
+            door.setTexture(ResourceManager::getTexture("../graphics/doorClosed.png"));
+            door.setPosition(x,y);
+            door.setScale(0.1,(float)128/door.getTexture()->getSize().y);
         }
-
-        Door(const Door&) = delete;
-        Door& operator=(const Door&) = delete;
-        Door(Door&&) noexcept = default;
-        Door& operator=(Door&&) noexcept = default;
+        sf::Vector2<float> getSize() override;
+        sf::Vector2<float> getPosition() override;
         ~Door() override;
-
-        void collision(Player& player, sf::RenderWindow &window) override;
+        void collisionRight(Player& player, sf::RenderWindow &window) override;
+        void collisionLeft(Player& player, sf::RenderWindow &window) override;
+        void draw(sf::RenderWindow &window) override;
+        void update(sf::RenderWindow& window, Player& player, Equipment& eq,  sf::Time) override;
         bool status() const;
         void setStatus(bool status);
 
     private:
         int id = 99;
-        sf::RectangleShape jumpPad;
+        float lastUsed;
+        sf::Sprite door;
         bool isOpen;
 
 

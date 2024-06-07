@@ -24,7 +24,7 @@ public:
     void checkCollisionInteract(Player& player, sf::RenderWindow &window);
     void checkCollisionEntity(std::unique_ptr<Entity>& entity);
     void draw(sf::RenderWindow& window);
-    void update(sf::RenderWindow& window, sf::Time time, Player& player, Equipment& eq);
+    void update(sf::RenderWindow& window, sf::Time deltatime, Player& player, Equipment& eq, sf::Time Time);
     void getMapSeed();
 
     Map(const Map&) = delete;
@@ -32,9 +32,10 @@ public:
 
     Map(Map&&) = default;
     Map& operator=(Map&&) = default;
-
-
     int getNumberOfEnemies();
+    int getSubType();
+    MapTypes::types getMainType();
+    float getSpawnPoint();
 
 private:
     sf::Sprite backgroundTexture;
@@ -49,6 +50,7 @@ private:
     int id;
     int enemies_number;
     int npc_number;
+    float spawnPoint;
 
 };
 

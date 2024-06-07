@@ -25,11 +25,6 @@ bool TimeIncreaser::isStackable() const
     return Stackable;
 }
 
-std::unique_ptr<Collectable> TimeIncreaser::clone() const
-{
-    return Collectable::clone();
-}
-
 int TimeIncreaser::getId()
 {
     return id;

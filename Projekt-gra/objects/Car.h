@@ -10,8 +10,8 @@ class Car
 public:
     Car(float x, float y) : Wall(x,y, 64,64, sf::Color{ 255, 255, 0, 255 }){
         isMoving = false;
-        car.setPosition(x,y);
         car.setTexture(ResourceManager::getTexture("../graphics/truck.png"));
+        car.setPosition(x,y);
         float sizeX = (float)car.getTexture()->getSize().x;
         car.setScale(200/sizeX, 200/sizeX);
     }

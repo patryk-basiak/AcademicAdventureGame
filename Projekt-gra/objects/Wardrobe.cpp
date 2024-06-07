@@ -20,11 +20,11 @@ sf::Vector2<float> Wardrobe::getPosition() {
     return wardrobeTexture.getPosition();
 }
 
-std::vector<float> Wardrobe::getSize() {
-    return this->size;
+sf::Vector2<float> Wardrobe::getSize() {
+    return sf::Vector2f {size[0], size[1]};
 }
 
-void Wardrobe::update(sf::RenderWindow &window, Player &player, Equipment& eq) {
+void Wardrobe::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::Time time) {
     if(stage_1){
         active = true;
     }

@@ -5,13 +5,22 @@
 #include "Computer.h"
 #include "fmt/core.h"
 #include "../Settings.h"
-
+#include <iostream>
+#include <chrono>
+#include <thread>
 
 void Computer::collision(Player &player, sf::RenderWindow& window) {
-    if(!inUse) {
+    if (!inUse) {
         window.draw(text);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+    coll = true;
+}
+
+
+void Computer::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time time) {
+    if(coll){
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+            if(time.asSeconds() - lastUsed > 2) {
                 if (inUse) {
                     movable = true;
                     inUse = false;
@@ -20,11 +29,10 @@ void Computer::collision(Player &player, sf::RenderWindow& window) {
                     inUse = true;
                 }
             }
+            lastUsed = time.asSeconds();
         }
+    }
 
-
-
-void Computer::update(sf::RenderWindow& window, Player& player, Equipment& eq) {
     if(inUse){
         player.hide();
     }
@@ -34,6 +42,7 @@ void Computer::update(sf::RenderWindow& window, Player& player, Equipment& eq) {
     for(auto &e: icons){
         e->update(window);
     }
+    coll = false;
 
 }
 
@@ -65,6 +74,27 @@ sf::Vector2<float> Computer::getPosition() {
     return this->computer.getPosition();
 }
 
-std::vector<float> Computer::getSize() {
-    return size;
+sf::Vector2<float> Computer::getSize() {
+    return sf::Vector2<float>{size[0], size[1] };
+}
+
+void Computer::collisionRight(Player &player, sf::RenderWindow &window) {
+    if (!inUse) {
+        window.draw(text);
+    }
+    coll = true;
+}
+
+void Computer::collisionLeft(Player &player, sf::RenderWindow &window) {
+    if (!inUse) {
+        window.draw(text);
+    }
+    coll = true;
+}
+
+void Computer::collisionBottom(Player &player, sf::RenderWindow &window) {
+    if (!inUse) {
+        window.draw(text);
+    }
+    coll = true;
 }

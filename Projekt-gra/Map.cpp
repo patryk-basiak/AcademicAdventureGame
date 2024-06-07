@@ -59,7 +59,7 @@ Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subty
     this->entity_vec = transformEntities(map_vec[2]);
     this->interactable_vec = transformInteractable(map_vec[3]);
     this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/CountrySide.png"));
-
+    this->spawnPoint = 700;
 }
 
 std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const {
@@ -108,8 +108,8 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                             {0, 5, 0, 0, 0, 102, 0, 0, 0, 0, 101, 0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {0, 5, 0, 7, 7, 7,   7, 7, 7, 7, 7,   7, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 98, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {3, 6, 2, 6, 6, 6,   6, 6, 6, 6, 6,   6, 6,  3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
                                             {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
                                             {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
@@ -143,8 +143,8 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 98, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
                                                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
                                                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
@@ -161,8 +161,8 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                                                  {0, 0, 0, 0,   102, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                  {0, 0, 0, 1,   1,   1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                  {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                 {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                 {0, 0, 0, 103, 0,   0, 0, 0, 0, 0, 5, 0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0},
+                                                 {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 98, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 103, 0,   0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0},
                                                  {1, 1, 2, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
                                                  {1, 1, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
                                                  {1, 1, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
@@ -670,8 +670,6 @@ std::vector<std::unique_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
             }if(i==9)
             {
                 lvl0_trans.emplace_back(std::make_unique<Stone>(x,y));
-            } if(i == 99){
-                lvl0_trans.emplace_back(std::make_unique<Door>(x,y));
             }
             if(i == 101){
                 lvl0_trans.emplace_back(std::make_unique<Bed>(x,y));
@@ -702,6 +700,11 @@ std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vecto
             if (i == 5) {
                 lvl0_trans.emplace_back(std::make_unique<Chest>(x,y));
             }
+            if(i == 99){
+                lvl0_trans.emplace_back(std::make_unique<Door>(x,y));
+            }if(i == 98){
+                lvl0_trans.emplace_back(std::make_unique<Door>(x+50,y));
+            }
             if(i == 102){
                 lvl0_trans.emplace_back(std::make_unique<Computer>(x,y));
             }
@@ -723,7 +726,7 @@ std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vecto
 }
 
 
-void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipment& eq){
+void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, Equipment& eq, sf::Time time){
     if(!eq.throwable.empty()){
         this->throwable = eq.throwable;
     }
@@ -744,7 +747,7 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
         }
     }
     for( auto it = entity_vec.begin(); it != entity_vec.end(); it++) {
-        (*it)->update(time, player);
+        (*it)->update(deltatime, player);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             (*it)->collision(player);
             if(!(*it)->isFriendly()) {
@@ -778,10 +781,12 @@ void Map::update(sf::RenderWindow& window, sf::Time time, Player& player, Equipm
             }
         }
     for (auto const &e: interactable_vec) {
-        e->update(window,player, eq);
+        e->update(window,player, eq, time);
     }
     for (auto const &e: throwable) {
         e->update(window,player);
+    }for (auto const &e: walls_vec) {
+        e->update();
     }
 }
 
@@ -800,106 +805,58 @@ void Map::draw(sf::RenderWindow& window) {
         e->draw(window);
     }
     for (auto const &e: throwable) {
-        e->draw(window);\
+        e->draw(window);
     }
 }
 
 
 void Map::checkCollision(Player& player, sf::RenderWindow &window) {
-    // Separating Axis Theorem
-    // source: https://code.tutsplus.com/collision-detection-using-the-separating-axis-theorem--gamedev-169t
+// sources: https://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects //TODO read more
 
+        float playerBottom = player.getPosition().y + player.getSize()[1];
+        float playerTop = player.getPosition().y;
+        float playerLeft = player.getPosition().x;
+        float playerRight = player.getPosition().x + player.getSize()[0];
 
-//    std::vector<float> PlayerLeftCorner = std::vector<float>{player.getPosition().x, player.getPosition().y};
-//    std::vector<double> PlayerCenter = std::vector<double>{player.getPosition().x + (player.getSize()[0]*0.5), player.getPosition().y + (player.getSize()[1]*0.5)};
-//    std::vector<float> PlayerRightCorner = std::vector<float>{player.getPosition().x + player.getSize()[0], player.getPosition().y};
-//    std::vector<float> PlayerLeftDownCorner = std::vector<float>{player.getPosition().x, player.getPosition().y + player.getSize()[1]};
-//    std::vector<float> PlayerRightDownCorner = std::vector<float>{player.getPosition().x + player.getSize()[0], player.getPosition().y + player.getSize()[1]};
-//
-//    for (const auto &wall: walls_vec){
-//
-//        std::vector<float> WallLeftCorner     = std::vector<float>{wall->getPosition().x,  wall->getPosition().y};
-//        std::vector<float> WallRightCorner    = std::vector<float>{wall->getPosition().x + wall->getSize().x,      wall->getPosition().y};
-//        std::vector<double> WallCenter    = std::vector<double>{wall->getPosition().x + (wall->getSize().x*0.5),      wall->getPosition().y + (wall->getSize().y*0.5)};
-//        std::vector<float> WallLeftDownCorner = std::vector<float>{wall->getPosition().x,  wall->getPosition().y + wall->getSize().y};
-//        std::vector<float> WallRightDownCorner= std::vector<float>{wall->getPosition().x + wall->getSize().x,      wall->getPosition().y + wall->getSize().y};
-//
-//
-//        std::vector<double> axis = std::vector<double>{
-//            1,-1
-//        };
-//
-//        std::vector<double> CenterVec = std::vector<double>{
-//            WallCenter[0] - PlayerCenter[0],
-//            WallCenter[1] - PlayerCenter[1]
-//        };
-//        std::vector<double> WallCenterToLeftUpVec = std::vector<double>{
-//            WallLeftCorner[0] - WallCenter[0],
-//            WallLeftCorner[1] - WallCenter[1]
-//        };
-//        std::vector<double> PlayerCenterToRightUpVec = std::vector<double>{
-//            PlayerRightCorner[0] - PlayerCenter[0],
-//            PlayerRightCorner[1] - PlayerCenter[1]
-//        };
-//
-//        float projC = dotProduct(CenterVec, axis);
-//        float projA = dotProduct(WallCenterToLeftUpVec, axis);
-//        float projB = dotProduct(PlayerCenterToRightUpVec, axis);
-//
-//        float gap = projC - projA + projB;
-//
-//        if(gap > 0){
-//            fmt::println("It s a big gap beetwen boxes");
-//        }
-//        else if(gap == 0){
-//            fmt::println("Boxes are touching each other");
-//        }
-//        else {
-//            fmt::println("Objects are pen each other");
-//        }
-    float playerBottom = player.getPosition().y + player.getSize()[1];
-    float playerTop = player.getPosition().y;
-    float playerLeft = player.getPosition().x;
-    float playerRight = player.getPosition().x + player.getSize()[0];
-    for (const auto &wall: walls_vec) {
+        for (const auto &wall : walls_vec) {
+            float wallTop = wall->getPosition().y;
+            float wallLeft = wall->getPosition().x;
+            float wallRight = wall->getPosition().x + wall->getSize().x;
+            float wallBottom = wall->getPosition().y + wall->getSize().y;
 
-        float wallTop = wall->getPosition().y;
-        float wallLeft = wall->getPosition().x;
-        float wallRight = wall->getPosition().x + wall->getSize().x;
-        float wallBottom = wall->getPosition().y + wall->getSize().y;
+            if (playerRight > wallLeft && playerLeft < wallRight && playerBottom > wallTop && playerTop < wallBottom) {
+                float overlapLeft = playerRight - wallLeft;
+                float overlapRight = wallRight - playerLeft;
+                float overlapTop = playerBottom - wallTop;
+                float overlapBottom = wallBottom - playerTop;
 
-        if (playerRight > wallLeft && playerLeft < wallRight && playerBottom > wallTop && playerTop < wallBottom) {
-            if (playerBottom > wallTop && playerTop < wallTop) {
-                wall->collision(player, window);
-//                player.setSurface(wallTop);
-                // Top
+                bool fromLeft(std::abs(overlapLeft) < std::abs(overlapRight));
+                bool fromTop(std::abs(overlapTop) < std::abs(overlapBottom));
 
+                float minOverlapX = fromLeft ? overlapLeft : overlapRight;
+                float minOverlapY = fromTop ? overlapTop : overlapBottom;
+
+                if (std::abs(minOverlapX) < std::abs(minOverlapY)) {
+                    if (fromLeft) {
+                        // Collision from the left
+                        wall->collisionLeft(player,window);
+                    } else {
+                        // Collision from the right
+                        wall->collisionRight(player,window);
+                    }
+                } else {
+                    if (fromTop) {
+                        // Collision from the top
+                        wall->collision(player, window);
+                    } else {
+                        // Collision from the bottom
+                        wall->collisionBottom(player,window);
+                    }
+                }
             }
-            if (playerTop < wallBottom && playerBottom > wallBottom){
-                // Bottom
-                player.setVerticalVelocity(0);
-                player.setPosition(player.getPosition().x, wallBottom);
-                fmt::print("Collision with the bottom ({}, {})\n", wall->getPosition().x,
-                           wall->getPosition().y);
-            }
-            if (playerRight > wallLeft && playerLeft < wallLeft && playerBottom < wallTop && playerTop > wallTop ) {
-                // Left
-                player.setVelocity(0);
-                player.setPosition(wallLeft - player.getSize()[0], player.getPosition().y);
-                fmt::print("Collision with the left ({}, {}) ({},{})\n", wallRight,
-                           wallLeft, playerRight, playerLeft);
-            }
-            if (playerLeft < wallRight && playerRight > wallRight && playerBottom < wallTop && playerTop > wallTop ) {
-                // Right
-                player.setVelocity(0);
-                player.setPosition(wallRight + 10, player.getPosition().y);
-                fmt::print("Collision with the right ({}, {})\n", wall->getPosition().x,
-                           wall->getPosition().y);
-            }
-
         }
     }
-}
+
 
 
 void Map::checkCollisionEntity(std::unique_ptr<Entity>& entity){
@@ -957,39 +914,45 @@ void Map::checkCollisionInteract(Player &player, sf::RenderWindow &window) {
     float playerTop = player.getPosition().y;
     float playerLeft = player.getPosition().x;
     float playerRight = player.getPosition().x + player.getSize()[0];
-    for (const auto &interact: interactable_vec) {
 
-        float interactTop = interact->getPosition().y;
-        float interactLeft = interact->getPosition().x;
-        float interactRight = interact->getPosition().x + interact->getSize()[0];
-        float interactBottom = interact->getPosition().y + interact->getSize()[1];
+    for (const auto &wall : interactable_vec) {
+        float wallTop = wall->getPosition().y;
+        float wallLeft = wall->getPosition().x;
+        float wallRight = wall->getPosition().x + wall->getSize().x;
+        float wallBottom = wall->getPosition().y + wall->getSize().y;
 
-        if (playerRight > interactLeft && playerLeft < interactRight && playerBottom > interactTop && playerTop < interactBottom) {
-            if (playerBottom > interactTop && playerTop < interactTop) {
-                interact->collision(player, window);
-//                player.setSurface(interactTop);
-                // Top
+        if (playerRight > wallLeft && playerLeft < wallRight && playerBottom > wallTop && playerTop < wallBottom) {
+            float overlapLeft = playerRight - wallLeft;
+            float overlapRight = wallRight - playerLeft;
+            float overlapTop = playerBottom - wallTop;
+            float overlapBottom = wallBottom - playerTop;
 
-            }
-            if (playerTop < interactBottom && playerBottom > interactBottom){
-                // Bottom
-                interact->collision(player, window);
-                fmt::print("Collision with the bottom ({}, {})\n", interact->getPosition().x,
-                           interact->getPosition().y);
-            }
-            if (playerRight > interactLeft && playerLeft < interactLeft && playerBottom < interactTop && playerTop > interactTop ) {
-                interact->collision(player, window);
-                // Left
-                fmt::print("Collision with the left ({}, {}) ({},{})\n", interactRight,
-                           interactLeft, playerRight, playerLeft);
-            }
-            if (playerLeft < interactRight && playerRight > interactRight && playerBottom < interactTop && playerTop > interactTop ) {
-                interact->collision(player, window);
-                // Right
-                fmt::print("Collision with the right ({}, {})\n", interact->getPosition().x,
-                           interact->getPosition().y);
-            }
+            bool fromLeft(std::abs(overlapLeft) < std::abs(overlapRight));
+            bool fromTop(std::abs(overlapTop) < std::abs(overlapBottom));
 
+            float minOverlapX = fromLeft ? overlapLeft : overlapRight;
+            float minOverlapY = fromTop ? overlapTop : overlapBottom;
+
+            if (std::abs(minOverlapX) < std::abs(minOverlapY)) {
+                if (fromLeft) {
+                    // Collision from the left
+                    wall->collisionLeft(player,window);
+                } else {
+                    // Collision from the right
+                    wall->collisionRight(player,window);
+                }
+            } else {
+                if (fromTop) {
+                    // Collision from the top
+                    wall->collision(player, window);
+                } else {
+                    // Collision from the bottom
+                    wall->collisionBottom(player,window);
+                }
+            }
+        }
+        else{
+            wall->setColl(false);
         }
     }
 
@@ -998,6 +961,18 @@ void Map::checkCollisionInteract(Player &player, sf::RenderWindow &window) {
 int Map::getNumberOfEnemies()
 {
     return entity_vec.size();
+}
+
+int Map::getSubType() {
+    return subType;
+}
+
+MapTypes::types Map::getMainType() {
+    return mainType;
+}
+
+float Map::getSpawnPoint() {
+    return spawnPoint;
 }
 
 

@@ -22,7 +22,7 @@ void Pistol::usage(Player& player) {
         if (ammunition > 0) {
             if (ready) {
                 int n = player.getFacingRight() ? 1: -1;
-                Collectable::throwable.push_back(std::make_shared<Bullet>(pistol.getPosition().x,pistol.getPosition().y,n));
+                Collectable::throwable.push_back(std::make_unique<Bullet>(pistol.getPosition().x,pistol.getPosition().y,n));
                 ammunition--;
                 ready = false;
             } else {
@@ -67,10 +67,6 @@ void Pistol::draw(sf::RenderWindow &window) {
 
 bool Pistol::isStackable() const {
     return this->Stackable;
-}
-
-std::unique_ptr<Collectable> Pistol::clone() const {
-    return std::make_unique<Pistol>(*this);
 }
 
 int Pistol::getId() {

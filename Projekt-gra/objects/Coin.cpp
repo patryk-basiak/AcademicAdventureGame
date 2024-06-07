@@ -22,9 +22,6 @@ bool Coin::isStackable() const {
     return this->Stackable;
 }
 
-std::unique_ptr<Collectable> Coin::clone() const {
-    return std::make_unique<Coin>(*this);
-}
 
 int Coin::getId() {
     return this->value;

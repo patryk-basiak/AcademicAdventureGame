@@ -25,9 +25,7 @@ bool UniCard::isStackable() const {
     return Stackable;
 }
 
-std::unique_ptr<Collectable> UniCard::clone() const {
-    return Collectable::clone();
-}
+
 
 int UniCard::getId() {
     return index;

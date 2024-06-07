@@ -42,4 +42,20 @@ Wall::Wall(float x, float y) {
 
 }
 
+void Wall::collisionRight(Player &player, sf::RenderWindow &window) {
+    player.setVelocity(0);
+    player.setPosition(wall.getPosition().x + wall.getSize().x, player.getPosition().y);
+}
+
+void Wall::collisionLeft(Player &player, sf::RenderWindow &window) {
+    player.setVelocity(0);
+    player.setPosition(wall.getPosition().x - player.getSize()[0], player.getPosition().y);
+
+}
+
+void Wall::collisionBottom(Player &player, sf::RenderWindow &window) {
+    player.setVerticalVelocity(0);
+    player.setPosition(player.getPosition().x, wall.getPosition().y + wall.getSize().y);
+}
+
 Wall::~Wall() = default;

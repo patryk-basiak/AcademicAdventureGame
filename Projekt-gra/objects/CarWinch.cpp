@@ -13,12 +13,12 @@ sf::Vector2<float> CarWinch::getPosition() {
     return winch.getPosition();
 }
 
-std::vector<float> CarWinch::getSize() {
-    return std::vector<float>{0,0}; // TODO
+sf::Vector2<float> CarWinch::getSize() {
+    return sf::Vector2<float>{0,0}; // TODO
 }
 
-void CarWinch::update(sf::RenderWindow &window, Player &player, Equipment &eq) {
-    Interactable::update(window, player, eq);
+void CarWinch::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Time time) {
+    Interactable::update(window, player, eq, time);
 }
 
 void CarWinch::collision(Player &player, sf::RenderWindow &window) {

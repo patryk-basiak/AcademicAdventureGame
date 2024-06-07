@@ -17,6 +17,9 @@ public:
     virtual void update();
     virtual void draw(sf::RenderWindow &window) const;
     virtual void collision(Player& player, sf::RenderWindow &window);
+    virtual void collisionRight(Player& player, sf::RenderWindow &window);
+    virtual void collisionLeft(Player& player, sf::RenderWindow &window);
+    virtual void collisionBottom(Player& player, sf::RenderWindow &window);
     sf::FloatRect getGlobalBounds() const;
     virtual bool isCollision() const;
 

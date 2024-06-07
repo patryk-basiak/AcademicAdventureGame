@@ -5,9 +5,9 @@
 #include "Kiosk.h"
 #include "fmt/core.h"
 
-std::vector<float> Kiosk::getSize()
+sf::Vector2<float>  Kiosk::getSize()
 {
-    return size;
+    return sf::Vector2<float> {size[0], size[1]};
 }
 
 sf::Vector2<float> Kiosk::getPosition()
@@ -36,7 +36,7 @@ void Kiosk::collision(Player &player, sf::RenderWindow &window)
     }
 }
 
-void Kiosk::update(sf::RenderWindow &window, Player &player, Equipment &eq)
+void Kiosk::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Time)
 {
     sf::Vector2 mouse = sf::Mouse::getPosition(window);
     if(inUse){

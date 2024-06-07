@@ -43,52 +43,49 @@ void Player::jump(){
 void Player::update(sf::Time time) {
     float deltaTime = time.asSeconds();
 
-    velocity = 0.0f;
-    float currentTime = clock.getElapsedTime().asSeconds();
+    float horizontalVelocity = 0.0f;
+    float verticalVelocityIncrement = gravity * deltaTime;
 
-    if (player.getPosition().y == surface) {
-        isGround = true;
-    }
-    if(health <= 0){
+    if (health <= 0) {
         game = false;
+        return;
     }
+
 
     if (movable) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             isFacingRight = true;
-            velocity = speed * deltaTime;
+            horizontalVelocity = speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
             isFacingRight = false;
-            velocity = -speed * deltaTime;
+            horizontalVelocity = -speed;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-//                    sf::Vector2 pos = player.getPosition();
-//                    player.move(3,0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-//                    sf::Vector2 pos = player.getPosition();
-//                    player.move(3,0);
-        }
-        collisionRect.left += velocity;
-        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) or sf::Keyboard::isKeyPressed(sf::Keyboard::Up))) {
-            if(currentTime - lastJumpTime >= JumpCooldown ){
-                verticalVelocity = jumpVelocity;
-                isGround = false;
-                lastJumpTime = currentTime;
-            }
-
-        }
-        if(!isGround){
-            verticalVelocity += gravity * deltaTime;
-        }
-        if ((collisionRect.top + collisionRect.height) > surface) {
-            collisionRect.top = surface - collisionRect.height;
-
-        }
-        collisionRect.top += verticalVelocity * deltaTime;
-        player.setPosition(collisionRect.left, collisionRect.top);
     }
+
+    collisionRect.left += horizontalVelocity * deltaTime;
+    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))) {
+        verticalVelocity = jumpVelocity;
+        isGround = false;
+        lastJumpTime = clock.getElapsedTime().asSeconds();
+    }
+
+    if (!isGround) {
+        verticalVelocity += verticalVelocityIncrement;
+    }
+
+
+    collisionRect.top += verticalVelocity * deltaTime;
+
+    if (verticalVelocity == 0) {
+        isGround = true;
+    }else {
+        isGround = false;
+    }
+
+    // Update the player's position based on the collision rect
+    player.setPosition(collisionRect.left, collisionRect.top);
+
 }
 sf::FloatRect Player::getGlobalBounds(){
     return player.getGlobalBounds();
@@ -102,6 +99,7 @@ sf::Vector2<float> Player::getPosition() {
 void Player::setPosition(float x, float y) {
     collisionRect.left = x;
     collisionRect.top = y;
+    player.setPosition(x,y);
 
 }
 

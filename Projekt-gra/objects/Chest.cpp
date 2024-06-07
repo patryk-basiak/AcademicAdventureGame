@@ -20,11 +20,11 @@ sf::Vector2<float> Chest::getPosition() {
     return chestTexture.getPosition();
 }
 
-std::vector<float> Chest::getSize() {
-    return this->size;
+sf::Vector2<float> Chest::getSize() {
+    return sf::Vector2<float>{size[0], size[1]};
 }
 
-void Chest::update(sf::RenderWindow &window, Player &player, Equipment& eq) {
+void Chest::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::Time time) {
     if(stage_1){
         active = true;
     }

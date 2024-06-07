@@ -24,9 +24,6 @@ int Bullet::getId() {
     return id;
 }
 
-std::unique_ptr<Collectable> Bullet::clone() const {
-    return std::unique_ptr<Collectable>();
-}
 
 void Bullet::collision(Player &player) {
     ;

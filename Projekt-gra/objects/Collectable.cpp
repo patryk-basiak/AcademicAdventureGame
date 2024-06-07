@@ -64,9 +64,6 @@ bool Collectable::operator==(const Collectable &other) const {
     return this->id == other.id;
 }
 
-std::unique_ptr<Collectable> Collectable::clone() const {
-    return std::make_unique<Collectable>(*this);
-}
 
 int Collectable::getId() {
     return this->id;

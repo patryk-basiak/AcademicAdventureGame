@@ -111,6 +111,8 @@ add_executable(game main.cpp
         objects/stone.h
         objects/CarEnemy.cpp
         objects/CarEnemy.h
+        ThrowableContainer.cpp
+        ThrowableContainer.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)
