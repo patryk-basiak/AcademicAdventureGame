@@ -17,8 +17,7 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
             game = false;
         }
         if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::E) {
-                fmt::println("working");
+            if (event.key.code == sf::Keyboard::E and !keyboardInput) {
                 eq.show();
             }
             if (event.key.code == sf::Keyboard::Escape) {
@@ -76,11 +75,12 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
         if (player.getPosition().x < -40) {
             player.setPosition((float)(window.getSize().x - 30), player.getSurface());
         }
-
-        currentMap.draw(window);
-        currentMap.update(window,deltaTime,player,eq, time);
-        hud.update(player, fps, currentLvl, nextRoomAvailable, currentMap.getNumberOfEnemies());
-        hud.draw(window,eq,player);
+        if(game) {
+            currentMap.draw(window);
+            currentMap.update(window, deltaTime, player, eq, time);
+            hud.update(player, fps, currentLvl, nextRoomAvailable, currentMap.getNumberOfEnemies());
+            hud.draw(window, eq, player);
+        }
 
 
 }

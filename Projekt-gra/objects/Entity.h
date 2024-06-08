@@ -20,10 +20,13 @@ public:
     virtual void setPosition(float d, float d1);
     virtual bool isFriendly();
     virtual void setVerticalVelocity(int i);
+    virtual void setVelocity(int i);
 
 private:
 
     int health;
+    float velocity = 0;
+    float VerticalVelocity = 0;
     sf::RectangleShape entity;
     sf::Vector2<float> startPosition;
     bool toRight = true;

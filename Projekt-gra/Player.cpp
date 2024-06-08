@@ -41,6 +41,9 @@ void Player::jump(){
 }
 
 void Player::update(sf::Time time) {
+    if(!game){
+        player.setPosition(1500,200);
+    }
     float deltaTime = time.asSeconds();
 
     float horizontalVelocity = 0.0f;
@@ -83,7 +86,6 @@ void Player::update(sf::Time time) {
         isGround = false;
     }
 
-    // Update the player's position based on the collision rect
     player.setPosition(collisionRect.left, collisionRect.top);
 
 }

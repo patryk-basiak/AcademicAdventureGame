@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "../Player.h"
+#include "Entity.h"
+#include <memory>
 class Wall {
 public:
     Wall(float x, float y, float sX, float sY, sf::Color color);
@@ -20,6 +22,10 @@ public:
     virtual void collisionRight(Player& player, sf::RenderWindow &window);
     virtual void collisionLeft(Player& player, sf::RenderWindow &window);
     virtual void collisionBottom(Player& player, sf::RenderWindow &window);
+    virtual void collision(std::unique_ptr<Entity>&, sf::RenderWindow &window);
+    virtual void collisionRight(std::unique_ptr<Entity>&, sf::RenderWindow &window);
+    virtual void collisionLeft(std::unique_ptr<Entity>&, sf::RenderWindow &window);
+    virtual void collisionBottom(std::unique_ptr<Entity>&, sf::RenderWindow &window);
     sf::FloatRect getGlobalBounds() const;
     virtual bool isCollision() const;
 

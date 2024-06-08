@@ -22,7 +22,7 @@ public:
 
     void checkCollision(Player& player, sf::RenderWindow &window);
     void checkCollisionInteract(Player& player, sf::RenderWindow &window);
-    void checkCollisionEntity(std::unique_ptr<Entity>& entity);
+    void checkCollisionEntity(std::unique_ptr<Entity>& entity, sf::RenderWindow &window);
     void draw(sf::RenderWindow& window);
     void update(sf::RenderWindow& window, sf::Time deltatime, Player& player, Equipment& eq, sf::Time Time);
     void getMapSeed();

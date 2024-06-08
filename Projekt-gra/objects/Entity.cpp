@@ -24,14 +24,16 @@ void Entity::draw(sf::RenderWindow &window) {
 }
 
 void Entity::update(sf::Time time, Player& player) {
+    velocity = 100;
+    VerticalVelocity = 0;
     if (toRight) {
-        entity.move(sf::Vector2f(100*time.asSeconds(), 0));
+        entity.move(sf::Vector2f(velocity*time.asSeconds(), VerticalVelocity));
         if (std::abs(entity.getPosition().x - this->startPosition.x) > 50) {
             this->toRight = false;
         }
     }
     if (!toRight) {
-        entity.move(sf::Vector2f(-100*time.asSeconds(), 0));
+        entity.move(sf::Vector2f(-velocity*time.asSeconds(), VerticalVelocity));
         if (std::abs(entity.getPosition().x - this->startPosition.x) > 50) {
             this->toRight = true;
 
@@ -60,10 +62,14 @@ Entity::~Entity() {
 }
 
 void Entity::setVerticalVelocity(int i) {
-
+    VerticalVelocity=0;
 }
 
 bool Entity::isFriendly() {
     return friendly;
+}
+
+void Entity::setVelocity(int i) {
+    velocity = i;
 }
 

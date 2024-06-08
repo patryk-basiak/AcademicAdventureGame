@@ -33,6 +33,7 @@ ID for Interactable generation:
 103 - Wardrobe
 201 - Kiosk
 300 - Shop
+301 - Shop (objective)
 301 - CarWinch
 
 
@@ -46,6 +47,7 @@ ID for items:
 5 - ID Uni Card
 6 - Time Increaser
 7 - Health
+11 - CarWinchItem
 ---------------------------------
 ID for entities:
 0 - null (not an object)

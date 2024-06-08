@@ -57,5 +57,25 @@ void Wall::collisionBottom(Player &player, sf::RenderWindow &window) {
     player.setVerticalVelocity(0);
     player.setPosition(player.getPosition().x, wall.getPosition().y + wall.getSize().y);
 }
+void Wall::collisionRight(std::unique_ptr<Entity>& entity, sf::RenderWindow &window) {
+    entity->setVelocity(0);
+    entity->setPosition(wall.getPosition().x + wall.getSize().x, entity->getPosition().y);
+}
+
+void Wall::collisionLeft(std::unique_ptr<Entity>& entity, sf::RenderWindow &window) {
+    entity->setVelocity(0);
+    entity->setPosition(wall.getPosition().x - entity->getSize().x, entity->getPosition().y);
+
+}
+
+void Wall::collisionBottom(std::unique_ptr<Entity>& entity, sf::RenderWindow &window) {
+    entity->setVerticalVelocity(0);
+    entity->setPosition(entity->getPosition().x, wall.getPosition().y + wall.getSize().y);
+}
+
+void Wall::collision(std::unique_ptr<Entity> &entity, sf::RenderWindow &window) {
+    entity->setPosition(entity->getPosition().x, wall.getPosition().y - entity->getSize().y);
+    entity->setVerticalVelocity(0);
+}
 
 Wall::~Wall() = default;

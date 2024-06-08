@@ -34,6 +34,7 @@
 #include "objects/street.h"
 #include "objects/stone.h"
 #include "objects/CarEnemy.h"
+#include "objects/CarWinchItem.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -533,11 +534,22 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                         {
                             temp.push_back(7);
                             interact.push_back(0);
-                        }else if(i % 4 == 3 and i < y - 5 and j < x - 4 and j== chP)
+                        }else if(i % 4 == 2 and i < y - 5 and j < x - 4)
                         {
-                            temp.push_back(0);
-                            interact.push_back(300);
-                            chP = chestPos(gen);
+                            if(j == x - 7 and i < y -10)
+                            {
+                                temp.push_back(0);
+                                interact.push_back(301);
+                            }
+                            else if(j % 4 == 2)
+                            {
+                                temp.push_back(0);
+                                interact.push_back(300);
+                            }
+                            else{
+                                temp.push_back(0);
+                                interact.push_back(0);
+                            }
                         }
                         else if(i == y - 3 and j % 4 == 1)
                         {
@@ -624,6 +636,8 @@ std::vector<std::unique_ptr<Collectable>> Map::transformObjects(std::vector<std:
             }
             if(i == 5){
                 trans.push_back(std::make_unique<UniCard>(x,y));
+            }if(i == 11){
+                trans.push_back(std::make_unique<CarWinchItem>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -714,6 +728,8 @@ std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vecto
                 lvl0_trans.emplace_back(std::make_unique<Kiosk>(x,y));
             }if(i == 300){
                 lvl0_trans.emplace_back(std::make_unique<Shop>(x,y));
+            }if(i == 301){
+                lvl0_trans.emplace_back(std::make_unique<Shop>(x,y, 0));
             }
             x += 64;
             if (x >= 1600) {
@@ -732,10 +748,6 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
     }
     this->checkCollision(player, window);
     this->checkCollisionInteract(player, window);
-    for(auto &e: entity_vec){
-        checkCollisionEntity(e);
-    }
-
 
     for (auto it = items_vec.begin(); it != items_vec.end(); it++) {
         (*it)->update(window, player);
@@ -747,6 +759,7 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
         }
     }
     for( auto it = entity_vec.begin(); it != entity_vec.end(); it++) {
+        checkCollisionEntity((*it), window);
         (*it)->update(deltatime, player);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             (*it)->collision(player);
@@ -755,23 +768,22 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
                 it--;
             }
         }
-        if(!(*it)->isFriendly()) {
-            for (auto its = throwable.begin(); its != throwable.end(); its++) {
-                if ((*its)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
-//                throwable.erase(its);
-//                its--;
-                    entity_vec.erase(it);
-                    it--;
-                }
-            }
-        }
         if( (*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610){
             entity_vec.erase(it);
             it--;
-        }// TODO check it
+        }
+        if(!(*it)->isFriendly()) {
+            for (auto bullets = throwable.begin(); bullets != throwable.end(); bullets++) {
+                if ((*bullets)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+                    entity_vec.erase(it);
+                    it--;
+                    throwable.erase(bullets);
+                    bullets--;
+                }
+            }
+        }
 
     }
-
         for( auto its = throwable.begin(); its != throwable.end(); its++) {
             if ((*its)->getPosition().x > window.getSize().x) {
                 (*its)->collision(player);
@@ -859,14 +871,13 @@ void Map::checkCollision(Player& player, sf::RenderWindow &window) {
 
 
 
-void Map::checkCollisionEntity(std::unique_ptr<Entity>& entity){
-    float entityBottom = entity->getPosition().y + entity->getSize().y;
+void Map::checkCollisionEntity(std::unique_ptr<Entity>& entity, sf::RenderWindow &window){
+    float entityBottom = entity->getPosition().y + entity->getSize().x;
     float entityTop = entity->getPosition().y;
     float entityLeft = entity->getPosition().x;
     float entityRight = entity->getPosition().x + entity->getSize().x;
 
-    for (const auto &wall: walls_vec) {
-
+    for (const auto &wall : walls_vec) {
         float wallTop = wall->getPosition().y;
         float wallLeft = wall->getPosition().x;
         float wallRight = wall->getPosition().x + wall->getSize().x;
@@ -895,7 +906,6 @@ void Map::checkCollisionEntity(std::unique_ptr<Entity>& entity){
                 fmt::print("Collision with the right ({}, {})\n", wall->getPosition().x,
                            wall->getPosition().y);
             }
-
         }
     }
 }

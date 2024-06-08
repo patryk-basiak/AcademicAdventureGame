@@ -9,7 +9,7 @@
 
 void JumpPad::collision(Player& player, sf::RenderWindow &window){
 //    player.setPosition(player.getPosition().x, jumpPad.getPosition().y - player.getSize()[1]);
-    player.setVerticalVelocity(-400);
+    player.setVerticalVelocity(-500);
 }
 
 sf::Vector2<float> JumpPad::getPosition() {

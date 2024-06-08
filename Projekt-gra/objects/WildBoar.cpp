@@ -25,10 +25,8 @@ sf::Vector2<float> WildBoar::getSize() {
 
 WildBoar::~WildBoar() = default;
 void WildBoar::update(sf::Time time, Player &player) {
-    fmt::println("{}", followingPlayer);
-
     float deltaTime = time.asSeconds();
-
+    velocity = 50;
     horizontalVelocity += gravity * deltaTime;
     wild.move(velocity * deltaTime, horizontalVelocity);
     if(wild.getPosition().x < 0){
@@ -61,4 +59,8 @@ void WildBoar::setPosition(float d, float d1) {
 
 void WildBoar::setVerticalVelocity(int i) {
     horizontalVelocity = i;
+}
+
+void WildBoar::setVelocity(int i) {
+//    velocity = i;
 }

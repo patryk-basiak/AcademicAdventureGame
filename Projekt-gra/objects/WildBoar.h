@@ -28,6 +28,7 @@ public:
     ~WildBoar() override;
     void setPosition(float d, float d1);
     void setVerticalVelocity(int i) override;
+    void setVelocity(int i) override;
 
 
 private:

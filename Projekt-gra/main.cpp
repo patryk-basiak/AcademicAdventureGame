@@ -36,8 +36,6 @@ auto main() -> int {
     Equipment eq;
     HUD hud;
     Game gameClass;
-    eq.addItem(3);
-    eq.setMoney(131232);
     bool debug = false;
     debugMode = true;
 

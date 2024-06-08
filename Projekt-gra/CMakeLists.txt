@@ -113,6 +113,8 @@ add_executable(game main.cpp
         objects/CarEnemy.h
         ThrowableContainer.cpp
         ThrowableContainer.h
+        objects/CarWinchItem.cpp
+        objects/CarWinchItem.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

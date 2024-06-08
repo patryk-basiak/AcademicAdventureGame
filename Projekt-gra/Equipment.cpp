@@ -5,6 +5,7 @@
 #include "Settings.h"
 #include "objects/Coin.h"
 #include "objects/UniCard.h"
+#include "objects/CarWinchItem.h"
 #include <algorithm>
 
 std::vector<int> Equipment::eq;
@@ -166,22 +167,29 @@ void Equipment::addItem(int id) {
     if (items.find(id) == items.end()) {
         isEmpty = false;
         if (id == 2) {
-            items.insert({id, {std::make_shared<Pistol>(0, 0), 1}});
+            items.insert({id, {std::make_unique<Pistol>(0, 0), 1}});
             if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<Pistol>(0, 0));
             }
 
         }
         if (id == 3) {
-            items.insert({id, {std::make_shared<Coin>(0, 0), 1}});
+            items.insert({id, {std::make_unique<Coin>(0, 0), 1}});
             if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<Coin>(0, 0));
             }
         }
         if (id == 5) {
-            items.insert({id, {std::make_shared<UniCard>(0, 0), 1}});
+            items.insert({id, {std::make_unique<UniCard>(0, 0), 1}});
             if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<UniCard>(0, 0));
+            }
+        }
+        if (id == 11) {
+            items.insert({
+                id, {std::make_unique<CarWinchItem>(0, 0), 1}});
+            if (temp_items.size() < 3) {
+                temp_items.push_back(std::make_unique<CarWinchItem>(0, 0));
             }
         }
         std::ranges::reverse(temp_items);
