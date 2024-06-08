@@ -21,10 +21,12 @@ public:
     void draw(sf::RenderWindow& window) override;
     sf::Vector2<float> getSize() override;
     bool isStackable() const override;
+    bool isOneTimeUse() override;
     int getId() override;
 
 
 private:
+    bool OneTimeUse = true;
     sf::Sprite carWinchItem;
     sf::Text popUp;
     bool Stackable = false;

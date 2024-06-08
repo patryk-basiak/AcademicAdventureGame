@@ -8,7 +8,7 @@
 Car::~Car() = default;
 
 sf::Vector2<float> Car::getSize() {
-    return sf::Vector2f {(float)car.getTexture()->getSize().x, (float)car.getTexture()->getSize().y};
+    return sf::Vector2f {(float)car.getTexture()->getSize().x*car.getScale().x,(float)car.getTexture()->getSize().y* car.getScale().y};
 }
 sf::Vector2<float> Car::getPosition()
 {
@@ -28,3 +28,9 @@ void Car::draw(sf::RenderWindow &window) const {
 void Car::update() {
     ;
 }
+
+void Car::setPosition(float x, float y) {
+    car.setPosition(x,y);
+}
+
+

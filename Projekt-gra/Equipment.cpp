@@ -41,12 +41,6 @@ void Equipment::show() {
 
 
 void Equipment::update(sf::RenderWindow& window, Player& player)  {
-    for(auto &e: temp_items){
-        if(!e->getThrowable().empty()){
-            throwable = e->getThrowable();
-            fmt::println("eq");
-        }
-    }
     Equipment::showInHand(player, window);
     if (!this->isShown) {
         window.draw(smallEq);
@@ -167,32 +161,32 @@ void Equipment::addItem(int id) {
     if (items.find(id) == items.end()) {
         isEmpty = false;
         if (id == 2) {
-            items.insert({id, {std::make_unique<Pistol>(0, 0), 1}});
+            std::unique_ptr<Collectable> pistol = std::make_unique<Pistol>(0, 0);
+            items.insert({id, std::make_pair(std::move(pistol), 1)});
             if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<Pistol>(0, 0));
             }
 
         }
         if (id == 3) {
-            items.insert({id, {std::make_unique<Coin>(0, 0), 1}});
+            items.insert({id, std::make_pair(std::make_unique<Coin>(0, 0), 1)});
             if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<Coin>(0, 0));
             }
         }
         if (id == 5) {
-            items.insert({id, {std::make_unique<UniCard>(0, 0), 1}});
+            items.insert({id, std::make_pair(std::make_unique<UniCard>(0, 0), 1)});
             if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<UniCard>(0, 0));
             }
         }
         if (id == 11) {
             items.insert({
-                id, {std::make_unique<CarWinchItem>(0, 0), 1}});
+                id, std::make_pair(std::make_unique<CarWinchItem>(0, 0), 1)});
             if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<CarWinchItem>(0, 0));
             }
         }
-        std::ranges::reverse(temp_items);
     }
     else {
         auto iter = items.find(id);
@@ -212,14 +206,6 @@ void Equipment::useItemInHand(Player& player) {
 
     }
 }
-
-std::shared_ptr<Collectable> Equipment::getItemInHand() {
-    if(currentEq < temp_items.size()){
-        return temp_items[0];//TODO napraw to gowno
-    }
-    return temp_items[currentEq];
-}
-
 bool Equipment::getStatus() {
     return isEmpty;
 }

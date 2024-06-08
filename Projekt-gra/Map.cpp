@@ -35,6 +35,7 @@
 #include "objects/stone.h"
 #include "objects/CarEnemy.h"
 #include "objects/CarWinchItem.h"
+#include "ThrowableContainer.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -743,9 +744,6 @@ std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vecto
 
 
 void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, Equipment& eq, sf::Time time){
-    if(!eq.throwable.empty()){
-        this->throwable = eq.throwable;
-    }
     this->checkCollision(player, window);
     this->checkCollisionInteract(player, window);
 
@@ -766,36 +764,41 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
             if(!(*it)->isFriendly()) {
                 entity_vec.erase(it);
                 it--;
+                return;
             }
         }
         if( (*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610){
             entity_vec.erase(it);
             it--;
+            return;
         }
         if(!(*it)->isFriendly()) {
-            for (auto bullets = throwable.begin(); bullets != throwable.end(); bullets++) {
+            for (auto bullets = ThrowableContainer::getVector().begin(); bullets != ThrowableContainer::getVector().end(); bullets++) {
                 if ((*bullets)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
                     entity_vec.erase(it);
                     it--;
-                    throwable.erase(bullets);
+                    ThrowableContainer::getVector().erase(bullets);
                     bullets--;
+                    return;
                 }
             }
         }
 
     }
-        for( auto its = throwable.begin(); its != throwable.end(); its++) {
+        for( auto its = ThrowableContainer::getVector().begin(); its != ThrowableContainer::getVector().end(); its++) {
             if ((*its)->getPosition().x > window.getSize().x) {
                 (*its)->collision(player);
-                throwable.erase(its);
+                ThrowableContainer::getVector().erase(its);
                 its--;
-
             }
         }
+    for (auto const &e: ThrowableContainer::getInteractVector()) {
+        e->update(window,player, eq, time);
+    }
     for (auto const &e: interactable_vec) {
         e->update(window,player, eq, time);
     }
-    for (auto const &e: throwable) {
+    for (auto const &e: ThrowableContainer::getVector()) {
         e->update(window,player);
     }for (auto const &e: walls_vec) {
         e->update();
@@ -807,7 +810,7 @@ void Map::draw(sf::RenderWindow& window) {
     for (auto &it: items_vec) {
         it->draw(window);
     }
-    for (auto & it : entity_vec) {
+    for (auto &it: entity_vec) {
         it->draw(window);
     }
     for (auto const &e: walls_vec) {
@@ -816,8 +819,14 @@ void Map::draw(sf::RenderWindow& window) {
     for (auto const &e: interactable_vec) {
         e->draw(window);
     }
-    for (auto const &e: throwable) {
+    for (auto const &e: ThrowableContainer::getVector()) {
         e->draw(window);
+    }
+    for (auto const &e: ThrowableContainer::getInteractVector()) {
+        e->draw(window);
+        for (auto &x: walls_vec) {
+            e->check(x);
+        }
     }
 }
 
@@ -831,6 +840,9 @@ void Map::checkCollision(Player& player, sf::RenderWindow &window) {
         float playerRight = player.getPosition().x + player.getSize()[0];
 
         for (const auto &wall : walls_vec) {
+            if (Car *car = dynamic_cast<Car *>(wall.get())) {
+                fmt::println("car position: {}", car->getPosition().x);
+            }
             float wallTop = wall->getPosition().y;
             float wallLeft = wall->getPosition().x;
             float wallRight = wall->getPosition().x + wall->getSize().x;

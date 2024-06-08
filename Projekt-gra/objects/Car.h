@@ -24,6 +24,8 @@ public:
     void update() override;
     void draw(sf::RenderWindow &window) const override;
 
+    void setPosition(float x, float y) override;
+
 private:
     sf::Sprite car;
     bool isMoving;

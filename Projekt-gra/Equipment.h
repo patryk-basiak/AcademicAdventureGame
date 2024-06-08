@@ -17,8 +17,8 @@ private:
     int currentEq;
     bool isEmpty = true;
     bool isShown = false;
-    std::vector<std::shared_ptr<Collectable>> temp_items;
-    std::map<int, std::pair<std::shared_ptr<Collectable>, int>> items;
+    std::vector<std::unique_ptr<Collectable>> temp_items;
+    std::map<int, std::pair<std::unique_ptr<Collectable>, int>> items;
     std::vector<int> numberOfItems;
 
 
@@ -29,7 +29,6 @@ public:
 //    static int currentPos;
     static std::vector<int> eq;
     void movedMouse();
-    std::shared_ptr<Collectable> getItemInHand();
     void movedMouseDown();
     int itemInHand() const;
     bool getStatus();
@@ -40,7 +39,6 @@ public:
     void update(sf::RenderWindow& window, Player& player);
     void show();
     void addItem(int ID);
-    std::vector<std::shared_ptr<Collectable>> throwable;
 
     void useItemInHand(Player& player);
 

@@ -44,7 +44,6 @@ private:
     std::vector<std::unique_ptr<Entity>> entity_vec;
     std::vector<std::unique_ptr<Interactable>> interactable_vec;
     std::vector<std::unique_ptr<Collectable>> items_vec;
-    std::vector<std::shared_ptr<Collectable>> throwable;
     std::vector<std::unique_ptr<Wall>> walls_vec;
     std::vector<std::vector<std::vector<int>>> map_vec;
     int id;

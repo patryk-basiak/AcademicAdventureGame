@@ -46,8 +46,17 @@ public:
         title.setString("Wordle Hack");
         title.setFont(Interactable::font);
 
+        info.setTexture(ResourceManager::getTexture("../graphics/info.png"));
+        info.setPosition(HackInside.getPosition().x + 125, HackInside.getPosition().y + 250);
+        info.setScale((float)32/info.getTexture()->getSize().x,(float)32/info.getTexture()->getSize().y );
+
+        tryAgain.setTexture(ResourceManager::getTexture("../graphics/tryAgain.png"));
+        tryAgain.setPosition(HackInside.getPosition().x + 165, HackInside.getPosition().y + 250);
+        tryAgain.setScale((float)32/tryAgain.getTexture()->getSize().x,(float)32/tryAgain.getTexture()->getSize().y );
+
+
         HackingDoneText.setPosition(HackInside.getPosition().x + 75, HackInside.getPosition().y + 150);
-        HackingDoneText.setString("Hacked successful \n access granted");
+        HackingDoneText.setString("Hack successful \n access granted");
         HackingDoneText.setFillColor(sf::Color::Green);
         HackingDoneText.setFont(Interactable::font);
 
@@ -115,7 +124,7 @@ public:
     bool getStatus() override;
     
 private:
-
+    void clear();
     sf::Text popUp;
     sf::Sprite shop;
     std::map<std::unique_ptr<Collectable>, int> itemsInside;
@@ -146,5 +155,8 @@ private:
     sf::Text HackingDoneText;
     float HackDoneTime = 0;
     bool showHackingDone = false;
+    sf::Sprite info;
+    sf::Sprite tryAgain;
+    int xd =0;
 
 };

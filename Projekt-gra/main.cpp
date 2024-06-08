@@ -38,7 +38,7 @@ auto main() -> int {
     Game gameClass;
     bool debug = false;
     debugMode = true;
-
+    eq.addItem(2);
     sf::Clock clock;
     sf::Clock timer;
     while (window.isOpen()) {
@@ -67,6 +67,22 @@ auto main() -> int {
                 eq.update(window, player);
                 fps1.update();
                 window.display();
+
+            }
+            while(died){
+                gameClass.loadGraphics();
+                sf::Event event = sf::Event();
+                while (window.pollEvent(event)) {
+                    if (event.type == sf::Event::KeyPressed) {
+                        if (event.key.code == sf::Keyboard::Enter) {
+                            died = false;
+                            window.close();
+                        }
+                    }
+                    window.clear(sf::Color::Blue);
+                    window.display();
+                }
+
 
             }
     }

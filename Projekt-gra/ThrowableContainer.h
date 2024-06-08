@@ -3,25 +3,24 @@
 #include <vector>
 #include <memory>
 #include "objects/Collectable.h"
+#include "objects/Coin.h"
+#include "objects/UniCard.h"
+#include "objects/CarWinchItem.h"
+#include "objects/Interactable.h"
 
-template <typename T>
+
 class ThrowableContainer {
 public:
+    static void addItem(int id, float x, float y);
+    static void addItemInteract(int id, float x, float y);
+    static void addItem(int id, float x, float y, float add);
+    static void addItemInteract(int id, float x, float y, float add);
+    static std::vector<std::unique_ptr<Collectable>>& getVector();
+    static std::vector<std::unique_ptr<Interactable>>& getInteractVector();
 
-    static void addItems(const T& item) {
-        vector.push_back(std::make_unique<T>(item));
-    }
-
-    ThrowableContainer& operator=(ThrowableContainer&& eq) noexcept {
-        if (this != &eq) {  // Protect against self-assignment
-            if (!eq.vector.empty()) {
-                this->vector = std::move(eq.vector);
-            }
-        }
-        return *this;
-    }
+    ThrowableContainer& operator=(ThrowableContainer&& eq) noexcept;
 
 private:
     static std::vector<std::unique_ptr<Collectable>> vector;
-
+    static std::vector<std::unique_ptr<Interactable>> vector_interact;
 };

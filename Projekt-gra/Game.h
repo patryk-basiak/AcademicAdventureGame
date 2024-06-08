@@ -29,7 +29,6 @@ private:
     bool loaded;
     bool nextRoomAvailable  = false;
     bool debug = false;
-    bool pause;
     bool started;
     int currentLvl = 0;
     std::vector<Map> maps;

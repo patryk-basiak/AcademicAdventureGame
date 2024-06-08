@@ -41,17 +41,26 @@ void Player::jump(){
 }
 
 void Player::update(sf::Time time) {
-    if(!game){
-        player.setPosition(1500,200);
-    }
     float deltaTime = time.asSeconds();
 
     float horizontalVelocity = 0.0f;
     float verticalVelocityIncrement = gravity * deltaTime;
 
+    if(!game or paused){
+        player.setPosition(1500,200);
+        velocity = 0;
+        verticalVelocity = 0;
+        horizontalVelocity = 0;
+    }
+
+
     if (health <= 0) {
+        died = true;
         game = false;
         return;
+    }
+    if(player.getPosition().y > 1000){
+        health = 0;
     }
 
 
@@ -67,13 +76,13 @@ void Player::update(sf::Time time) {
     }
 
     collisionRect.left += horizontalVelocity * deltaTime;
-    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))) {
+    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) and jumpable) {
         verticalVelocity = jumpVelocity;
         isGround = false;
         lastJumpTime = clock.getElapsedTime().asSeconds();
     }
 
-    if (!isGround) {
+    if (!isGround and jumpable) {
         verticalVelocity += verticalVelocityIncrement;
     }
 

@@ -6,7 +6,10 @@
 
 bool movable = true;
 bool game = false;
+bool paused = false;
 bool combat = true;
+bool died = false;
+bool jumpable = true;
 bool debugMode = false;
 
 

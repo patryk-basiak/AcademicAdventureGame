@@ -28,6 +28,8 @@ void Shop::draw(sf::RenderWindow &window) {
             for(auto & letter: textObjects){
                 window.draw(letter);
             }
+            window.draw(tryAgain);
+            window.draw(info);
         }
         else {
             for (auto &vec: answers) {
@@ -37,6 +39,8 @@ void Shop::draw(sf::RenderWindow &window) {
             for(auto & letter: textObjects){
                 window.draw(letter);
             }
+            window.draw(tryAgain);
+            window.draw(info);
         }
 
     }
@@ -107,16 +111,30 @@ void Shop::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::T
         }
     }
     if (type == 0 and hack and !HackingDone) {
+
+        sf::Vector2 mouse = sf::Mouse::getPosition(window);
+        if(mouse.x > info.getPosition().x and mouse.x < info.getPosition().x + (info.getTexture()->getSize().x * info.getScale().x )
+            and mouse.y > info.getPosition().y and mouse.y < info.getPosition().y + (info.getTexture()->getSize().y * info.getScale().y )){
+            fmt::println("info clicked");
+        }if(mouse.x > tryAgain.getPosition().x and mouse.x < tryAgain.getPosition().x + (tryAgain.getTexture()->getSize().x * tryAgain.getScale().x )
+            and mouse.y > tryAgain.getPosition().y and mouse.y < tryAgain.getPosition().y + (tryAgain.getTexture()->getSize().y * tryAgain.getScale().y )){
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                this->clear();
+            }
+        }
         keyboardInput = true;
-        player.hide();
         movable = false;
-        fmt::println("{}", word);
+        if(xd == 0) {
+            fmt::println("{}", word);
+        }
+        xd++;
         for (int i = 0; i < sf::Keyboard::KeyCount; ++i) {
             if (sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(i))) {
                 if (!keyState[i]) {
                     keyState[i] = true;
                     fmt::println("{}", textObjects.size());
-                    if (textObjects.size() < 6) {
+                    if (textObjects.size() < 6 and answers.size() < 5) {
                         char newChar = '\0';
                         if (i >= sf::Keyboard::A && i <= sf::Keyboard::Z) {
                             newChar = static_cast<char>(i - sf::Keyboard::A + 'a');
@@ -138,32 +156,25 @@ void Shop::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::T
                     if(textObjects.size() == 6 and !HackingDone){
                         if(i == sf::Keyboard::Enter){
                             int guessed = 0;
-                            std::vector<std::string> temp;
                             for(int x = 0; x <textObjects.size(); ++x){
-                                temp.push_back(textObjects[x].getString());
                                 auto it = std::find(word.begin(),word.end(), textObjects[x].getString());
                                 if(it != word.end()){
                                     if(std::count(word.begin(), word.end(),textObjects[x].getString()) > 1){
-                                        std::vector<int> indices;
-                                        std::vector<int> indicesN;
-                                        for (int j = 0; j < word.size(); ++j) {
-                                            if (word[j] == textObjects[x].getString()) {
-                                                indices.push_back(j);
-                                            }
-                                        }for (int j = 0; j < textObjects.size(); ++j) {
-                                            if (textObjects[j].getString() == textObjects[x].getString()) {
-                                                indices.push_back(j);
-                                            }
-                                        }
-                                        for(int d = 0; d < word.size(); ++d){
-                                            if(indices[d] == indicesN[d]){
-                                                textObjects[d].setFillColor(sf::Color::Green);
+                                        for(int p = 0; p<=x; ++p){
+                                            std::string a = textObjects[p].getString();
+                                            fmt::println("word: {}", word[p]);
+                                            fmt::println("anserw: {}", a);
+                                            fmt::println("looking for: {}", (*it));
+                                            if (word[p] == (*it) && a == (*it)){
+                                                fmt::println("hello");
+                                                textObjects[x].setFillColor(sf::Color::Green);
                                                 guessed++;
                                             }
-                                            else{
-                                                textObjects[d].setFillColor(sf::Color::Yellow);
+                                            if (((word[p] != (*it) && a == (*it) )or (word[p] == (*it) && a != (*it) ))){
+                                                textObjects[x].setFillColor(sf::Color::Yellow);
                                             }
                                         }
+
                                     }
                                     else if(std::count(word.begin(), word.end(),textObjects[x].getString()) == 1) {
                                         if (x == std::distance(word.begin(), it)) {
@@ -172,18 +183,16 @@ void Shop::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::T
 
                                         }
                                         else{
+                                            fmt::println("im here");
                                             textObjects[x].setFillColor(sf::Color::Yellow);
                                         }
-                                }
-                                    else{
-                                        textObjects[x].setFillColor(sf::Color::Yellow);
                                     }
                                 }
                             }
                             answers.push_back(textObjects);
                             textObjects.clear();
                             fmt::println("{}", guessed);
-                            if(guessed == 6){
+                            if(guessed >= 6){
                                 HackingDone = true;
                                 keyboardInput = false;
                                 player.showPlayer();
@@ -248,6 +257,11 @@ void Shop::collision(Player &player, sf::RenderWindow &window) {
 
 bool Shop::getStatus() {
     return isOpen;
+}
+
+void Shop::clear() {
+    answers.clear();
+    textObjects.clear();
 }
 
 Shop::~Shop() = default;

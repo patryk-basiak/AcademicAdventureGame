@@ -53,3 +53,7 @@ sf::Vector2<float> Interactable::getSize() {
 void Interactable::setColl(bool collide) {
     coll = collide;
 }
+
+void Interactable::check(std::unique_ptr<Wall> &wall) {
+
+}

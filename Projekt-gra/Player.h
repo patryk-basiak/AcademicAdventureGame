@@ -1,6 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
-
+#include <memory>
 class Player {
 
 public:
@@ -48,7 +48,6 @@ private:
     int val= 0;
     int health = 3;
     float jumpVelocity = -200;
-    bool died = false;
     bool isGround = true;
     float surface = 1000;
     bool isFacingRight = true;

@@ -78,4 +78,8 @@ void Wall::collision(std::unique_ptr<Entity> &entity, sf::RenderWindow &window) 
     entity->setVerticalVelocity(0);
 }
 
+void Wall::setPosition(float x, float y) {
+    wall.setPosition(x,y);
+}
+
 Wall::~Wall() = default;

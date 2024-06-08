@@ -4,6 +4,7 @@
 #include "Pistol.h"
 #include "../Equipment.h"
 #include "Bullet.h"
+#include "../ThrowableContainer.h"
 #include <fmt/core.h>
 
 
@@ -22,6 +23,7 @@ void Pistol::usage(Player& player) {
         if (ammunition > 0) {
             if (ready) {
                 int n = player.getFacingRight() ? 1: -1;
+                ThrowableContainer::addItem(4,pistol.getPosition().x,pistol.getPosition().y,n);
                 Collectable::throwable.push_back(std::make_unique<Bullet>(pistol.getPosition().x,pistol.getPosition().y,n));
                 ammunition--;
                 ready = false;

@@ -2,6 +2,7 @@
 #include "CarWinchItem.h"
 #include "fmt/core.h"
 #include "../Equipment.h"
+#include "../ThrowableContainer.h"
 
 void CarWinchItem::collision(Player &player) {
     this->carWinchItem.setPosition(2000,2000);
@@ -35,11 +36,14 @@ void CarWinchItem::setPosition(float x, float y) {
 }
 
 sf::Vector2<float> CarWinchItem::getSize() {
-    return sf::Vector2f{32,32};
+    return sf::Vector2f{(float)carWinchItem.getTexture()->getSize().x*carWinchItem.getScale().x, (float)carWinchItem.getTexture()->getSize().y*carWinchItem.getScale().y};
 }
 
 void CarWinchItem::usage(Player &player) {
-    fmt::println("carWinchUsed");
-    carWinchItem.setPosition(10, 15);
-    inUse = true;
+    ThrowableContainer::addItemInteract(301, player.getPosition().x - 15, player.getPosition().y);
+
+
+}
+bool CarWinchItem::isOneTimeUse() {
+    return false;
 }

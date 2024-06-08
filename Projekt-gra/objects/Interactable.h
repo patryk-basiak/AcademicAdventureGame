@@ -4,6 +4,8 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "../Player.h"
 #include "../Equipment.h"
+#include "Wall.h"
+#include <memory>
 
 class Interactable {
 public:
@@ -19,6 +21,9 @@ public:
     virtual void collisionRight(Player& player, sf::RenderWindow &window);
     virtual void collisionLeft(Player& player, sf::RenderWindow &window);
     virtual void collisionBottom(Player& player, sf::RenderWindow &window);
+    virtual void check(std::unique_ptr<Wall>& wall);
+
+
 protected:
     sf::Font font;
     bool coll = false;

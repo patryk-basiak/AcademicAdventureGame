@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "ThrowableContainer.h"
 
 void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time time, HUD& hud, FPS& fps, sf::Time deltaTime) {
     if(!started){
@@ -21,12 +22,12 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
                 eq.show();
             }
             if (event.key.code == sf::Keyboard::Escape) {
-                if (pause) {
+                if (paused) {
                     movable = true;
-                    pause = false;
+                    paused = false;
                 } else {
                     movable = false;
-                    pause = true;
+                    paused = true;
                 }
 
             }
@@ -205,6 +206,8 @@ void Game::nextLvl(Player & player)
     stage_3 = false;
     currentLvl += 1;
     currentMap = std::move(maps[currentLvl]);
+    ThrowableContainer::getVector().clear();
+    ThrowableContainer::getInteractVector().clear();
     fmt::println("Next lvl");
 
 }
