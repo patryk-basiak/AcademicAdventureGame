@@ -11,6 +11,7 @@ bool combat = true;
 bool died = false;
 bool jumpable = true;
 bool debugMode = false;
+bool mousekeyListener = false;
 
 
 bool stage_0 = false;

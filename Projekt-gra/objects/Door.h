@@ -20,7 +20,7 @@ class Door
         void collisionRight(Player& player, sf::RenderWindow &window) override;
         void collisionLeft(Player& player, sf::RenderWindow &window) override;
         void draw(sf::RenderWindow &window) override;
-        void update(sf::RenderWindow& window, Player& player, Equipment& eq,  sf::Time) override;
+        void update(sf::RenderWindow& window, Player& player, Equipment& eq,  sf::Time, sf::Time deltatime) override;
         bool status() const;
         void setStatus(bool status);
 

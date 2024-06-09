@@ -11,7 +11,7 @@ Interactable::Interactable(float x, float y) {
 
 }
 
-void Interactable::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time) {
+void Interactable::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time, sf::Time deltatime) {
 
 }
 

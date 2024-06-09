@@ -36,7 +36,7 @@ void Kiosk::collision(Player &player, sf::RenderWindow &window)
     }
 }
 
-void Kiosk::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Time)
+void Kiosk::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Time, sf::Time deltatime)
 {
     sf::Vector2 mouse = sf::Mouse::getPosition(window);
     if(inUse){

@@ -115,6 +115,12 @@ add_executable(game main.cpp
         ThrowableContainer.h
         objects/CarWinchItem.cpp
         objects/CarWinchItem.h
+        objects/classroomDoor.cpp
+        objects/classroomDoor.h
+        objects/Elevator.cpp
+        objects/Elevator.h
+        objects/Disk.cpp
+        objects/Disk.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

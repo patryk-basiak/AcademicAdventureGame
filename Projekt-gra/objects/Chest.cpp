@@ -24,7 +24,7 @@ sf::Vector2<float> Chest::getSize() {
     return sf::Vector2<float>{size[0], size[1]};
 }
 
-void Chest::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::Time time) {
+void Chest::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::Time time, sf::Time deltatime) {
     if(stage_1){
         active = true;
     }

@@ -9,6 +9,7 @@ extern bool debugMode;
 extern bool keyboardInput;
 extern bool paused;
 extern bool jumpable;
+extern bool mousekeyListener;
 
 extern bool stage_0;
 extern bool stage_1;

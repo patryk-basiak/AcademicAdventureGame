@@ -11,7 +11,7 @@ class Game {
 public:
     Game(){
         loaded = false;
-        maps.emplace_back(0, 0, MapTypes::CITY, 1);
+        maps.emplace_back(0, 0, MapTypes::PJATK, 1);
         fmt::println("game constructed");
 
     }
@@ -36,7 +36,7 @@ private:
     Map currentMap = Map(0, 0, MapTypes::STARTING, 0);
     unsigned int lastLvl = maps.size();
     std::vector<int> decisions = std::vector<int>();
-    std::map<std::pair<MapTypes::types, int>, float> spawnPoints;
+    std::map<std::pair<MapTypes::types, int>, std::pair<std::vector<float>, std::vector<float>>> spawnPoints;
     std::map<int, float> spawn;
 
 };

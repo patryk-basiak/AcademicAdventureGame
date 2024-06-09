@@ -24,9 +24,11 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
             if (event.key.code == sf::Keyboard::Escape) {
                 if (paused) {
                     movable = true;
+                    jumpable = true;
                     paused = false;
                 } else {
                     movable = false;
+                    jumpable = false;
                     paused = true;
                 }
 
@@ -93,6 +95,8 @@ void Game::loadGraphics() {
         maps.emplace_back(0, 1, MapTypes::FOREST, 2);
         maps.emplace_back(0, 1, MapTypes::CITY, 0);
         maps.emplace_back(0, 1, MapTypes::CITY, 1);
+        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
+        maps.emplace_back(0, 1, MapTypes::PJATK, 1);
 //        maps.emplace_back(0, 0, MapTypes::TESTING, 0);
 ////                Map(0, 0, MapTypes::STARTING, 0),
 ////
@@ -100,7 +104,7 @@ void Game::loadGraphics() {
 ////                Map(5, 1, MapTypes::FOREST, 1),
 
 ////                Map(0, 6, MapTypes::CITY, 1),
-////                Map(1, 3, MapTypes::PJATK, 0),
+
 ////                Map(2, 14, MapTypes::PJATK, 1),
 ////                Map(0, 6, MapTypes::CITY, 2),
 ////                Map(2, 4, MapTypes::FOREST, 2),
@@ -110,7 +114,8 @@ void Game::loadGraphics() {
         currentMap = std::move(maps[currentLvl]);
         lastLvl = maps.size();
         for(auto &e : maps) {
-            spawnPoints.insert({{e.getMainType(), e.getSubType()}, e.getSpawnPoint()});
+            spawnPoints.insert({{e.getMainType(), e.getSubType()},
+                                {e.getSpawnPoint(),e.getSpawnPoint() }}); //TODO
         }
         loaded = true;
     }
@@ -198,7 +203,6 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
 
 void Game::nextLvl(Player & player)
 {
-    player.setPosition(15,spawnPoints.at(std::make_pair(currentMap.getMainType(), currentMap.getSubType())));
     this->nextRoomAvailable = false;
     stage_0 = false;
     stage_1 = false;
@@ -206,8 +210,10 @@ void Game::nextLvl(Player & player)
     stage_3 = false;
     currentLvl += 1;
     currentMap = std::move(maps[currentLvl]);
+    player.setPosition(spawnPoints.at(std::make_pair(currentMap.getMainType(), currentMap.getSubType())).first[0],spawnPoints.at(std::make_pair(currentMap.getMainType(), currentMap.getSubType())).first[1]);
     ThrowableContainer::getVector().clear();
     ThrowableContainer::getInteractVector().clear();
+//    maps.erase(maps.begin());
     fmt::println("Next lvl");
 
 }

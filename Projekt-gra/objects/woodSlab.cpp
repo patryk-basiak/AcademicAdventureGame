@@ -4,7 +4,7 @@
 
 #include "woodSlab.h"
 void WoodSlab::collision(Player &player, sf::RenderWindow &window) {
-    player.setPosition(player.getPosition().x, woodSlab.getPosition().y - player.getSize()[1] - 0.18);
+    player.setPosition(player.getPosition().x, woodSlab.getPosition().y - player.getSize()[1]);
     player.setVerticalVelocity(0);
 }
 
@@ -22,4 +22,8 @@ void WoodSlab::update() {
 
 void WoodSlab::draw(sf::RenderWindow &window) const {
     window.draw(woodSlab);
+}
+void WoodSlab::collisionBottom(Player &player, sf::RenderWindow &window) {
+    player.setVerticalVelocity(0);
+    player.setPosition(player.getPosition().x, woodSlab.getPosition().y + this->getSize().y);
 }

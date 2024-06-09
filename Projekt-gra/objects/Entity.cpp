@@ -57,9 +57,7 @@ void Entity::setPosition(float d, float d1) {
     this->entity.setPosition(d,d1);
 }
 
-Entity::~Entity() {
-
-}
+Entity::~Entity() =default;
 
 void Entity::setVerticalVelocity(int i) {
     VerticalVelocity=0;
@@ -71,5 +69,17 @@ bool Entity::isFriendly() {
 
 void Entity::setVelocity(int i) {
     velocity = i;
+}
+
+void Entity::setHealth(int i) {
+    health = i;
+}
+
+int Entity::getHealth() {
+    return health;
+}
+
+bool Entity::diesOutsideScreen() {
+    return true;
 }
 

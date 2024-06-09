@@ -14,7 +14,7 @@ public:
     virtual sf::Vector2<float> getPosition();
     virtual sf::Vector2<float> getSize();
     virtual ~Interactable();
-    virtual void update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time); //TODO deltatime
+    virtual void update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time, sf::Time deltatime); //TODO deltatime
     virtual void collision(Player& player, sf::RenderWindow &window) ;
     virtual bool getStatus();
     virtual void setColl(bool collide);

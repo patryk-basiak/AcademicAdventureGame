@@ -200,10 +200,20 @@ void Equipment::addItem(int id) {
 
 void Equipment::useItemInHand(Player& player) {
     if (!temp_items.empty()) {
-        if(currentEq < temp_items.size()){
-            this->temp_items[currentEq]->usage(player);
-        }
+        if(!mousekeyListener) {
+            if (currentEq < temp_items.size()) {
+                if (temp_items[currentEq]->isOneTimeUse()) {
+                    this->temp_items[currentEq]->usage(player);
+                    auto it = std::find(temp_items.begin(), temp_items.end(), temp_items[currentEq]);
+                    auto temp = this->temp_items[currentEq]->getId();
+                    temp_items.erase(it);
+                    items.erase(temp);
 
+                } else {
+                    this->temp_items[currentEq]->usage(player);
+                }
+            }
+        }
     }
 }
 bool Equipment::getStatus() {

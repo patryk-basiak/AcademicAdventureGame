@@ -13,8 +13,12 @@ public :WildBoar(float x, float y) : Entity(x, y, sf::Color::Black) {
         initialPositionX = x;
         initialPositionY = y;
         velocity = 50; //TODO
-        health = 1;
+        health = 3;
         horizontalVelocity = 0;
+        healthLine.setPosition(wild.getPosition().x, wild.getPosition().y - 15);
+        healthLine.setFillColor(sf::Color::Red);
+        healthLine.setSize(sf::Vector2f (this->getSize().x, 4));
+        part = (float)this->getSize().x/health;
     }
 
 
@@ -29,18 +33,22 @@ public:
     void setPosition(float d, float d1);
     void setVerticalVelocity(int i) override;
     void setVelocity(int i) override;
+    void setHealth(int i) override;
+    int getHealth()  override;
 
 
 private:
     int id =2;
     bool followingPlayer = false;
     float gravity = 50;
-    int health;
+    int health = 3;
     sf::Sprite wild;
     float velocity;
     float horizontalVelocity;
     float initialPositionX;
     float initialPositionY;
+    sf::RectangleShape healthLine;
+    float part;
 
 };
 

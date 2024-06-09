@@ -2,7 +2,7 @@
 // Created by UseR on 18.05.2024.
 //
 
-#include "Door.h"
+ #include "Door.h"
 #include "fmt/core.h"
 
 
@@ -43,7 +43,7 @@ sf::Vector2<float> Door::getPosition() {
     return door.getPosition();
 }
 
-void Door::update(sf::RenderWindow &window, Player &player, Equipment &eq,  sf::Time deltatime) {
+void Door::update(sf::RenderWindow &window, Player &player, Equipment &eq,  sf::Time deltatime, sf::Time realDeltatime) {
     if(Interactable::coll) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
             fmt::println("hello");

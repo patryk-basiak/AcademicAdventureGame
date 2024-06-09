@@ -37,7 +37,7 @@ public:
      sf::Vector2<float> getPosition()override;
     sf::Vector2<float> getSize()override;
      ~Chest()override;
-     void update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time)override;
+     void update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time, sf::Time deltatime)override;
      void collision(Player& player, sf::RenderWindow &window) override;
      bool getStatus() override;
 

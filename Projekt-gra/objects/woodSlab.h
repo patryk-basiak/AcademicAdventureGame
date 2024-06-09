@@ -17,6 +17,7 @@ public:
     sf::Vector2<float> getSize() override;
     void update() override;
     void draw(sf::RenderWindow &window) const override;
+    void collisionBottom(Player& player, sf::RenderWindow &window) override;
 
 private:
     sf::Sprite woodSlab;

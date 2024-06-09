@@ -79,6 +79,7 @@ public:
         for(auto & ch : wantedLine){
             word.emplace_back(1,ch);
         }
+
         text.setFont(Interactable::font);
 
         text.setCharacterSize(24);
@@ -119,7 +120,7 @@ public:
     sf::Vector2<float> getPosition()override;
     sf::Vector2<float> getSize()override;
     ~Shop()override;
-    void update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time) override;
+    void update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time,  sf::Time deltatime) override;
     void collision(Player& player, sf::RenderWindow &window) override;
     bool getStatus() override;
     

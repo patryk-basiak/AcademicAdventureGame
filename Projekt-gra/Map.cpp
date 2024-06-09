@@ -36,6 +36,8 @@
 #include "objects/CarEnemy.h"
 #include "objects/CarWinchItem.h"
 #include "ThrowableContainer.h"
+#include "objects/classroomDoor.h"
+#include "objects/Elevator.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -52,6 +54,7 @@ static int tempID = 0;
 Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subtype) {
     this->mainType = mainType;
     this->subType = subtype;
+    this->spawnPoint = {0,0};
     this->id = tempID++;
     this->enemies_number = enemies_number;
     this->npc_number = npc_number;
@@ -61,10 +64,9 @@ Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subty
     this->entity_vec = transformEntities(map_vec[2]);
     this->interactable_vec = transformInteractable(map_vec[3]);
     this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/CountrySide.png"));
-    this->spawnPoint = 700;
 }
 
-std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const {
+std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
 
     if (x < 2 or y < 2) {
         x = 10;
@@ -176,6 +178,8 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
     }
     if (mainType == MapTypes::FOREST) {
         if (subType == 0) {
+            spawnPoint = std::vector<float>{4, 590};
+            endPoint; // TODO
             // source: https://stackoverflow.com/questions/22923551/generating-number-0-1-using-mersenne-twister-c
             std::uniform_int_distribution<> dist(3, 5);
             std::uniform_int_distribution<> treeNumbers(5, 11);
@@ -272,6 +276,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
             return vec;
         }
         if (subType == 1) {
+            spawnPoint = std::vector<float>{23, 718};
             int copyEnemyNumber = enemies_number;
              // Mersenne Twister engine
             std::uniform_int_distribution<> enemy(5, 20);
@@ -387,6 +392,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
 
         if (subType == 2)
         {
+            spawnPoint = std::vector<float>{86, 654};
             std::uniform_int_distribution<> wizardPos(x/2, x-3);
 
             auto wizPos = wizardPos(gen);
@@ -455,6 +461,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
         if(mainType == MapTypes::CITY)
         {
             if (subType == 0) {
+                spawnPoint = {10, 206};
                 auto map = std::vector<std::vector<int>>();
                 auto items = std::vector<std::vector<int>>();
                 auto ENEMY = std::vector<std::vector<int>>();
@@ -472,7 +479,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                             enemy.push_back(0);
                             interact.push_back(0);
                         }
-                        else if(i == y -7 and (j == x/2  or j == x - 3)){
+                        else if(i == y -5 and (j == 3 or j == 15 or j == 18)){
                             temp.push_back(0);
                             enemy.push_back(5);
                             interact.push_back(0);
@@ -505,6 +512,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
             }
             if(subType == 1)
             {
+                spawnPoint = {8, 654};
                 std::uniform_int_distribution<> chestPos(3, 11);
                 auto chP = chestPos(gen);
                 auto map = std::vector<std::vector<int>>();
@@ -588,16 +596,152 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) const 
                 return vec;
             }
         }
-    //
+    if(mainType == MapTypes::PJATK){
+        if(subType == 0){
+            spawnPoint = {852, 718};
 
-//    if(mainType == MapTypes::PJATK){
-//
-//    }
+            auto map = std::vector<std::vector<int>>();
+            auto items = std::vector<std::vector<int>>();
+            auto ENEMY = std::vector<std::vector<int>>();
+            auto inter = std::vector<std::vector<int>>();
+            for (int i = 0; i < y; ++i)
+            {
+                std::vector temp = std::vector<int>();
+                std::vector interact = std::vector<int>();
+                std::vector collect = std::vector<int>();
+                std::vector enemy = std::vector<int>();
+                int xTemp = 0;
+                for (int j = 0; j < x; ++j)
+                {
+                    if(j == x - 2 and i == y - 6){
+                        temp.push_back(0);
+                        enemy.push_back(0);
+                        interact.push_back(99);
+                    }
+                    else if((j == x - 2 or j == x -1) and i == y - 5){
+                        temp.push_back(0);
+                        enemy.push_back(0);
+                        interact.push_back(0);
+                    }
+                    else if(j < 5 or j > x - 3 )
+                    {
+                        temp.push_back(1);
+                        enemy.push_back(0);
+                        interact.push_back(0);
+                    }
+                    else if(i ==y/2 - 2 or i == y/2 - 4 or i == y/2 -3 )
+                    {
+                        temp.push_back(1);
+                        enemy.push_back(0);
+                        interact.push_back(0);
+                    }
+                    else if(j > x -6 and j < x-2 and i == y -3 or (i == y - 4 and (j == x -3 or j == x-4))){
+                            temp.push_back(1);
+                            enemy.push_back(0);
+                            interact.push_back(0);
+                    }
+
+                    else if (i > y - 3) {
+                        temp.push_back(9);
+                        enemy.push_back(0);
+                        interact.push_back(0);
+                    } else {
+                        temp.push_back(0);
+                        enemy.push_back(0);
+                        interact.push_back(0);
+                    }
+                }
+                map.push_back(temp);
+                inter.push_back(interact);
+                ENEMY.push_back(enemy);
+            }
+            vec.push_back(map);
+            vec.push_back({{0}});
+            vec.push_back(ENEMY);
+            vec.push_back(inter);
+            return vec;
+
+        }if(subType == 1){
+            spawnPoint = {852, 718};
+            std::uniform_int_distribution<> doorPos(5, 8);
+            std::uniform_int_distribution<> doorDistance(3, 8);
+            std::vector<float> doorLocations;
+            auto firstDoor = (float)doorPos(gen);
+            doorLocations.push_back(firstDoor);
+            for(int i = 0; i < 4; ++i){
+                firstDoor += (float) doorDistance(gen);
+                if(firstDoor < x){
+                    doorLocations.push_back(firstDoor);
+                }
+            }
+            auto map = std::vector<std::vector<int>>();
+            auto items = std::vector<std::vector<int>>();
+            auto ENEMY = std::vector<std::vector<int>>();
+            auto inter = std::vector<std::vector<int>>();
+            for (int i = 0; i < y; ++i)
+            {
+                std::vector temp = std::vector<int>();
+                std::vector interact = std::vector<int>();
+                std::vector collect = std::vector<int>();
+                std::vector enemy = std::vector<int>();
+                int xTemp=0;
+                for (int j = 0; j < x; ++j)
+                {
+                    if(i % 4 == 1 and i != 0 and i < y - 3) {
+                        temp.push_back(7);
+                        enemy.push_back(0);
+                        interact.push_back(0);
+                    }
+                    else if((i % 4 == 3 or i == y - 4) and j == 2 and i < y -3){
+                        temp.push_back(0);
+                        enemy.push_back(0);
+                        interact.push_back(401);
+                    }
+                    else if((i % 4 == 3 or i == y - 4) and i < y - 3 and j == (int)doorLocations.at(xTemp)){
+                        temp.push_back(0);
+                        enemy.push_back(0);
+                        interact.push_back(400);
+                        if(xTemp < doorLocations.size() - 1) {
+                            xTemp++;
+                        }
+                    }
+                    else if (i > y - 3) {
+                        temp.push_back(6);
+                        enemy.push_back(0);
+                        interact.push_back(0);
+                    } else {
+                        temp.push_back(0);
+                        enemy.push_back(0);
+                        interact.push_back(0);
+                    }
+
+                }
+                map.push_back(temp);
+                inter.push_back(interact);
+                ENEMY.push_back(enemy);
+                doorLocations.clear();
+                firstDoor = (float)doorPos(gen);
+                doorLocations.push_back(firstDoor);
+                for(int g = 0; g < 4; ++g){
+                    firstDoor += (float) doorDistance(gen);
+                    if(firstDoor < x){
+                        doorLocations.push_back(firstDoor);
+                    }
+                }
+            }
+            vec.push_back(map);
+            vec.push_back({{0}});
+            vec.push_back(ENEMY);
+            vec.push_back(inter);
+            return vec;
+
+        }
+        }
+    }
 //    if(mainType == MapTypes::ENDING){
 //
 //    }
 
-}
 std::vector<std::unique_ptr<Entity>> Map::transformEntities(const std::vector<std::vector<int>>& vec) {
     auto trans = std::vector<std::unique_ptr<Entity>>();
     float x = 0;
@@ -731,6 +875,10 @@ std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vecto
                 lvl0_trans.emplace_back(std::make_unique<Shop>(x,y));
             }if(i == 301){
                 lvl0_trans.emplace_back(std::make_unique<Shop>(x,y, 0));
+            }if(i == 400){
+                lvl0_trans.emplace_back(std::make_unique<ClassroomDoor>(x,y));
+            }if(i == 401){
+                lvl0_trans.emplace_back(std::make_unique<Elevator>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -767,7 +915,7 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
                 return;
             }
         }
-        if( (*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610){
+        if( ((*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610 )and (*it)->diesOutsideScreen()){
             entity_vec.erase(it);
             it--;
             return;
@@ -775,10 +923,13 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
         if(!(*it)->isFriendly()) {
             for (auto bullets = ThrowableContainer::getVector().begin(); bullets != ThrowableContainer::getVector().end(); bullets++) {
                 if ((*bullets)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
-                    entity_vec.erase(it);
-                    it--;
+                    (*it)->setHealth((*it)->getHealth()-1);
                     ThrowableContainer::getVector().erase(bullets);
                     bullets--;
+                    if((*it)->getHealth() <= 0){
+                        entity_vec.erase(it);
+                        it--;
+                    }
                     return;
                 }
             }
@@ -793,10 +944,10 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
             }
         }
     for (auto const &e: ThrowableContainer::getInteractVector()) {
-        e->update(window,player, eq, time);
+        e->update(window,player, eq, time, deltatime);
     }
     for (auto const &e: interactable_vec) {
-        e->update(window,player, eq, time);
+        e->update(window,player, eq, time, deltatime);
     }
     for (auto const &e: ThrowableContainer::getVector()) {
         e->update(window,player);
@@ -840,9 +991,6 @@ void Map::checkCollision(Player& player, sf::RenderWindow &window) {
         float playerRight = player.getPosition().x + player.getSize()[0];
 
         for (const auto &wall : walls_vec) {
-            if (Car *car = dynamic_cast<Car *>(wall.get())) {
-                fmt::println("car position: {}", car->getPosition().x);
-            }
             float wallTop = wall->getPosition().y;
             float wallLeft = wall->getPosition().x;
             float wallRight = wall->getPosition().x + wall->getSize().x;
@@ -884,7 +1032,7 @@ void Map::checkCollision(Player& player, sf::RenderWindow &window) {
 
 
 void Map::checkCollisionEntity(std::unique_ptr<Entity>& entity, sf::RenderWindow &window){
-    float entityBottom = entity->getPosition().y + entity->getSize().x;
+    float entityBottom = entity->getPosition().y + entity->getSize().y;
     float entityTop = entity->getPosition().y;
     float entityLeft = entity->getPosition().x;
     float entityRight = entity->getPosition().x + entity->getSize().x;
@@ -902,21 +1050,10 @@ void Map::checkCollisionEntity(std::unique_ptr<Entity>& entity, sf::RenderWindow
             }
             if (entityTop < wallBottom && entityBottom > wallBottom){
                 // Bottom
-                entity->setVerticalVelocity(0);
-
-                fmt::print("Collision with the bottom ({}, {})\n", wall->getPosition().x,
-                           wall->getPosition().y);
-            }
-            if (entityRight > wallLeft && entityLeft < wallLeft && entityBottom < wallTop && entityTop > wallTop ) {
-                // Left
-
-                fmt::print("Collision with the left ({}, {}) ({},{})\n", wallRight,
-                           wallLeft, entityRight, entityLeft);
-            }
-            if (entityLeft < wallRight && entityRight > wallRight && entityBottom < wallTop && entityTop > wallTop ) {
-                // Right
-                fmt::print("Collision with the right ({}, {})\n", wall->getPosition().x,
-                           wall->getPosition().y);
+//                entity->setVerticalVelocity(0);
+//
+//                fmt::print("Collision with the bottom ({}, {})\n", wall->getPosition().x,
+//                           wall->getPosition().y);
             }
         }
     }
@@ -993,7 +1130,7 @@ MapTypes::types Map::getMainType() {
     return mainType;
 }
 
-float Map::getSpawnPoint() {
+std::vector<float> Map::getSpawnPoint() {
     return spawnPoint;
 }
 

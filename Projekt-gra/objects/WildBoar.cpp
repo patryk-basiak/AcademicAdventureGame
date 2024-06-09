@@ -3,7 +3,9 @@
 
 void WildBoar::draw(sf::RenderWindow &window) {
     window.draw(wild);
-
+//    if(health != 3){
+        window.draw(healthLine);
+//    }
 }
 
 sf::FloatRect WildBoar::getGlobalBounds() {
@@ -13,6 +15,7 @@ sf::FloatRect WildBoar::getGlobalBounds() {
 
 void WildBoar::collision(Player &player) {
     player.setHealth(player.getHealth() - 1);
+    wild.setPosition(wild.getPosition().x + 10, wild.getPosition().y);
 }
 
 sf::Vector2<float> WildBoar::getPosition() {
@@ -25,6 +28,8 @@ sf::Vector2<float> WildBoar::getSize() {
 
 WildBoar::~WildBoar() = default;
 void WildBoar::update(sf::Time time, Player &player) {
+    healthLine.setSize(sf::Vector2f (part * health, healthLine.getSize().y));
+    healthLine.setPosition(wild.getPosition().x, wild.getPosition().y - 15);
     float deltaTime = time.asSeconds();
     velocity = 50;
     horizontalVelocity += gravity * deltaTime;
@@ -63,4 +68,12 @@ void WildBoar::setVerticalVelocity(int i) {
 
 void WildBoar::setVelocity(int i) {
 //    velocity = i;
+}
+
+void WildBoar::setHealth(int i) {
+    health = i;
+}
+
+int WildBoar::getHealth() {
+    return health;
 }

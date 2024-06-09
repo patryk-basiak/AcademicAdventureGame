@@ -14,7 +14,7 @@ class Map {
 public:
     Map(int enemies_number, int npc_number, MapTypes::types mainType, int subtype);
     bool CheckCollision(float x, float y, float width, float height);
-    std::vector<std::vector<std::vector<int>>> generateMap(int x, int y) const;
+    std::vector<std::vector<std::vector<int>>> generateMap(int x, int y);
     static std::vector<std::unique_ptr<Entity>> transformEntities(const std::vector<std::vector<int>>&vec);
     static std::vector<std::unique_ptr<Collectable>> transformObjects(std::vector<std::vector<int>> vec);
     static std::vector<std::unique_ptr<Wall>> transformWalls(std::vector<std::vector<int>> vec);
@@ -35,7 +35,7 @@ public:
     int getNumberOfEnemies();
     int getSubType();
     MapTypes::types getMainType();
-    float getSpawnPoint();
+    std::vector<float> getSpawnPoint();
 
 private:
     sf::Sprite backgroundTexture;
@@ -49,7 +49,8 @@ private:
     int id;
     int enemies_number;
     int npc_number;
-    float spawnPoint;
+    std::vector<float> spawnPoint;
+    std::vector<float> endPoint;
 
 };
 

@@ -21,10 +21,13 @@ public:
     virtual bool isFriendly();
     virtual void setVerticalVelocity(int i);
     virtual void setVelocity(int i);
+    virtual void setHealth(int i);
+    virtual int getHealth();
+    virtual bool diesOutsideScreen();
 
 private:
 
-    int health;
+    int health = 1;
     float velocity = 0;
     float VerticalVelocity = 0;
     sf::RectangleShape entity;

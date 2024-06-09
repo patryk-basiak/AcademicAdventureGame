@@ -45,5 +45,5 @@ void CarWinchItem::usage(Player &player) {
 
 }
 bool CarWinchItem::isOneTimeUse() {
-    return false;
+    return true;
 }

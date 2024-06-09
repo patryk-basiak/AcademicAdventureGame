@@ -36,6 +36,8 @@ ID for Interactable generation:
 301 - Shop (objective)
 301 - CarWinch
 
+400 - classroomDoor;
+401 - elevator;
 
 ---------------------------------
 ID for items:
