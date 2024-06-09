@@ -6,6 +6,7 @@
 #include "objects/Coin.h"
 #include "objects/UniCard.h"
 #include "objects/CarWinchItem.h"
+#include "objects/Disk.h"
 #include <algorithm>
 
 std::vector<int> Equipment::eq;
@@ -185,6 +186,12 @@ void Equipment::addItem(int id) {
                 id, std::make_pair(std::make_unique<CarWinchItem>(0, 0), 1)});
             if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<CarWinchItem>(0, 0));
+            }
+        }if (id == 20) {
+            items.insert({
+                id, std::make_pair(std::make_unique<Disk>(0, 0), 1)});
+            if (temp_items.size() < 3) {
+                temp_items.push_back(std::make_unique<Disk>(0, 0));
             }
         }
     }

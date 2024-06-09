@@ -121,6 +121,8 @@ add_executable(game main.cpp
         objects/Elevator.h
         objects/Disk.cpp
         objects/Disk.h
+        objects/ChatGptIcon.cpp
+        objects/ChatGptIcon.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

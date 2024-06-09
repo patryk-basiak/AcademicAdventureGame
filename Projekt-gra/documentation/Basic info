@@ -50,6 +50,7 @@ ID for items:
 6 - Time Increaser
 7 - Health
 11 - CarWinchItem
+20 - Disk
 ---------------------------------
 ID for entities:
 0 - null (not an object)

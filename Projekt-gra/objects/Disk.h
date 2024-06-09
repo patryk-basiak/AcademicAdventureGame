@@ -31,6 +31,6 @@ private:
     sf::Text popUp;
     bool Stackable = false;
     bool inUse = false;
-    int value = 11;
+    int value = 20;
 
 };

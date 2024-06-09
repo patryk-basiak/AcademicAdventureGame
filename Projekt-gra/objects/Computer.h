@@ -7,6 +7,7 @@
 #include "Icons.h"
 #include "GoogleIcons.h"
 #include "TeamsIcon.h"
+#include "ChatGptIcon.h"
 
 class Computer
     : public Interactable{
@@ -28,7 +29,7 @@ class Computer
             wallpaper.setScale(0.374,0.395);
             icons.push_back(std::make_unique<GoogleIcons>(311.5, 161.5));
             icons.push_back(std::make_unique<TeamsIcon>(451, 161.5));
-            //Icons(451,161.5)
+            icons.push_back(std::make_unique<ChatGptIcon>(590.5, 161.5));
             text.setString("Press F to use computer");
             text.setFont(Interactable::font);
             text.setPosition(computer.getPosition().x, computer.getPosition().y - this->size[1]);

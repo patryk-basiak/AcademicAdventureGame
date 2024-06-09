@@ -29,6 +29,7 @@ sf::Vector2<float> CarWinch::getSize() {
 }
 
 void CarWinch::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Time time, sf::Time deltatime) {
+    deltaTimeX = deltatime.asSeconds();
     if (player.getPosition().x - winch.getPosition().x < 40 and player.getPosition().x - winch.getPosition().x > 0 and
         std::abs(player.getPosition().y - winch.getPosition().y) < 40) {
         active = true;
@@ -100,7 +101,8 @@ bool CarWinch::getStatus() {
 void CarWinch::check(std::unique_ptr<Wall> &wall) {
     if (Car *car = dynamic_cast<Car *>(wall.get())) {
         if(car->getPosition().x - (line.getPosition().x + line.getSize().x) < 75 and run and line.getSize().x > 10){
-            car->setPosition(car->getPosition().x - 0.03, car->getPosition().y);
+            car->setPosition(car->getPosition().x - 100*deltaTimeX
+                             , car->getPosition().y);
         }
     }
 }

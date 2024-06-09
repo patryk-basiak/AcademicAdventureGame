@@ -148,6 +148,7 @@ void ClassroomDoor::update(sf::RenderWindow &window, Player &player, Equipment &
                 playerGame.getPosition().y < endPoint.getPosition().y + endPoint.getSize().y){
                 game = false;
                 isOpen = false;
+                eq.addItem(20); //TODO check it bro
                 gameEnded = deltatime.asSeconds();
             }
 

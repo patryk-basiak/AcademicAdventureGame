@@ -23,19 +23,23 @@ public:
         std::mt19937 gen(rd()); // Mersenne Twister engine
         std::uniform_int_distribution<> dist(1, 5);
         int numberOfItems = dist(gen);
-        this->itemsInside.insert({std::make_shared<Coin>(x, y), numberOfItems});
-        //TODO jakie inne itemy
+        this->itemsInside.emplace(std::make_unique<Coin>(content.getPosition().x +  15, content.getPosition().y + 15), numberOfItems);
         if(xID == 0){
-            this->itemsInside.insert({std::make_shared<UniCard>(x + 30, y), 1});
+            this->itemsInside.emplace(std::make_unique<UniCard>(x + 30, y), 1);
         }
         popUp.setString("Press F to open chest");
         popUp.setFont(Interactable::font);
         popUp.setPosition(chestTexture.getPosition().x, chestTexture.getPosition().y - this->size[1]);
+        number.setString(std::to_string(itemsInside.begin()->second));
+        number.setFont(Interactable::font);
+        number.setFillColor(sf::Color::Black);
+        number.setPosition(itemsInside.begin()->first->getPosition().x + (itemsInside.begin()->first->getSize().x), itemsInside.begin()->first->getPosition().y );
+//        number.setCharacterSize(10);
 
     }
      void draw(sf::RenderWindow& window) override;
      sf::Vector2<float> getPosition()override;
-    sf::Vector2<float> getSize()override;
+     sf::Vector2<float> getSize()override;
      ~Chest()override;
      void update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time, sf::Time deltatime)override;
      void collision(Player& player, sf::RenderWindow &window) override;
@@ -44,13 +48,16 @@ public:
 private:
     sf::Text popUp;
     sf::Sprite chestTexture;
-    std::map<std::shared_ptr<Collectable>, int> itemsInside;
+    std::map<std::unique_ptr<Collectable>, int> itemsInside;
     sf::Sprite content;
+    sf::Text number;
     int id=103;
     int xID;
     bool isOpen = false;
     bool active = false;
     std::vector<float> position;
     std::vector<float> size;
+    float lastUsed = 0;
+    float lastActive = 0;
 };
 

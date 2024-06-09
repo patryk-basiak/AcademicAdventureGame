@@ -2,6 +2,7 @@
 #include "GoogleIcons.h"
 #include "../ResourceManager.h"
 #include "fmt/core.h"
+#include "../Settings.h"
 
 
 void GoogleIcons::draw(sf::RenderWindow &window) {
@@ -14,11 +15,13 @@ void GoogleIcons::update(sf::RenderWindow &window) {
     if(std::pow(vec.x - centerX, 2) + std::pow(vec.y - centerY, 2) <= 4096){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             active = true;
+            movable = false;
         }
     }
     if(std::pow(vec.x - 1175, 2) + std::pow(vec.y - 125, 2) <= 800 and active){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             active = false;
+            movable = true;
         }
     }
 }

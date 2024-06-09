@@ -49,6 +49,7 @@ private:
     bool isAttached;
     bool possibleToAttached;
     bool run = false;
+    float deltaTimeX = 0;
 
 };
 

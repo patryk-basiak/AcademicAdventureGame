@@ -10,11 +10,10 @@
 class Wardrobe
         : public Interactable{
 public:
-    Wardrobe(float x, float y) : Interactable(x+15,y-15){
+    Wardrobe(float x, float y) : Interactable(x,y){
         this->wardrobeTexture.setTexture(ResourceManager::getTexture("../graphics/wardrobe.png"));
-        this->wardrobeTexture.setPosition(x + 15,y - 15);
-        this->wardrobeTexture.scale(0.2,0.2);
-        this->size = std::vector<float>{64.6, 80};
+        this->wardrobeTexture.setPosition(x,y-36 );
+        this->wardrobeTexture.scale((float)64/wardrobeTexture.getTexture()->getSize().x,(float)100/wardrobeTexture.getTexture()->getSize().y);
         this->shelf.setTexture(ResourceManager::getTexture("../graphics/shelf.png"));
         this->shelf.setPosition(wardrobeTexture.getPosition().x - 30, wardrobeTexture.getPosition().y);
         std::random_device rd;
@@ -22,13 +21,13 @@ public:
         std::uniform_int_distribution<> dist(1, 3);
         int numberOfItems = dist(gen);
         if(numberOfItems > 0) {
-            this->itemsInside.insert({std::make_shared<Coin>(x + 15, y), numberOfItems});
+            this->itemsInside.insert({std::make_shared<Coin>(shelf.getPosition().x +  15, shelf.getPosition().y + 15), numberOfItems});
 
         }
-        this->itemsInside.insert({std::make_shared<Pistol>(x + 30, y), 1});
+        this->itemsInside.insert({std::make_shared<Pistol>(shelf.getPosition().x +  50, shelf.getPosition().y + 15), 1});
         popUp.setString("Press F to open wardrobe");
         popUp.setFont(Interactable::font);
-        popUp.setPosition(wardrobeTexture.getPosition().x, wardrobeTexture.getPosition().y - this->size[1]);
+        popUp.setPosition(wardrobeTexture.getPosition().x, wardrobeTexture.getPosition().y - (this->getSize().y/2));
     }
      void draw(sf::RenderWindow& window) override;
      sf::Vector2<float> getPosition()override;
@@ -47,7 +46,6 @@ private:
     int id=103;
     bool isOpen = false;
     std::vector<float> position;
-    std::vector<float> size;
     float lastUsed = 0;
 };
 

@@ -13,6 +13,10 @@ void Chest::draw(sf::RenderWindow &window) {
         for(auto &item: itemsInside){
             item.first->draw(window);
         }
+        window.draw(number);
+    }
+    if(active and !isOpen){
+        window.draw(popUp);
     }
 }
 
@@ -21,7 +25,7 @@ sf::Vector2<float> Chest::getPosition() {
 }
 
 sf::Vector2<float> Chest::getSize() {
-    return sf::Vector2<float>{size[0], size[1]};
+    return sf::Vector2<float>{chestTexture.getTexture()->getSize().x * chestTexture.getScale().x, chestTexture.getTexture()->getSize().y * chestTexture.getScale().y};
 }
 
 void Chest::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::Time time, sf::Time deltatime) {
@@ -38,29 +42,32 @@ void Chest::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::
                     eq.addItem((*it).first->getId());
                 }
                 itemsInside.erase(it);
-                
-
-
+                number.setString("");
             }
         }
+    }
+    if (player.getPosition().x - chestTexture.getPosition().x < 128 and
+        player.getPosition().x - chestTexture.getPosition().x > 0 and
+        std::abs(player.getPosition().y - chestTexture.getPosition().y) < 80) {
+        active = true;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+            if (time.asSeconds() - lastUsed > 0.5) {
+                if (isOpen) {
+                    isOpen = false;
+                } else {
+                    isOpen = true;
+                }
+            }
+            lastUsed = time.asSeconds();
+        }
+    } else {
+        active = false;
     }
 }
 
 void Chest::collision(Player &player, sf::RenderWindow &window) {
-    if(active and !isOpen){
-        window.draw(popUp);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F) and stage_1){
-        fmt::println("wardrobe open");
-        if(!isOpen){
-            isOpen = true;
-            movable = false;
-    }
-        else{
-            isOpen = false;
-            movable = true;
-        }
-    }
+    
+    
 }
 
 bool Chest::getStatus() {

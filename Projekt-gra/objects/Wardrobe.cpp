@@ -14,6 +14,10 @@ void Wardrobe::draw(sf::RenderWindow &window) {
             item.first->draw(window);
         }
     }
+    if(active and !isOpen){
+        window.draw(popUp);
+    }
+
 }
 
 sf::Vector2<float> Wardrobe::getPosition() {
@@ -21,7 +25,7 @@ sf::Vector2<float> Wardrobe::getPosition() {
 }
 
 sf::Vector2<float> Wardrobe::getSize() {
-    return sf::Vector2f {size[0], size[1]};
+    return sf::Vector2f {wardrobeTexture.getTexture()->getSize().x * wardrobeTexture.getScale().x, wardrobeTexture.getTexture()->getSize().y * wardrobeTexture.getScale().y};
 }
 
 void Wardrobe::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::Time time, sf::Time deltatime) {
@@ -45,24 +49,27 @@ void Wardrobe::update(sf::RenderWindow &window, Player &player, Equipment& eq, s
             }
         }
     }
+    if (player.getPosition().x - wardrobeTexture.getPosition().x < 128 and
+        player.getPosition().x - wardrobeTexture.getPosition().x > 0 and
+        std::abs(player.getPosition().y - wardrobeTexture.getPosition().y) < 70) {
+        active = true;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+            if (time.asSeconds() - lastUsed > 0.5) {
+                if (isOpen) {
+                    isOpen = false;
+                } else {
+                    isOpen = true;
+                }
+            }
+            lastUsed = time.asSeconds();
+        }
+    } else {
+        active = false;
+    }
 }
 
 void Wardrobe::collision(Player &player, sf::RenderWindow &window) {
-    if(active and !isOpen){
-        window.draw(popUp);
-    }
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F) and stage_1){
-        fmt::println("wardrobe open");
-        if(!isOpen){
-            isOpen = true;
-            movable = false;
-    }
-        else{
-            isOpen = false;
-            movable = true;
-        }
-    }
 }
 
 bool Wardrobe::getStatus() {
