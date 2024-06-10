@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <unordered_map>
 #include "SFML/Graphics.hpp"
 #include <memory>
 #include "Settings.h"
@@ -20,7 +21,7 @@ private:
     std::vector<std::unique_ptr<Collectable>> temp_items;
     std::map<int, std::pair<std::unique_ptr<Collectable>, int>> items;
     std::vector<int> numberOfItems;
-
+    std::vector<int> itemPos;
 
     sf::Font font;
 public:
@@ -39,6 +40,7 @@ public:
     void update(sf::RenderWindow& window, Player& player);
     void show();
     void addItem(int ID);
+    bool hasItem(int ID);
 
     void useItemInHand(Player& player);
 

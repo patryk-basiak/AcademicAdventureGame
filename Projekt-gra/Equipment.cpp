@@ -7,6 +7,8 @@
 #include "objects/UniCard.h"
 #include "objects/CarWinchItem.h"
 #include "objects/Disk.h"
+#include "objects/Shotgun.h"
+#include "objects/AssultRiffle.h"
 #include <algorithm>
 
 std::vector<int> Equipment::eq;
@@ -47,44 +49,64 @@ void Equipment::update(sf::RenderWindow& window, Player& player)  {
         window.draw(smallEq);
         window.draw(pointer);
         float x = smallEq.getPosition().x + padding, y = smallEq.getPosition().y + padding;
-        for (auto &item: items) { //TODO
-            if (item.second.first->isStackable() and item.second.second > 1) {
+//        for (auto &item: items) { //TODO
+//            if (item.second.first->isStackable() and item.second.second > 1) {
+//                auto itemCount = sf::Text("000", font, 12);
+//                itemCount.setPosition({x + 20, y + 30});
+//                itemCount.setFillColor(sf::Color::Black);
+//                itemCount.setString(std::to_string(item.second.second));
+//                window.draw(itemCount);
+//            }
+//            item.second.first->setPosition(x,y);
+//            item.second.first->draw(window);
+//            x += 70.0f;
+//        }
+        for(int i = 0; i<3; ++i){
+            auto temp = items.find(itemPos[i]);
+            if(temp != items.end()){
+                if ((*temp).second.first->isStackable() and (*temp).second.second > 1) {
                 auto itemCount = sf::Text("000", font, 12);
                 itemCount.setPosition({x + 20, y + 30});
                 itemCount.setFillColor(sf::Color::Black);
-                itemCount.setString(std::to_string(item.second.second));
+                itemCount.setString(std::to_string((*temp).second.second));
                 window.draw(itemCount);
             }
-            item.second.first->setPosition(x,y);
-            item.second.first->draw(window);
+                (*temp).second.first->setPosition(x,y);
+                (*temp).second.first->draw(window);
             x += 70.0f;
+            }
         }
     } else {
         window.draw(eqRect);
-        float x = eqRect.getPosition().x + padding, y = eqRect.getPosition().y + padding;
-        for (auto &item: items) {
-            if (item.second.first->isStackable() and item.second.second > 1) {
-                auto itemCount = sf::Text("0", font, 12);
-                itemCount.setPosition({x + 20, y + 30});
-                itemCount.setFillColor(sf::Color::Black);
-                itemCount.setString(std::to_string(item.second.second));
-                window.draw(itemCount);
-            }
-            fmt::println("{}",item.second.first->getPosition().x);
-            item.second.first->setPosition(x,y);
-            item.second.first->draw(window);
-            x += 70.0f;
-            if (y > 470) {
-                x = 320;
-                y += 70.0f;
+        float x = eqRect.getPosition().x + padding;
+        float y = eqRect.getPosition().y + padding;
+        for(int i = 0; i<9; ++i){
+            auto temp = items.find(itemPos[i]);
+            if(temp != items.end()){
+                if ((*temp).second.first->isStackable() and (*temp).second.second > 1) {
+                    auto itemCount = sf::Text("000", font, 12);
+                    itemCount.setPosition({x + 20, y + 30});
+                    itemCount.setFillColor(sf::Color::Black);
+                    itemCount.setString(std::to_string((*temp).second.second));
+                    window.draw(itemCount);
+                }
+                (*temp).second.first->setPosition(x,y);
+                (*temp).second.first->draw(window);
+                if (i % 3 == 2 and i != 0) {
+                    x = eqRect.getPosition().x + padding;
+                    y += 70.0f;
+                }else{
+                    x += 70.0f;
+                }
+
             }
         }
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             sf::Vector2i pos = sf::Mouse::getPosition(window);
+            fmt::println("Kliknięto w pole: {}", pos.x);
             for (int i = 0; i < 3; ++i) {
                 for (int j = 0; j < 3; ++j) {
-
                     if (pos.x >= 320 + (70 * i) && pos.x <= 380 + (70 * i) && pos.y >= 320 + (70 * j) &&
                         pos.y <= 380 + (70 * j)) {
                         if (j == 0) {
@@ -187,6 +209,18 @@ void Equipment::addItem(int id) {
             if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<CarWinchItem>(0, 0));
             }
+        }if (id == 12) {
+            items.insert({
+                id, std::make_pair(std::make_unique<Shotgun>(0, 0), 1)});
+            if (temp_items.size() < 3) {
+                temp_items.push_back(std::make_unique<Shotgun>(0, 0));
+            }
+        }if (id == 13) {
+            items.insert({
+                id, std::make_pair(std::make_unique<AssultRiffle>(0, 0), 1)});
+            if (temp_items.size() < 3) {
+                temp_items.push_back(std::make_unique<AssultRiffle>(0, 0));
+            }
         }if (id == 20) {
             items.insert({
                 id, std::make_pair(std::make_unique<Disk>(0, 0), 1)});
@@ -194,6 +228,7 @@ void Equipment::addItem(int id) {
                 temp_items.push_back(std::make_unique<Disk>(0, 0));
             }
         }
+        itemPos.push_back(id);
     }
     else {
         auto iter = items.find(id);
@@ -241,6 +276,15 @@ void Equipment::setMoney(int n) {
     auto x = items.find(3);
     if(x != items.end()){
         x->second.second = n;
+    }
+}
+
+bool Equipment::hasItem(int ID) {
+    if (items.find(ID) == items.end()) {
+        return false;
+    }
+    else{
+        return true;
     }
 }
 

@@ -12,13 +12,25 @@ public:
         bullet.setFillColor(sf::Color::Black);
         initalPosX = x;
         initalPosY = y;
+        type = 0;
     }Bullet(float x, float y, int n) : Collectable(x, y, sf::Color{255, 165, 0, 255 }, 16, 16){
+        bullet.setPosition(x,y);
+        bullet.setRadius(6);
+        bullet.setFillColor(sf::Color::Blue);
+        initalPosX = x;
+        initalPosY = y;
+        direction = n;
+        type = 0;
+    }Bullet(float x, float y, int n, float angle, float angleY) : Collectable(x, y, sf::Color{255, 165, 0, 255 }, 16, 16){
         bullet.setPosition(x,y);
         bullet.setRadius(8);
         bullet.setFillColor(sf::Color::Black);
         initalPosX = x;
         initalPosY = y;
         direction = n;
+        this->degX = angle;
+        this->degY = angleY;
+        type = 2;
     }
     void setPosition(float x, float y) override;
      sf::FloatRect getGlobalBounds() override;
@@ -35,6 +47,9 @@ private:
     float initalPosX;
     float initalPosY;
     float velocity = 0.5;
+    float degX;
+    float degY;
+    float type;
     sf::CircleShape bullet;
 };
 

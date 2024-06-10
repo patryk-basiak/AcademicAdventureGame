@@ -1,7 +1,7 @@
 //
 // Created by UseR on 10.05.2024.
 //
-
+#include <cmath>
 #include "Bullet.h"
 
 void Bullet::setPosition(float x, float y) {
@@ -13,7 +13,12 @@ void Bullet::draw(sf::RenderWindow &window) {
 }
 
 void Bullet::update(sf::RenderWindow &window, Player& player) {
-    bullet.setPosition(bullet.getPosition().x + velocity*direction, bullet.getPosition().y);
+    if(type == 2){
+        bullet.setPosition(bullet.getPosition().x + (cos(degX*M_PI/180.0)  *  velocity*direction), bullet.getPosition().y + sin(degY*M_PI/180.0)*(velocity));
+    }if(type == 0){
+        bullet.setPosition(bullet.getPosition().x + (0.5*direction), bullet.getPosition().y);
+    }
+
 }
 
 bool Bullet::isStackable() const {

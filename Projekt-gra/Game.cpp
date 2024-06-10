@@ -95,8 +95,10 @@ void Game::loadGraphics() {
         maps.emplace_back(0, 1, MapTypes::FOREST, 2);
         maps.emplace_back(0, 1, MapTypes::CITY, 0);
         maps.emplace_back(0, 1, MapTypes::CITY, 1);
+        maps.emplace_back(0, 1, MapTypes::CITY, 2);
         maps.emplace_back(0, 1, MapTypes::PJATK, 0);
         maps.emplace_back(0, 1, MapTypes::PJATK, 1);
+        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
 //        maps.emplace_back(0, 0, MapTypes::TESTING, 0);
 ////                Map(0, 0, MapTypes::STARTING, 0),
 ////
@@ -128,64 +130,105 @@ int Game::getCurrentLvl() const {
 
 void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud) {
     if(!debugMode) {
-        if (currentLvl == 0 and game) {
+        if(game) {
             float currentTime = clockLvl0.getElapsedTime().asSeconds();
-            if (!stage_0) {
-                if (currentTime <= 3) {
-                    movable = false;
-                    hud.dialogSet(true);
-                    player.setPosition(player.getPosition().x - 0.03, player.getPosition().y);
+            if (currentMap.getMainType() == MapTypes::STARTING) {
+                if (!stage_0) {
+                    if (currentTime <= 3) {
+                        movable = false;
+                        hud.dialogSet(true);
+                        player.setPosition(player.getPosition().x - 0.03, player.getPosition().y);
+                    }
+                    if (currentTime > 3 and currentTime <= 6) {
+                        hud.dialogSet(true);
+                        hud.setMessage("Should I go on a walk or ride a bike with friends?");
+                    }
+                    if (currentTime > 6 and currentTime <= 7) {
+                        // decision window
+                        hud.dialogSet(true);
+                        hud.setDecision(std::vector<std::string>{"Go for a walk", "Go ride a bike with friends"},
+                                        player.getPosition().x - (player.getSize()[0] * 1.5),
+                                        player.getPosition().y - (player.getSize()[1])); //
+                    }
+                    if (currentTime > 8 and currentTime <= 12) {
+                        hud.dialogSet(false);
+                        hud.setDecisionVisibility(true);
+                        hud.setMessage("Wait, What's that sound?");
+
+                    }
                 }
-                if (currentTime > 3 and currentTime <= 6) {
+                if (stage_0) {
+//            clockLvl0.restart(); TODO
+                    float newTime = clockLvl0.getElapsedTime().asSeconds();
                     hud.dialogSet(true);
-                    hud.setMessage("Should I go on a walk or ride a bike with friends?");
+                    hud.setDecisionVisibility(false);
+                    movable = true;
+                    if (newTime > 3) {
+                        hud.dialogSet(false);
+                        if (!hud.dialogGet()) {
+//                    hud.dialogSet(false);
+                            int tempDecision = hud.getDecision();
+                            // TODO resultat decyzji
+                            decisions.push_back(tempDecision);
+                            hud.setObjective("Check computer");
+                        }
+                    }
                 }
-                if (currentTime > 6 and currentTime <= 7) {
-                    // decision window
-                    hud.dialogSet(true);
-                    hud.setDecision(std::vector<std::string>{"Go for a walk", "Go ride a bike with friends"},
-                                    player.getPosition().x - (player.getSize()[0] * 1.5),
-                                    player.getPosition().y - (player.getSize()[1])); //
+                if (stage_1) {
+                    hud.setObjective("Look for disk");
                 }
-                if (currentTime > 8 and currentTime <= 12) {
-                    hud.dialogSet(false);
-                    hud.setDecisionVisibility(true);
-                    hud.setMessage("Wait, What's that sound?");
+                if (stage_1 and stage_2) {
+                    nextRoomAvailable = true;
+                    hud.setObjective("Go back to Uni and find your files");
+                }
+
+            }
+            if (currentMap.getMainType() == MapTypes::FOREST) {
+                hud.setObjective("Jump over the trees and go to Uni");
+                if (currentMap.getSubType() == 0) {
+                    nextRoomAvailable = true;
 
                 }
+                if (currentMap.getSubType() == 1) {
+                    hud.setObjective("Eliminate enemies");
+                    if (currentMap.getNumberOfEnemies() <= 0) {
+                        nextRoomAvailable = true;
+
+                    }
+                }
+                if (currentMap.getSubType() == 2) {
+                    nextRoomAvailable = true;
+                    hud.setObjective("");
+                }
             }
-            if (stage_0) {
-//            clockLvl0.restart(); TODO
-                float newTime = clockLvl0.getElapsedTime().asSeconds();
-                hud.dialogSet(true);
-                hud.setDecisionVisibility(false);
-                movable = true;
-                if (newTime > 3) {
-                    hud.dialogSet(false);
-                    if (!hud.dialogGet()) {
-//                    hud.dialogSet(false);
-                        int tempDecision = hud.getDecision();
-                        // TODO resultat decyzji
-                        decisions.push_back(tempDecision);
-                        hud.setObjective("Check computer");
+            if (currentMap.getMainType() == MapTypes::CITY) {
+                if (currentMap.getSubType() == 0) {
+                    nextRoomAvailable = true;
+                    hud.setObjective("Avoid cars");
+                }
+                if (currentMap.getSubType() == 1) {
+                    nextRoomAvailable = true;
+                    hud.setObjective("Find a way to go further");
+                }
+                if (currentMap.getSubType() == 2) {
+                    hud.setObjective("Eliminate Boss");
+                    if (currentMap.getNumberOfEnemies() <= 0) {
+                        nextRoomAvailable = true;
                     }
                 }
             }
-            if (stage_1) {
-                hud.setObjective("Look for disk");
-            }
-            if (stage_1 and stage_2) {
-                nextRoomAvailable = true;
-                hud.setObjective("Go back to Uni and find your files");
-            }
-
-        }
-        if (currentLvl == 1) {
-            nextRoomAvailable = true;
-        }
-        if (currentLvl == 2) {
-            if (currentMap.getNumberOfEnemies() <= 0) {
-                nextRoomAvailable = true;
+            if (currentMap.getMainType() == MapTypes::PJATK) {
+                if (currentMap.getSubType() == 0) {
+                    nextRoomAvailable = true;
+                    hud.setObjective("Go to the Uni building B");
+                }
+                if (currentMap.getSubType() == 1) {
+                    hud.setObjective("Find class room where you left your disk");
+                    if (eq.hasItem(20)) {
+                        nextRoomAvailable = true;
+                        hud.setObjective("Go back to home and return an assignment");
+                    }
+                }
             }
         }
     }

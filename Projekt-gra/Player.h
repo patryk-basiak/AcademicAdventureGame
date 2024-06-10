@@ -47,7 +47,7 @@ private:
     float JumpCooldown = 2;
     int val= 0;
     int health = 3;
-    float jumpVelocity = -200;
+    float jumpVelocity = -150;
     bool isGround = true;
     float surface = 1000;
     bool isFacingRight = true;

@@ -38,6 +38,7 @@
 #include "ThrowableContainer.h"
 #include "objects/classroomDoor.h"
 #include "objects/Elevator.h"
+#include "objects/ComputerBoss.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -594,6 +595,52 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                 vec.push_back({{0}});
                 vec.push_back(inter);
                 return vec;
+            }if(subType == 2)
+            {
+                spawnPoint = {8, 654};
+                std::uniform_int_distribution<> chestPos(3, 11);
+                auto chP = chestPos(gen);
+                auto map = std::vector<std::vector<int>>();
+                auto items = std::vector<std::vector<int>>();
+                auto ENEMY = std::vector<std::vector<int>>();
+                auto inter = std::vector<std::vector<int>>();
+                for (int i = 0; i < y; ++i)
+                {
+                    std::vector temp = std::vector<int>();
+                    std::vector interact = std::vector<int>();
+                    std::vector enemy = std::vector<int>();
+                    std::vector collect = std::vector<int>();
+                    for (int j = 0; j < x; ++j)
+                    {
+                        if(i == y - 6 and j > 4 and j < x - 4) {
+                            temp.push_back(1);
+                            interact.push_back(0);
+                            enemy.push_back(0);
+                        }else if(i == 3 and j == x/2 - 4){
+                            temp.push_back(0);
+                            interact.push_back(0);
+                            enemy.push_back(6);
+                        }else if(i > y - 3)
+                        {
+                            temp.push_back(9);
+                            interact.push_back(0);
+                            enemy.push_back(0);
+                        }else
+                        {
+                            temp.push_back(0);
+                            interact.push_back(0);
+                            enemy.push_back(0);
+                        }
+                    }
+                    map.push_back(temp);
+                    inter.push_back(interact);
+                    ENEMY.push_back(enemy);
+                }
+                vec.push_back(map);
+                vec.push_back({{0}});
+                vec.push_back(ENEMY);
+                vec.push_back(inter);
+                return vec;
             }
         }
     if(mainType == MapTypes::PJATK){
@@ -756,6 +803,8 @@ std::vector<std::unique_ptr<Entity>> Map::transformEntities(const std::vector<st
                 trans.push_back(std::make_unique<Wizard>(x,y));
             }if (i == 5) {
                 trans.push_back(std::make_unique<CarEnemy>(x,y));
+            }if (i == 6) {
+                trans.push_back(std::make_unique<ComputerBoss>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -909,14 +958,52 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
         (*it)->update(deltatime, player);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             (*it)->collision(player);
-            if(!(*it)->isFriendly()) {
+            if (!(*it)->isFriendly()) {
                 entity_vec.erase(it);
                 it--;
                 return;
             }
         }
-        if( ((*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610 )and (*it)->diesOutsideScreen()){
+        if (((*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610) and (*it)->diesOutsideScreen()) {
             entity_vec.erase(it);
+            it--;
+            return;
+        }
+        if (!(*it)->isFriendly()) {
+            for (auto bullets = ThrowableContainer::getVector().begin();
+                 bullets != ThrowableContainer::getVector().end(); bullets++) {
+                if ((*bullets)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+                    (*it)->setHealth((*it)->getHealth() - 1);
+                    ThrowableContainer::getVector().erase(bullets);
+                    bullets--;
+                    if ((*it)->getHealth() <= 0) {
+                        entity_vec.erase(it);
+                        it--;
+                    }
+                    return;
+                }
+                for (auto &iter: walls_vec)
+                    if ((*bullets)->getGlobalBounds().intersects(iter->getGlobalBounds())) {
+                        ThrowableContainer::getVector().erase(bullets);
+                        bullets--;
+                        return;
+                    }
+            }
+        }
+    }
+        for( auto it = ThrowableContainer::getEntityVector().begin(); it != ThrowableContainer::getEntityVector().end(); it++) {
+        checkCollisionEntity((*it), window);
+        (*it)->update(deltatime, player);
+        if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+            (*it)->collision(player);
+            if (!(*it)->isFriendly()) {
+                ThrowableContainer::getEntityVector().erase(it);
+                it--;
+                return;
+            }
+        }
+        if( ((*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610 )and (*it)->diesOutsideScreen()){
+            ThrowableContainer::getEntityVector().erase(it);
             it--;
             return;
         }
@@ -927,9 +1014,15 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
                     ThrowableContainer::getVector().erase(bullets);
                     bullets--;
                     if((*it)->getHealth() <= 0){
-                        entity_vec.erase(it);
+                        ThrowableContainer::getEntityVector().erase(it);
                         it--;
                     }
+                    return;
+                }
+                for(auto & iter : walls_vec)
+                if((*bullets)->getGlobalBounds().intersects(iter->getGlobalBounds())){
+                    ThrowableContainer::getVector().erase(bullets);
+                    bullets--;
                     return;
                 }
             }
@@ -943,6 +1036,16 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
                 its--;
             }
         }
+
+    for (auto it = ThrowableContainer::getVector().begin(); it != ThrowableContainer::getVector().end(); it++) {
+        (*it)->update(window, player);
+        if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+            eq.addItem((*it)->getId());
+            (*it)->collision(player);
+            ThrowableContainer::getVector().erase(it);
+            it--;
+        }
+    }
     for (auto const &e: ThrowableContainer::getInteractVector()) {
         e->update(window,player, eq, time, deltatime);
     }
@@ -953,6 +1056,8 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
         e->update(window,player);
     }for (auto const &e: walls_vec) {
         e->update();
+    }for (auto const &e: ThrowableContainer::getEntityVector()) {
+        e->update(deltatime, player);
     }
 }
 
@@ -971,6 +1076,8 @@ void Map::draw(sf::RenderWindow& window) {
         e->draw(window);
     }
     for (auto const &e: ThrowableContainer::getVector()) {
+        e->draw(window);
+    }for (auto const &e: ThrowableContainer::getEntityVector()) {
         e->draw(window);
     }
     for (auto const &e: ThrowableContainer::getInteractVector()) {

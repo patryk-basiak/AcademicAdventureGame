@@ -5,9 +5,11 @@
 #include "ThrowableContainer.h"
 #include "objects/Bullet.h"
 #include "objects/CarWinch.h"
+#include "objects/smallComputers.h"
 
 std::vector<std::unique_ptr<Collectable>> ThrowableContainer::vector;
 std::vector<std::unique_ptr<Interactable>> ThrowableContainer::vector_interact;
+std::vector<std::unique_ptr<Entity>> ThrowableContainer::vector_entity;
 void ThrowableContainer::addItem(int id, float x, float y) {
     if (id == 3) {
         vector.push_back(std::make_unique<Coin>(x, y));
@@ -48,4 +50,24 @@ void ThrowableContainer::addItemInteract(int id, float x, float y) {
 
 void ThrowableContainer::addItemInteract(int id, float x, float y, float add) {
 //TODO
+}
+
+void ThrowableContainer::addItem(int id, float x, float y, float add, float n, float m) {
+    if (id == 4) {
+        vector.push_back(std::make_unique<Bullet>(x, y, add, n, m));
+    }
+}
+
+void ThrowableContainer::addItemEntity(int id, float x, float y, float add) {
+    if(id == 7){
+        vector_entity.push_back(std::make_unique<SmallComputers>(x,y));
+    }
+}
+
+void ThrowableContainer::addItemEntity(int id, float x, float y, float add, float n, float m) {
+//TODO
+}
+
+std::vector<std::unique_ptr<Entity>> &ThrowableContainer::getEntityVector() {
+    return vector_entity;
 }

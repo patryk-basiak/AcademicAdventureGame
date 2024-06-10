@@ -43,9 +43,6 @@ sf::Vector2<float> Disk::getSize() {
 }
 
 void Disk::usage(Player &player) {
-    ThrowableContainer::addItemInteract(301, player.getPosition().x - 15, player.getPosition().y);
-
-
 }
 bool Disk::isOneTimeUse() {
     return true;

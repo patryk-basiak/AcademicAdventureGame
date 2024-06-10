@@ -42,7 +42,10 @@ void Chest::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::
                     eq.addItem((*it).first->getId());
                 }
                 itemsInside.erase(it);
+                it--;
                 number.setString("");
+                return;
+
             }
         }
     }

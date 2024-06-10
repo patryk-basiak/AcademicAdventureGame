@@ -20,7 +20,7 @@ void Computer::collision(Player &player, sf::RenderWindow& window) {
 void Computer::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time time, sf::Time deltatime) {
     if(coll){
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
-            if(time.asSeconds() - lastUsed > 2) {
+            if(time.asSeconds() - lastUsed > 0.8) {
                 if (inUse) {
                     movable = true;
                     inUse = false;

@@ -50,6 +50,8 @@ ID for items:
 6 - Time Increaser
 7 - Health
 11 - CarWinchItem
+12 - shotgun
+13 - Ak47
 20 - Disk
 ---------------------------------
 ID for entities:
@@ -59,6 +61,8 @@ ID for entities:
 3 - Entity
 4 - Wizard
 5 - CarEnemy
+6 - Computer (boss)
+7 - small computer
 
 Classes:
 main.cpp

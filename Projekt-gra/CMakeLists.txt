@@ -123,6 +123,14 @@ add_executable(game main.cpp
         objects/Disk.h
         objects/ChatGptIcon.cpp
         objects/ChatGptIcon.h
+        objects/ComputerBoss.cpp
+        objects/ComputerBoss.h
+        objects/Shotgun.cpp
+        objects/Shotgun.h
+        objects/smallComputers.cpp
+        objects/smallComputers.h
+        objects/AssultRiffle.cpp
+        objects/AssultRiffle.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

@@ -37,8 +37,13 @@ auto main() -> int {
     HUD hud;
     Game gameClass;
     bool debug = false;
-    debugMode = true;
+    debugMode = false;
     eq.addItem(2);
+    eq.addItem(3);
+    eq.addItem(5);
+    eq.addItem(12);
+    eq.addItem(13);
+    eq.addItem(20);
     sf::Clock clock;
     sf::Clock timer;
     while (window.isOpen()) {

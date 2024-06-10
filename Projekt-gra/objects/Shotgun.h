@@ -8,38 +8,23 @@
 #include "../ResourceManager.h"
 
 
-class Pistol
+class Shotgun
         : public Collectable{
 
 public:
-    Pistol(float x, float y) : Collectable(x, y, sf::Color{255, 165, 0, 255 }, 60, 60){
-        fmt::println("pistol created");
-        pistol.scale(0.042,0.042);
-        pistol.setTexture(ResourceManager::getTexture("../graphics/pistol.png"));
-        pistol.setPosition(x,y);
+    Shotgun(float x, float y) : Collectable(x, y, sf::Color{255, 165, 0, 255 }, 60, 60){
+        fmt::println("shotgun created");
+        shotgun.setTexture(ResourceManager::getTexture("../graphics/shotgun.png"));
+        shotgun.scale((float)64/shotgun.getTexture()->getSize().x,(float)32/shotgun.getTexture()->getSize().y);
+        shotgun.setPosition(x,y);
     }
-
-    Pistol(const Pistol& other)
-            : Collectable(other)
-    {
-        ID = other.ID;
-        Stackable = other.Stackable;
-        am = other.am;
-        toAdd = other.toAdd;
-
-        for (const auto& shape : other.ammo) {
-            ammo.push_back(shape);
-        }
-        pistol = other.pistol;
-    }
+    
 
 
     void setPosition(float x, float y) override;
     void usage(Player& player) override;
     std::vector<sf::RectangleShape> getAmmoList() override;
     void draw(sf::RenderWindow& window) override;
-    bool operator==(const Collectable& other) const override;
-    bool operator==(const Pistol& other) const;
     void collision(Player& player) override;
     void update(sf::RenderWindow& window, Player& player) override;
     bool isStackable() const override;
@@ -48,17 +33,17 @@ public:
 private:
     sf::Clock clock;
     float lastShotTime = 0;
-    float shotCooldown = 2;
-    float reloadTime = 4;
+    float shotCooldown = 1;
+    float reloadTime = 3;
     float reloadStart = 0;
     bool reloading = false;
     bool ready = true;
     void shot();
-    int ID = 2;
-    int ammunition = 15;
+    int ID = 12;
+    int ammunition = 12;
     bool Stackable = false;
     std::vector<sf::RectangleShape> ammo;
-    sf::Sprite pistol;
+    sf::Sprite shotgun;
     std::vector<int> am;
     bool toAdd = false;
 
