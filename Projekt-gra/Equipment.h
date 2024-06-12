@@ -15,14 +15,18 @@ protected:
 private:
     int size = 9;
     float padding = 10;
-    int currentEq;
+    int currentEq = 0;
     bool isEmpty = true;
     bool isShown = false;
     std::vector<std::unique_ptr<Collectable>> temp_items;
     std::map<int, std::pair<std::unique_ptr<Collectable>, int>> items;
     std::vector<int> numberOfItems;
     std::vector<int> itemPos;
-
+    int holding = 99;
+    bool mouseClicked = false;
+    bool isHolding = false;
+    float lastClicked = 0;
+    float lastOpen = 0;
     sf::Font font;
 public:
 
@@ -37,7 +41,7 @@ public:
     sf::RectangleShape smallEq;
     sf::RectangleShape pointer;
     void showInHand(Player& player, sf::RenderWindow& window) const;
-    void update(sf::RenderWindow& window, Player& player);
+    void update(sf::RenderWindow& window, Player& player, sf::Time timer);
     void show();
     void addItem(int ID);
     bool hasItem(int ID);

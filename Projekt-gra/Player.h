@@ -44,10 +44,10 @@ private:
     int agile = 3;
     int endurance = 3;
     float lastJumpTime = 0;
-    float JumpCooldown = 2;
+    float JumpCooldown = 1.2;
     int val= 0;
     int health = 3;
-    float jumpVelocity = -150;
+    float jumpVelocity = (float) -150 - ((float)(150*agile)/20);
     bool isGround = true;
     float surface = 1000;
     bool isFacingRight = true;

@@ -77,9 +77,11 @@ void Player::update(sf::Time time) {
 
     collisionRect.left += horizontalVelocity * deltaTime;
     if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) and jumpable) {
-        verticalVelocity = jumpVelocity;
-        isGround = false;
-        lastJumpTime = clock.getElapsedTime().asSeconds();
+        if(clock.getElapsedTime().asSeconds() - lastJumpTime > JumpCooldown) {
+            verticalVelocity = jumpVelocity;
+            isGround = false;
+            lastJumpTime = clock.getElapsedTime().asSeconds();
+        }
     }
 
     if (!isGround and jumpable) {

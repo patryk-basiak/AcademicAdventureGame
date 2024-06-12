@@ -8,11 +8,12 @@
 #include "FPS.h"
 #include "HUD.h"
 #include "Game.h"
+#include "Menu.h"
 
 
 auto main() -> int {
     sf::RenderWindow window = sf::RenderWindow(
-            sf::VideoMode({1600, 900}), "Adventure",
+            sf::VideoMode({1600, 900}), "Academic Rush: Sunday Quest",
             sf::Style::Default, sf::ContextSettings(0, 0, 8));
     // set frame limit
 //    window.setFramerateLimit(144);
@@ -30,6 +31,7 @@ auto main() -> int {
     worldBack.setTexture(ResourceManager::getTexture("../graphics/backgroundCity.png"));
     worldBack.scale(0.78125, 0.78125);
 
+    Menu menuClass;
     FPS fps1;
     // initialize player and eq
     Player player;
@@ -58,6 +60,7 @@ auto main() -> int {
                     }
                 }
                 window.clear(sf::Color::Black);
+                menuClass.draw(window);
                 window.display();
             }
         }
@@ -69,7 +72,7 @@ auto main() -> int {
                 gameClass.gameRules(window,player,eq,deltaTime,hud);
                 player.update(deltaTime);
                 player.draw(window);
-                eq.update(window, player);
+                eq.update(window, player, time);
                 fps1.update();
                 window.display();
 

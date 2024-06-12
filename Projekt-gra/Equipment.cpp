@@ -43,24 +43,12 @@ void Equipment::show() {
 
 
 
-void Equipment::update(sf::RenderWindow& window, Player& player)  {
+void Equipment::update(sf::RenderWindow& window, Player& player, sf::Time timer)  {
     Equipment::showInHand(player, window);
     if (!this->isShown) {
         window.draw(smallEq);
         window.draw(pointer);
         float x = smallEq.getPosition().x + padding, y = smallEq.getPosition().y + padding;
-//        for (auto &item: items) { //TODO
-//            if (item.second.first->isStackable() and item.second.second > 1) {
-//                auto itemCount = sf::Text("000", font, 12);
-//                itemCount.setPosition({x + 20, y + 30});
-//                itemCount.setFillColor(sf::Color::Black);
-//                itemCount.setString(std::to_string(item.second.second));
-//                window.draw(itemCount);
-//            }
-//            item.second.first->setPosition(x,y);
-//            item.second.first->draw(window);
-//            x += 70.0f;
-//        }
         for(int i = 0; i<3; ++i){
             auto temp = items.find(itemPos[i]);
             if(temp != items.end()){
@@ -71,27 +59,37 @@ void Equipment::update(sf::RenderWindow& window, Player& player)  {
                 itemCount.setString(std::to_string((*temp).second.second));
                 window.draw(itemCount);
             }
-                (*temp).second.first->setPosition(x,y);
-                (*temp).second.first->draw(window);
+                temp_items.at(i)->setPosition(x,y);
+                temp_items.at(i)->draw(window);
             x += 70.0f;
             }
         }
+        if(timer.asSeconds() - lastOpen < 0.3 and timer.asSeconds() - lastOpen > 0.2){
+            mousekeyListener = false;
+        }
     } else {
+        lastOpen = timer.asSeconds();
+        mousekeyListener = true;
+        sf::Vector2i pos = sf::Mouse::getPosition(window);
         window.draw(eqRect);
         float x = eqRect.getPosition().x + padding;
         float y = eqRect.getPosition().y + padding;
         for(int i = 0; i<9; ++i){
             auto temp = items.find(itemPos[i]);
             if(temp != items.end()){
-                if ((*temp).second.first->isStackable() and (*temp).second.second > 1) {
+                if ((*temp).second.first->isStackable() and (*temp).second.second > 1 and i != holding) {
                     auto itemCount = sf::Text("000", font, 12);
                     itemCount.setPosition({x + 20, y + 30});
                     itemCount.setFillColor(sf::Color::Black);
                     itemCount.setString(std::to_string((*temp).second.second));
                     window.draw(itemCount);
                 }
-                (*temp).second.first->setPosition(x,y);
-                (*temp).second.first->draw(window);
+                if((!isHolding and !mouseClicked) or i != holding) {
+                    temp_items.at(i)->setPosition(x, y);
+                }else{
+                    temp_items.at(i)->setPosition(pos.x,pos.y);
+                }
+                temp_items.at(i)->draw(window);
                 if (i % 3 == 2 and i != 0) {
                     x = eqRect.getPosition().x + padding;
                     y += 70.0f;
@@ -102,31 +100,53 @@ void Equipment::update(sf::RenderWindow& window, Player& player)  {
             }
         }
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            sf::Vector2i pos = sf::Mouse::getPosition(window);
-            fmt::println("Kliknięto w pole: {}", pos.x);
-            for (int i = 0; i < 3; ++i) {
-                for (int j = 0; j < 3; ++j) {
-                    if (pos.x >= 320 + (70 * i) && pos.x <= 380 + (70 * i) && pos.y >= 320 + (70 * j) &&
-                        pos.y <= 380 + (70 * j)) {
-                        if (j == 0) {
-                            fmt::println("Kliknięto w pole: {}", i);
-                        }
-                        if (j == 1)
-                            fmt::println("Kliknięto w pole: {}", i + j + 2);
-                        if (j == 2) {
-                            fmt::println("Kliknięto w pole: {}", i + j + 4);
+
+
+                for (int i = 0; i <3 ; ++i) {
+                    for (int j = 0; j < 3; ++j) {
+                        if(pos.x >= eqRect.getPosition().x + j*70 and pos.x <= eqRect.getPosition().x + ((j+1)*70) and
+                           pos.y >= eqRect.getPosition().y + i*70 and pos.y <= eqRect.getPosition().y + ((i+1)*70)){
+                            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                                if(timer.asSeconds() - lastClicked > 0.2) {
+                                    lastClicked = timer.asSeconds();
+                                    mouseClicked = true;
+                                    if (!isHolding) {
+                                        holding = j + (i * 3);
+                                        isHolding = true;
+                                    } else {
+                                        if (j != holding and holding != 99) {
+                                            if (j + (i * 3) >= temp_items.size()) {
+                                                fmt::println("help");
+                                                iter_swap(temp_items.begin() + holding, temp_items.end() - 1);
+                                                iter_swap(itemPos.begin() + holding, itemPos.end() - 1);
+                                                isHolding = false;
+                                                holding = 99;
+                                            } else if (temp_items.at(j + (i * 3)) != nullptr) {
+                                                fmt::println("second {}{}", holding, j);
+                                                iter_swap(temp_items.begin() + holding,
+                                                          temp_items.begin() + (j + (i * 3)));
+                                                iter_swap(itemPos.begin() + holding, itemPos.begin() + (j + (i * 3)));
+                                                isHolding = false;
+                                                holding = 99;
+                                            }
+                                        } else {
+                                            fmt::println("last");
+                                            holding = 99;
+                                            isHolding = false;
+                                        }
+
+                                    }
+                                } else {
+                                    mouseClicked = false;
+                                }
+                            }
                         }
                     }
                 }
 
-
-            }
-
         }
 
     }
-}
 
 int Equipment::itemInHand() const {
     if (!eq.empty()){
@@ -136,7 +156,8 @@ int Equipment::itemInHand() const {
 }
 void Equipment::showInHand(Player& player, sf::RenderWindow& window) const {
     if (!items.empty() && currentEq < items.size() and player.isSeen()) {
-        auto& item = temp_items.at(currentEq);
+        auto iterator = items.find(itemPos[currentEq]);
+        auto& item = (*iterator).second.first;
         if (item == nullptr) {
             return;
         }
@@ -146,36 +167,28 @@ void Equipment::showInHand(Player& player, sf::RenderWindow& window) const {
         else{
             item->setPosition(player.getPosition().x - 25, player.getPosition().y + 5);
         }
-
         item->draw(window);
         item->update(window, player);
-
-
         }
     }
 
 void Equipment::movedMouse() {
-    this->currentEq += 1;
-    pointer.setPosition(pointer.getPosition().x + 70, pointer.getPosition().y);
-    if(this->currentEq >= 3){
+    if(this->currentEq >=2){
         this->currentEq = 0;
         pointer.setPosition(700, 840);
+    }else{
+        this->currentEq += 1;
+        pointer.setPosition(pointer.getPosition().x + 70, pointer.getPosition().y);
     }
-    if(pointer.getPosition().x < 700  or pointer.getPosition().x > 900){
-        pointer.setPosition(700,840);
-    }
-
 }
 
 void Equipment::movedMouseDown() {
-    this->currentEq -= 1;
-    pointer.setPosition(pointer.getPosition().x - 70, pointer.getPosition().y);
-    if(this->currentEq < 0){
+    if(this->currentEq <= 0){
         pointer.setPosition(840, pointer.getPosition().y);
-        this->currentEq = 3;
-    }
-    if(pointer.getPosition().x < 690 or pointer.getPosition().x > 900 ){
-        pointer.setPosition(840, 840);
+        this->currentEq = 2;
+    }else{
+        pointer.setPosition(pointer.getPosition().x - 70, pointer.getPosition().y);
+        this->currentEq -= 1;
     }
 }
 
@@ -186,47 +199,32 @@ void Equipment::addItem(int id) {
         if (id == 2) {
             std::unique_ptr<Collectable> pistol = std::make_unique<Pistol>(0, 0);
             items.insert({id, std::make_pair(std::move(pistol), 1)});
-            if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<Pistol>(0, 0));
-            }
-
         }
         if (id == 3) {
             items.insert({id, std::make_pair(std::make_unique<Coin>(0, 0), 1)});
-            if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<Coin>(0, 0));
-            }
         }
         if (id == 5) {
             items.insert({id, std::make_pair(std::make_unique<UniCard>(0, 0), 1)});
-            if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<UniCard>(0, 0));
-            }
         }
         if (id == 11) {
             items.insert({
                 id, std::make_pair(std::make_unique<CarWinchItem>(0, 0), 1)});
-            if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<CarWinchItem>(0, 0));
-            }
         }if (id == 12) {
             items.insert({
                 id, std::make_pair(std::make_unique<Shotgun>(0, 0), 1)});
-            if (temp_items.size() < 3) {
                 temp_items.push_back(std::make_unique<Shotgun>(0, 0));
-            }
         }if (id == 13) {
-            items.insert({
-                id, std::make_pair(std::make_unique<AssultRiffle>(0, 0), 1)});
-            if (temp_items.size() < 3) {
-                temp_items.push_back(std::make_unique<AssultRiffle>(0, 0));
-            }
+            items.insert({id, std::make_pair(std::make_unique<AssultRiffle>(0, 0), 1)});
+            temp_items.push_back(std::make_unique<AssultRiffle>(0, 0));
+
         }if (id == 20) {
             items.insert({
                 id, std::make_pair(std::make_unique<Disk>(0, 0), 1)});
-            if (temp_items.size() < 3) {
-                temp_items.push_back(std::make_unique<Disk>(0, 0));
-            }
+            temp_items.push_back(std::make_unique<Disk>(0, 0));
         }
         itemPos.push_back(id);
     }
@@ -241,18 +239,20 @@ void Equipment::addItem(int id) {
 
 
 void Equipment::useItemInHand(Player& player) {
-    if (!temp_items.empty()) {
+    if (!items.empty()) {
         if(!mousekeyListener) {
-            if (currentEq < temp_items.size()) {
-                if (temp_items[currentEq]->isOneTimeUse()) {
-                    this->temp_items[currentEq]->usage(player);
-                    auto it = std::find(temp_items.begin(), temp_items.end(), temp_items[currentEq]);
-                    auto temp = this->temp_items[currentEq]->getId();
-                    temp_items.erase(it);
+            if (currentEq < itemPos.size()) {
+                auto iter = ((items.find(itemPos[currentEq])));
+                if ((*items.find(itemPos[currentEq])).second.first->isOneTimeUse()) {
+                    (*iter).second.first->usage(player);
+                    auto it = std::find(items.begin(), items.end(), (*iter));
+                    auto temp = (*iter).second.first->getId();
                     items.erase(temp);
-
+                    auto xIt = std::find(itemPos.begin(), itemPos.end(), temp);
+                    temp_items.erase(temp_items.begin() + currentEq);
+                    itemPos.erase(xIt);
                 } else {
-                    this->temp_items[currentEq]->usage(player);
+                    (*iter).second.first->usage(player);
                 }
             }
         }

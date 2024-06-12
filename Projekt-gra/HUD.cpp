@@ -88,6 +88,12 @@ void HUD::setDecision(std::vector<std::string> newDec, float x, float y) {
 
 void HUD::setDecisionVisibility(bool visible) {
     decisionShow = visible;
+    if(!visible){
+        mousekeyListener = false;
+    }else{
+        mousekeyListener = true;
+    }
+
 }
 
 int HUD::getDecision() {

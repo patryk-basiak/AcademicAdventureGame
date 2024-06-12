@@ -1002,6 +1002,7 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
                 return;
             }
         }
+
         if( ((*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610 )and (*it)->diesOutsideScreen()){
             ThrowableContainer::getEntityVector().erase(it);
             it--;
@@ -1017,12 +1018,6 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
                         ThrowableContainer::getEntityVector().erase(it);
                         it--;
                     }
-                    return;
-                }
-                for(auto & iter : walls_vec)
-                if((*bullets)->getGlobalBounds().intersects(iter->getGlobalBounds())){
-                    ThrowableContainer::getVector().erase(bullets);
-                    bullets--;
                     return;
                 }
             }
@@ -1045,7 +1040,14 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
             ThrowableContainer::getVector().erase(it);
             it--;
         }
+        for(auto & iter : walls_vec)
+            if((*it)->getGlobalBounds().intersects(iter->getGlobalBounds())){
+                ThrowableContainer::getVector().erase((it));
+                it--;
+                return;
+            }
     }
+
     for (auto const &e: ThrowableContainer::getInteractVector()) {
         e->update(window,player, eq, time, deltatime);
     }

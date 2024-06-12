@@ -131,6 +131,8 @@ add_executable(game main.cpp
         objects/smallComputers.h
         objects/AssultRiffle.cpp
         objects/AssultRiffle.h
+        Menu.cpp
+        Menu.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

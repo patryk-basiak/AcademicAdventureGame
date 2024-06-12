@@ -29,10 +29,10 @@ public:
         tempInside.setSize(sf::Vector2f{400,400});
         tempInside.setPosition(kiosk.getPosition().x + (size[0]/2) - 200, kiosk.getPosition().y + (size[1]/2) - 200 );
         tempInside.setFillColor(sf::Color::White);
-        items.emplace(std::make_unique<Health>(x,y - 100), std::make_pair(10,0));
-        items.emplace(std::make_unique<TimeIncreaser>(x,y), std::make_pair(15,0));
-        items.emplace(std::make_unique<Shotgun>(x,y + 100), std::make_pair(15,0));
-        items.emplace(std::make_unique<AssultRiffle>(x,y + 200), std::make_pair(25,0));
+        items.emplace(std::make_unique<Health>(x,y - 175), std::make_pair(10,0));
+        items.emplace(std::make_unique<TimeIncreaser>(x,y - 75), std::make_pair(15,0));
+        items.emplace(std::make_unique<Shotgun>(x,y + 25), std::make_pair(15,0));
+        items.emplace(std::make_unique<AssultRiffle>(x,y + 125), std::make_pair(25,0));
         auto it = items.begin();
         for(auto & e : price)
         {
