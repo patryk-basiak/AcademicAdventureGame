@@ -18,9 +18,9 @@ Equipment::Equipment(){
         fmt::println("font loading error");
     }
     this->currentEq = 0;
-    eqRect.setSize(sf::Vector2f(220,220));
-    eqRect.setPosition(800 - (eqRect.getSize().x/2),450 - (eqRect.getSize().y/2));
-    eqRect.setFillColor({173,216,230,255});
+    eqRect.setTexture(ResourceManager::getTexture("../graphics/shelf.png"));
+    eqRect.setScale((float)300/eqRect.getTexture()->getSize().x,(float)300/eqRect.getTexture()->getSize().y);
+    eqRect.setPosition(800 - (eqRect.getTexture()->getSize().x*eqRect.getScale().x/2),450 - (eqRect.getTexture()->getSize().x*eqRect.getScale().y/2));
     smallEq.setSize(sf::Vector2f(220,70));
     smallEq.setPosition(800 - (smallEq.getSize().x/2),900 - (smallEq.getSize().y));
     smallEq.setFillColor(sf::Color::Magenta);
@@ -48,7 +48,8 @@ void Equipment::update(sf::RenderWindow& window, Player& player, sf::Time timer)
     if (!this->isShown) {
         window.draw(smallEq);
         window.draw(pointer);
-        float x = smallEq.getPosition().x + padding, y = smallEq.getPosition().y + padding;
+        float x = smallEq.getPosition().x + padding - 20;
+        float y = smallEq.getPosition().y + padding - 20;
         for(int i = 0; i<3; ++i){
             auto temp = items.find(itemPos[i]);
             if(temp != items.end()){
@@ -73,7 +74,7 @@ void Equipment::update(sf::RenderWindow& window, Player& player, sf::Time timer)
         sf::Vector2i pos = sf::Mouse::getPosition(window);
         window.draw(eqRect);
         float x = eqRect.getPosition().x + padding;
-        float y = eqRect.getPosition().y + padding;
+        float y = eqRect.getPosition().y + padding + 10;
         for(int i = 0; i<9; ++i){
             auto temp = items.find(itemPos[i]);
             if(temp != items.end()){
@@ -92,9 +93,9 @@ void Equipment::update(sf::RenderWindow& window, Player& player, sf::Time timer)
                 temp_items.at(i)->draw(window);
                 if (i % 3 == 2 and i != 0) {
                     x = eqRect.getPosition().x + padding;
-                    y += 70.0f;
+                    y += 90.0f;
                 }else{
-                    x += 70.0f;
+                    x += 80.0f;
                 }
 
             }
@@ -104,8 +105,8 @@ void Equipment::update(sf::RenderWindow& window, Player& player, sf::Time timer)
 
                 for (int i = 0; i <3 ; ++i) {
                     for (int j = 0; j < 3; ++j) {
-                        if(pos.x >= eqRect.getPosition().x + j*70 and pos.x <= eqRect.getPosition().x + ((j+1)*70) and
-                           pos.y >= eqRect.getPosition().y + i*70 and pos.y <= eqRect.getPosition().y + ((i+1)*70)){
+                        if(pos.x >= eqRect.getPosition().x + j*80 and pos.x <= eqRect.getPosition().x + ((j+1)*80) and
+                           pos.y >= eqRect.getPosition().y + i*90 and pos.y <= eqRect.getPosition().y + ((i+1)*90)){
                             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                                 if(timer.asSeconds() - lastClicked > 0.2) {
                                     lastClicked = timer.asSeconds();
@@ -285,6 +286,29 @@ bool Equipment::hasItem(int ID) {
     }
     else{
         return true;
+    }
+}
+
+std::vector<std::string> Equipment::getSave() {
+    std::vector<std::string> saves;
+
+    for(int itemPo : itemPos){
+        std::string temp;
+        temp = std::to_string(items.find(itemPo)->second.first->getId());
+        if(items.find(itemPo)->second.first->isStackable()){
+            temp += "," + std::to_string(items.find(itemPo)->second.second);
+        }
+        saves.push_back(temp);
+    }
+    return saves;
+
+}
+
+std::string Equipment::getItemInfo() {
+    if (!items.empty() and currentEq < items.size()) {
+        return items.find(itemPos[currentEq])->second.first->getInfo();
+    }else{
+        return "";
     }
 }
 

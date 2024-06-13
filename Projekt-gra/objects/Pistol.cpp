@@ -92,6 +92,10 @@ std::vector<sf::RectangleShape> Pistol::getAmmoList() {
     return this->ammo;
 }
 
+std::string Pistol::getInfo() {
+    return "Ammunition: " + std::to_string(ammunition);
+}
+
 
 
 

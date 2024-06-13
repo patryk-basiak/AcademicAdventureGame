@@ -27,12 +27,15 @@ if(debug) {
     window.draw(numberOfEnemies);
 }
     window.draw(health);
-
+    window.draw(timer);
+    window.draw(itemInfo);
+    itemInfo.setString(eq.getItemInfo());
 }
 
 void HUD::update(Player &player, FPS& fps1, int lvl, bool nextRoomAvailable, int numOfEnemies ) {
 
     health.setString("Health: " + std::to_string(player.getHealth()));
+    timer.setString("Time: 00:00");
     if(dialogShow) {
         mess.update(player);
     }
@@ -44,6 +47,7 @@ void HUD::update(Player &player, FPS& fps1, int lvl, bool nextRoomAvailable, int
         lvlNumber.setString("Current Lvl: " + std::to_string(lvl));
         roomAvail.setString("Next room available: " + std::to_string(nextRoomAvailable));
     }
+
 
 }
 void HUD::hideDebug() {

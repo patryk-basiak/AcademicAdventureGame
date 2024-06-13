@@ -4,13 +4,16 @@
 
 #include "Game.h"
 #include "ThrowableContainer.h"
+#include <fmt/ostream.h>
+#include <fmt/ranges.h>
 
-void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time time, HUD& hud, FPS& fps, sf::Time deltaTime) {
+#include <utility>
+void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Clock& clock, HUD& hud, FPS& fps, sf::Time deltaTime) {
     if(!started){
         clockLvl0.restart();
         started = true;
     }
-
+    sf::Time time = clock.getElapsedTime();
     sf::Event event = sf::Event();
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
@@ -45,7 +48,9 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
 
         }
         if (event.type == sf::Event::GainedFocus) {
-            // resume
+           paused = false;
+        }if (event.type == sf::Event::LostFocus) {
+            paused = true;
         }
         if (event.type == sf::Event::MouseWheelScrolled) {
             if (event.mouseWheelScroll.delta > 0) {
@@ -67,7 +72,7 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
         if (player.getPosition().x >=  (float)(window.getSize().x - 30)) {
             if (currentLvl != lastLvl and nextRoomAvailable) {
                 if(time.asSeconds() - lastLvlChanged > 5) {
-                    this->nextLvl(player);
+                    this->nextLvl(window, player, eq, clock);
                     lastLvlChanged = time.asSeconds();
                 }
             }
@@ -78,7 +83,12 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
         if (player.getPosition().x < -40) {
             player.setPosition((float)(window.getSize().x - 30), player.getSurface());
         }
-        if(game) {
+        if(game_started) {
+            if(!clockedRestarted){
+                clock.restart();
+                clockedRestarted = true;
+                clockLvl0.restart();
+            }
             currentMap.draw(window);
             currentMap.update(window, deltaTime, player, eq, time);
             hud.update(player, fps, currentLvl, nextRoomAvailable, currentMap.getNumberOfEnemies());
@@ -90,15 +100,7 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::T
 
 void Game::loadGraphics() {
     if(!loaded) {
-        maps.emplace_back(0, 0, MapTypes::FOREST, 0);
-        maps.emplace_back(15, 0, MapTypes::FOREST, 1);
-        maps.emplace_back(0, 1, MapTypes::FOREST, 2);
-        maps.emplace_back(0, 1, MapTypes::CITY, 0);
-        maps.emplace_back(0, 1, MapTypes::CITY, 1);
-        maps.emplace_back(0, 1, MapTypes::CITY, 2);
-        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
-        maps.emplace_back(0, 1, MapTypes::PJATK, 1);
-        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
+
 //        maps.emplace_back(0, 0, MapTypes::TESTING, 0);
 ////                Map(0, 0, MapTypes::STARTING, 0),
 ////
@@ -112,14 +114,14 @@ void Game::loadGraphics() {
 ////                Map(2, 4, MapTypes::FOREST, 2),
 ////                Map(2, 4, MapTypes::ENDING, 0),
 ////        };
-        currentLvl = 0;
-        currentMap = std::move(maps[currentLvl]);
-        lastLvl = maps.size();
-        for(auto &e : maps) {
-            spawnPoints.insert({{e.getMainType(), e.getSubType()},
-                                {e.getSpawnPoint(),e.getSpawnPoint() }}); //TODO
-        }
-        loaded = true;
+//        currentLvl = 0;
+//        currentMap = std::move(maps[currentLvl]);
+//        lastLvl = maps.size();
+//        for(auto &e : maps) {
+//            spawnPoints.insert({{e.getMainType(), e.getSubType()},
+//                                {e.getSpawnPoint(),e.getSpawnPoint() }}); //TODO
+//        }
+//        loaded = true;
     }
 }
 
@@ -130,12 +132,15 @@ int Game::getCurrentLvl() const {
 
 void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Time deltaTime, HUD& hud) {
     if(!debugMode) {
-        if(game) {
+        if(game_started) {
             float currentTime = clockLvl0.getElapsedTime().asSeconds();
             if (currentMap.getMainType() == MapTypes::STARTING) {
                 if (!stage_0) {
                     if (currentTime <= 3) {
                         movable = false;
+                        combat = false;
+                        mousekeyListener = true;
+                        hud.dialogSet("What a lovely day");
                         hud.dialogSet(true);
                         player.setPosition(player.getPosition().x - 0.03, player.getPosition().y);
                     }
@@ -158,7 +163,6 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
                     }
                 }
                 if (stage_0) {
-//            clockLvl0.restart(); TODO
                     float newTime = clockLvl0.getElapsedTime().asSeconds();
                     hud.dialogSet(true);
                     hud.setDecisionVisibility(false);
@@ -191,12 +195,14 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
                 }
                 if (currentMap.getSubType() == 1) {
                     hud.setObjective("Eliminate enemies");
+                    combat = true;
                     if (currentMap.getNumberOfEnemies() <= 0) {
                         nextRoomAvailable = true;
 
                     }
                 }
                 if (currentMap.getSubType() == 2) {
+
                     nextRoomAvailable = true;
                     hud.setObjective("");
                 }
@@ -204,13 +210,16 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
             if (currentMap.getMainType() == MapTypes::CITY) {
                 if (currentMap.getSubType() == 0) {
                     nextRoomAvailable = true;
+                    combat = false;
                     hud.setObjective("Avoid cars");
                 }
                 if (currentMap.getSubType() == 1) {
+                    combat = false;
                     nextRoomAvailable = true;
                     hud.setObjective("Find a way to go further");
                 }
                 if (currentMap.getSubType() == 2) {
+                    combat = true;
                     hud.setObjective("Eliminate Boss");
                     if (currentMap.getNumberOfEnemies() <= 0) {
                         nextRoomAvailable = true;
@@ -218,6 +227,7 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
                 }
             }
             if (currentMap.getMainType() == MapTypes::PJATK) {
+                combat = false;
                 if (currentMap.getSubType() == 0) {
                     nextRoomAvailable = true;
                     hud.setObjective("Go to the Uni building B");
@@ -244,7 +254,7 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
 
 }
 
-void Game::nextLvl(Player & player)
+void Game::nextLvl(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Clock Time)
 {
     this->nextRoomAvailable = false;
     stage_0 = false;
@@ -256,7 +266,7 @@ void Game::nextLvl(Player & player)
     player.setPosition(spawnPoints.at(std::make_pair(currentMap.getMainType(), currentMap.getSubType())).first[0],spawnPoints.at(std::make_pair(currentMap.getMainType(), currentMap.getSubType())).first[1]);
     ThrowableContainer::getVector().clear();
     ThrowableContainer::getInteractVector().clear();
-//    maps.erase(maps.begin());
+    this->gameSave(window,player,eq, Time, false);
     fmt::println("Next lvl");
 
 }
@@ -264,3 +274,159 @@ void Game::nextLvl(Player & player)
 bool Game::getNextRoomAvailability() const {
     return nextRoomAvailable;
 }
+
+void Game::startGame() {
+    game_started = true;
+}
+
+void Game::gameSave(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Clock Time, bool permanent) {
+    if(permanent){
+        if(file_path.empty()) {
+            file_path = "../saves/save" + std::to_string(1) + ".txt";
+        }
+        auto file = std::fstream(file_path, std::ios::out | std::ios::trunc);
+        switch(currentMap.getMainType()){
+            case MapTypes::STARTING:
+                fmt::println(file, "{}", "STARTING");
+                break;
+            case MapTypes::FOREST:
+                fmt::println(file, "{}", "FOREST");
+                break;
+            case MapTypes::CITY:
+                fmt::println(file, "{}", "CITY");
+                break;
+            case MapTypes::PJATK:
+                fmt::println(file, "{}", "PJATK");
+                break;
+            case MapTypes::ENDING:
+                fmt::println(file, "{}", "ENDING");
+                break;
+            case MapTypes::TESTING:
+                fmt::println(file, "{}", "TESTING");
+                break;
+        }
+        fmt::println(file, "{}", currentMap.getSubType());
+        fmt::println(file, "{}", Time.getElapsedTime().asSeconds());
+        fmt::println(file, "{}", fmt::join(eq.getSave(), "\n"));
+        file.close();
+    }else{
+        if(temp_path.empty()) {
+            temp_path = "../saves/temp/temp" + std::to_string(0) + ".txt";
+        }
+        auto file = std::fstream(temp_path, std::ios::out | std::ios::trunc);
+        switch(currentMap.getMainType()){
+            case MapTypes::STARTING:
+                fmt::println(file, "{}", "STARTING");
+                break;
+            case MapTypes::FOREST:
+                fmt::println(file, "{}", "FOREST");
+                break;
+            case MapTypes::CITY:
+                fmt::println(file, "{}", "CITY");
+                break;
+            case MapTypes::PJATK:
+                fmt::println(file, "{}", "PJATK");
+                break;
+            case MapTypes::ENDING:
+                fmt::println(file, "{}", "ENDING");
+                break;
+            case MapTypes::TESTING:
+                fmt::println(file, "{}", "TESTING");
+                break;
+        }
+        fmt::println(file, "{}", currentMap.getSubType());
+        fmt::println(file, "{}", Time.getElapsedTime().asSeconds());
+        fmt::println(file, "eq--");
+        fmt::println(file, "{}", fmt::join(eq.getSave(), "\n"));
+        file.close();
+
+    }
+
+}
+
+void Game::gameLoad(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Clock Time, bool newGame, std::string filePath) {
+    file_path = std::move(filePath);
+    std::ifstream file(file_path);
+    std::string line;
+    int index = 0;
+    MapTypes::types type;
+    int subtype = 0;
+    if (file.is_open()) {
+        while (getline(file, line)) {
+            if (index == 0) {
+                auto iterator = maps.begin();
+                std::string temporary;
+                for (auto e: line) {
+                    temporary += e;
+                }
+                if (temporary == "FOREST") {
+                    type = MapTypes::FOREST;
+                }
+                if (temporary == "CITY") {
+                    type = MapTypes::CITY;
+                }
+                if (temporary == "PJATK") {
+                    type = MapTypes::PJATK;
+                }
+                if (temporary == "ENDING") {
+                    type = MapTypes::ENDING;
+                }
+                fmt::println("{}", temporary);
+            }
+            if (index == 1) {
+                subtype = std::stoi(line);
+                fmt::println("{}", subtype);
+            }
+            if (index == 2) {
+                //TODO Time
+            }
+            if (index >= 4) {
+                int commaPoint = 0;
+                for (int i = 0; i < line.size(); ++i) {
+                    if (line[i] == ',') {
+                        commaPoint = i;
+                    }
+                }
+                if (commaPoint == 0) {
+                    eq.addItem(std::stoi(line));
+                } else {
+                    std::string item;
+                    std::string number;
+                    for (int j = 0; j < line.size(); ++j) {
+                        if (j < commaPoint) {
+                            item += line[j];
+                        }
+                        if (j > commaPoint) {
+                            number += line[j];
+                        }
+                    }
+                    for (int x = 0; x < std::stoi(number); ++x) {
+                        eq.addItem(std::stoi(item));
+                    }
+                }
+            }
+
+            index++;
+        }
+        file.close();
+        int n = 0;
+        for (auto &e: maps) {
+            if (e.getSubType() == subtype and e.getMainType() == type) {
+                fmt::println("help");
+                break;
+            }
+            n++;
+        }
+        fmt::println("n: {}{}", n, subtype);
+        auto iterator = maps.begin();
+        iterator += n;
+//        maps.erase(maps.begin(), iterator);
+        fmt::println("maps size{}", maps.size());
+        currentLvl = n;
+        currentMap = std::move(maps[currentLvl]);
+        game_started = true;
+        player.setPosition(spawnPoints.at(std::make_pair(currentMap.getMainType(), currentMap.getSubType())).first[0],spawnPoints.at(std::make_pair(currentMap.getMainType(), currentMap.getSubType())).first[1]);
+    }else {
+            fmt::println("File error");
+        }
+    }

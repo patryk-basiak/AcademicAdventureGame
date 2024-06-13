@@ -91,4 +91,8 @@ bool Collectable::isOneTimeUse() {
     return oneTimeUse;
 }
 
+std::string Collectable::getInfo() {
+    return "";
+}
+
 

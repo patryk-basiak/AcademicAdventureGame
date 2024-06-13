@@ -285,7 +285,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
             std::uniform_int_distribution<> platform(0, 1);
             std::uniform_int_distribution<> jumpPadPos(2, 12);
             std::uniform_int_distribution<> randomRange(2, 4);
-            int copyNumbersEnemy = 5;
+            int copyNumbersEnemy =this->enemies_number;
             auto map = std::vector<std::vector<int>>();
             auto items = std::vector<std::vector<int>>();
             auto ENEMY = std::vector<std::vector<int>>();

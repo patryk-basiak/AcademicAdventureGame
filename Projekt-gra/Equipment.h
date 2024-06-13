@@ -14,7 +14,7 @@ protected:
 
 private:
     int size = 9;
-    float padding = 10;
+    float padding = 35;
     int currentEq = 0;
     bool isEmpty = true;
     bool isShown = false;
@@ -37,7 +37,7 @@ public:
     void movedMouseDown();
     int itemInHand() const;
     bool getStatus();
-    sf::RectangleShape eqRect;
+    sf::Sprite eqRect;
     sf::RectangleShape smallEq;
     sf::RectangleShape pointer;
     void showInHand(Player& player, sf::RenderWindow& window) const;
@@ -49,7 +49,9 @@ public:
     void useItemInHand(Player& player);
 
     int getMoney();
+    std::string getItemInfo();
     void setMoney(int n);
+    std::vector<std::string> getSave();
 };
 
 

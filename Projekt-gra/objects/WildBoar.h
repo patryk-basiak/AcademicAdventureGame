@@ -1,19 +1,23 @@
 #pragma once
 
 #include "Entity.h"
+#include <random>
 #include "../ResourceManager.h"
 
 class WildBoar
         : public Entity{
 
 public :WildBoar(float x, float y) : Entity(x, y, sf::Color::Black) {
+        gen = std::mt19937(rd());
+        destination = std::uniform_int_distribution<>(300, 1500);
+        wantedPos = (float)destination(gen);
         wild.setTexture(ResourceManager::getTexture("../graphics/0wildboarLeft.png"));
         wild.setPosition(x, y);
         wild.scale(0.1, 0.1);
         initialPositionX = x;
         initialPositionY = y;
         velocity = 50; //TODO
-        health = 3;
+        health = 5;
         horizontalVelocity = 0;
         healthLine.setPosition(wild.getPosition().x, wild.getPosition().y - 15);
         healthLine.setFillColor(sf::Color::Red);
@@ -47,8 +51,13 @@ private:
     float horizontalVelocity;
     float initialPositionX;
     float initialPositionY;
+    float wantedPos;
     sf::RectangleShape healthLine;
     float part;
+    std::random_device rd;
+    std::mt19937 gen;
+    std::uniform_int_distribution<> destination;
+
 
 };
 

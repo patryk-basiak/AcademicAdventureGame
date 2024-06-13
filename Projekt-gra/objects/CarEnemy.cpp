@@ -40,7 +40,6 @@ void CarEnemy::update(sf::Time time, Player &player) {
 
 void CarEnemy::setPosition(float d, float d1) {
     car.setPosition(d,d1);
-    fmt::println("{} | {}", d, d1);
 }
 
 void CarEnemy::setVerticalVelocity(int i) {

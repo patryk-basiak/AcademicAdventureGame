@@ -29,6 +29,8 @@ public:
     std::vector<std::shared_ptr<Collectable>> getThrowable() const;
 
 
+    virtual std::string getInfo();
+
 protected:
     sf::Font font;
     std::vector<std::shared_ptr<Collectable>> throwable;
@@ -37,7 +39,6 @@ private:
     sf::RectangleShape collect;
     bool Stackable = false;
     bool oneTimeUse = false;
-
 
 
 };

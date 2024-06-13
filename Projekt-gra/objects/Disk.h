@@ -9,7 +9,7 @@ public:
     Disk(float x, float y): Collectable(x,y, sf::Color{255,215,0,255}){
         disk.setPosition(x,y);
         disk.setTexture(ResourceManager::getTexture("../graphics/disk.png"));
-        disk.setScale((float)64/disk.getTexture()->getSize().x,(float)64/disk.getTexture()->getSize().y);
+        disk.setScale((float)48/disk.getTexture()->getSize().x,(float)48/disk.getTexture()->getSize().y);
         popUp.setFont(Collectable::font);
         popUp.setString("Disk");
         popUp.setFillColor((sf::Color{255,215,0,255}));

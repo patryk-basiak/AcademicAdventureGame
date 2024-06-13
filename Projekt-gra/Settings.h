@@ -3,6 +3,7 @@
 
 extern bool movable;
 extern bool game;
+extern bool menuX;
 extern bool died;
 extern bool combat;
 extern bool debugMode;

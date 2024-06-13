@@ -29,6 +29,7 @@ public:
     void update(sf::RenderWindow& window, Player& player) override;
     bool isStackable() const override;
     int getId() override;
+    std::string getInfo() override;
 
 private:
     sf::Clock clock;

@@ -86,6 +86,10 @@ std::vector<sf::RectangleShape> Shotgun::getAmmoList() {
     return this->ammo;
 }
 
+std::string Shotgun::getInfo() {
+    return "Ammunition: " + std::to_string(ammunition);
+}
+
 
 
 

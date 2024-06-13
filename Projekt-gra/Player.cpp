@@ -42,16 +42,13 @@ void Player::jump(){
 
 void Player::update(sf::Time time) {
     float deltaTime = time.asSeconds();
-
+    if(!game_started){
+        deltaTime = 0; // first delta time was always so big that I have make it zero.
+        game_started = true;
+    }
     float horizontalVelocity = 0.0f;
     float verticalVelocityIncrement = gravity * deltaTime;
 
-    if(!game or paused){
-        player.setPosition(1500,200);
-        velocity = 0;
-        verticalVelocity = 0;
-        horizontalVelocity = 0;
-    }
 
 
     if (health <= 0) {
@@ -75,7 +72,6 @@ void Player::update(sf::Time time) {
         }
     }
 
-    collisionRect.left += horizontalVelocity * deltaTime;
     if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) and jumpable) {
         if(clock.getElapsedTime().asSeconds() - lastJumpTime > JumpCooldown) {
             verticalVelocity = jumpVelocity;
@@ -83,19 +79,25 @@ void Player::update(sf::Time time) {
             lastJumpTime = clock.getElapsedTime().asSeconds();
         }
     }
+    if(!game or paused){
+        player.setPosition(1500,200);
+        velocity = 0;
+        verticalVelocity = 0;
+        horizontalVelocity = 0;
+        verticalVelocityIncrement = 0;
+    }
 
     if (!isGround and jumpable) {
         verticalVelocity += verticalVelocityIncrement;
     }
-
-
-    collisionRect.top += verticalVelocity * deltaTime;
 
     if (verticalVelocity == 0) {
         isGround = true;
     }else {
         isGround = false;
     }
+    collisionRect.left += horizontalVelocity * deltaTime;
+    collisionRect.top += verticalVelocity * deltaTime;
 
     player.setPosition(collisionRect.left, collisionRect.top);
 
@@ -175,5 +177,45 @@ bool Player::isSeen() {
 
 bool Player::getFacingRight() {
     return isFacingRight;
+}
+
+int Player::getStrength() const {
+    return strength;
+}
+
+int Player::getIntelligence() const {
+    return intelligence;
+}
+
+int Player::getLuck() const {
+    return luck;
+}
+
+int Player::getAgile() const {
+    return agile;
+}
+
+int Player::getEndurance() const {
+    return endurance;
+}
+
+void Player::setStrength(int strength) {
+    Player::strength = strength;
+}
+
+void Player::setIntelligence(int intelligence) {
+    Player::intelligence = intelligence;
+}
+
+void Player::setLuck(int luck) {
+    Player::luck = luck;
+}
+
+void Player::setAgile(int agile) {
+    Player::agile = agile;
+}
+
+void Player::setEndurance(int endurance) {
+    Player::endurance = endurance;
 }
 

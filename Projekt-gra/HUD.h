@@ -16,7 +16,7 @@ public:
             fmt::println("font loading error");
         }
 
-        objective.setPosition(690,725);
+        objective.setPosition(690,760);
         objective.setFont(font);
         objective.setCharacterSize(30);
         positionX.setPosition(1250,150);
@@ -37,6 +37,12 @@ public:
         health.setFont(font);
         health.setPosition(100,800);
         health.setCharacterSize(30);
+        timer.setFont(font);
+        timer.setPosition(100,830);
+        timer.setCharacterSize(30);
+        itemInfo.setFont(font);
+        itemInfo.setPosition(100,860);
+        itemInfo.setCharacterSize(30);
         numberOfEnemies.setFont(font);
         numberOfEnemies.setPosition(1250,350);
         numberOfEnemies.setCharacterSize(30);
@@ -65,6 +71,8 @@ private:
     bool dialogShow = true;
     sf::Clock clock;
     sf::Text health;
+    sf::Text timer;
+    sf::Text itemInfo;
     sf::Text lvlNumber;
     sf::Text numberOfEnemies;
     sf::Font font;
@@ -76,6 +84,6 @@ private:
     sf::RectangleShape time;
     DecisionElement decisionElement = DecisionElement(std::vector<std::string>{"im","default", "frame"}, 0,0);
     std::vector<DialogElement> dialog = std::vector<DialogElement>{DialogElement("What a lovely day!")};
-    DialogElement mess = DialogElement("What a lovely day");
+    DialogElement mess = DialogElement("");
     bool decisionShow = false;
 };

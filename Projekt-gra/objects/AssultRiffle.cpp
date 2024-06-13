@@ -89,6 +89,10 @@ std::vector<sf::RectangleShape> AssultRiffle::getAmmoList() {
     return this->ammo;
 }
 
+std::string AssultRiffle::getInfo() {
+    return "Ammunition " + std::to_string(ammunition);
+}
+
 
 
 

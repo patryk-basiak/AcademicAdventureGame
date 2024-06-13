@@ -6,6 +6,7 @@
 
 bool movable = true;
 bool game = false;
+bool menuX = false;
 bool paused = false;
 bool combat = true;
 bool died = false;

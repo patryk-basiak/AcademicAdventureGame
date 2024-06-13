@@ -28,6 +28,21 @@ public:
     void setVelocity(float i);
     void setVerticalVelocity(float i);
 
+    int getStrength() const;
+    int getIntelligence() const;
+    int getLuck() const;
+    int getAgile() const;
+    int getEndurance() const;
+
+    void setStrength(int strength);
+
+    void setIntelligence(int intelligence);
+
+    void setLuck(int luck);
+
+    void setAgile(int agile);
+
+    void setEndurance(int endurance);
 
     void hide();
 
@@ -46,7 +61,7 @@ private:
     float lastJumpTime = 0;
     float JumpCooldown = 1.2;
     int val= 0;
-    int health = 3;
+    int health = 3 + (endurance/3);
     float jumpVelocity = (float) -150 - ((float)(150*agile)/20);
     bool isGround = true;
     float surface = 1000;
@@ -56,6 +71,7 @@ private:
     float gravity = 200;
     float verticalVelocity = 5;
     bool inAir;
+    bool game_started = false;
     std::vector<float> size;
     float velocity = 0;
     sf::Texture playerImgText = sf::Texture();
