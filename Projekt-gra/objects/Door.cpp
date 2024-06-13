@@ -36,7 +36,11 @@ sf::Vector2<float> Door::getSize() {
 }
 
 void Door::draw(sf::RenderWindow &window)  {
-    window.draw(door);
+    if(!isOpen) {
+        window.draw(door);
+    }else{
+        window.draw(doorOpen);
+    }
 }
 
 sf::Vector2<float> Door::getPosition() {
@@ -46,25 +50,15 @@ sf::Vector2<float> Door::getPosition() {
 void Door::update(sf::RenderWindow &window, Player &player, Equipment &eq,  sf::Time deltatime, sf::Time realDeltatime) {
     if(Interactable::coll) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
-            fmt::println("hello");
-            if (deltatime.asSeconds() - lastUsed > 2) {
-                fmt::println("inside");
+            if (deltatime.asSeconds() - lastUsed > 0.4) {
                 if (isOpen) {
                     isOpen = false;
-                    fmt::println("door closed");
                 } else {
                     isOpen = true;
                 }
             }
             lastUsed = deltatime.asSeconds();
         }
-    }
-    if(isOpen){
-        door.setTexture(ResourceManager::getTexture("../graphics/doorOpen.png"));
-        door.setScale(0.3,(float)128/door.getTexture()->getSize().y);
-    }if(!isOpen){
-        door.setTexture(ResourceManager::getTexture("../graphics/doorClosed.png"));
-        door.setScale(0.1,(float)128/door.getTexture()->getSize().y);
     }
 }
 

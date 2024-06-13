@@ -39,6 +39,11 @@
 #include "objects/classroomDoor.h"
 #include "objects/Elevator.h"
 #include "objects/ComputerBoss.h"
+#include "objects/Glass.h"
+#include "objects/Stairs.h"
+#include "objects/WhiteWool.h"
+#include "objects/DarkBlock.h"
+#include "objects/StoneBlock.h"
 
 static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
     double result = 0;
@@ -613,13 +618,21 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                     for (int j = 0; j < x; ++j)
                     {
                         if(i == y - 6 and j > 4 and j < x - 4) {
-                            temp.push_back(1);
+                            temp.push_back(9);
                             interact.push_back(0);
                             enemy.push_back(0);
                         }else if(i == 3 and j == x/2 - 4){
                             temp.push_back(0);
                             interact.push_back(0);
                             enemy.push_back(6);
+                        }else if(i == y - 4 and (j == 4  or j == x - 4)){
+                            temp.push_back(2);
+                            interact.push_back(0);
+                            enemy.push_back(0);
+                        }else if(i == y - 4){
+                            temp.push_back(8);
+                            interact.push_back(0);
+                            enemy.push_back(0);
                         }else if(i > y - 3)
                         {
                             temp.push_back(9);
@@ -665,34 +678,49 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                         enemy.push_back(0);
                         interact.push_back(99);
                     }
-                    else if((j == x - 2 or j == x -1) and i == y - 5){
+                    else if((j == x - 2 or j == x -1) and (i == y - 5 or i == y - 6)){
                         temp.push_back(0);
                         enemy.push_back(0);
                         interact.push_back(0);
-                    }
-                    else if(j < 5 or j > x - 3 )
-                    {
-                        temp.push_back(1);
+                    }else if (i > y - 3) {
+                        temp.push_back(14);
+                        enemy.push_back(0);
+                        interact.push_back(0);
+                    }else if (j < 5){
+                        temp.push_back(13);
                         enemy.push_back(0);
                         interact.push_back(0);
                     }
+                    else if( j > x - 3 )
+                    {
+                        if(i > y - 6){
+                            temp.push_back(5);
+                            enemy.push_back(0);
+                            interact.push_back(0);
+                        }
+                        else{
+                            temp.push_back(12);
+                            enemy.push_back(0);
+                            interact.push_back(0);
+                        }
+
+                    }
                     else if(i ==y/2 - 2 or i == y/2 - 4 or i == y/2 -3 )
                     {
-                        temp.push_back(1);
+                        temp.push_back(10);
+                        enemy.push_back(0);
+                        interact.push_back(0);
+                    }else if(i ==y/2 - 5 or i == y/2 - 1){
+                        temp.push_back(13);
                         enemy.push_back(0);
                         interact.push_back(0);
                     }
                     else if(j > x -6 and j < x-2 and i == y -3 or (i == y - 4 and (j == x -3 or j == x-4))){
-                            temp.push_back(1);
+                            temp.push_back(11);
                             enemy.push_back(0);
                             interact.push_back(0);
                     }
-
-                    else if (i > y - 3) {
-                        temp.push_back(9);
-                        enemy.push_back(0);
-                        interact.push_back(0);
-                    } else {
+                     else {
                         temp.push_back(0);
                         enemy.push_back(0);
                         interact.push_back(0);
@@ -878,6 +906,21 @@ std::vector<std::unique_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
             }if(i==9)
             {
                 lvl0_trans.emplace_back(std::make_unique<Stone>(x,y));
+            }if(i==10)
+            {
+                lvl0_trans.emplace_back(std::make_unique<Glass>(x,y));
+            }if(i==11)
+            {
+                lvl0_trans.emplace_back(std::make_unique<Stairs>(x,y));
+            }if(i==12)
+            {
+                lvl0_trans.emplace_back(std::make_unique<WhiteWool>(x,y));
+            }if(i==13)
+            {
+                lvl0_trans.emplace_back(std::make_unique<DarkBlock>(x,y));
+            }if(i==14)
+            {
+                lvl0_trans.emplace_back(std::make_unique<StoneBlock>(x,y));
             }
             if(i == 101){
                 lvl0_trans.emplace_back(std::make_unique<Bed>(x,y));

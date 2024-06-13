@@ -24,7 +24,7 @@ auto main() -> int {
     Equipment eq;
     HUD hud;
     Game gameClass;
-    debugMode = false;
+    debugMode = true;
     sf::Clock clock;
     sf::Clock timer;
     while (window.isOpen()) {

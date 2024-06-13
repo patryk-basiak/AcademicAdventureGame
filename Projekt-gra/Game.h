@@ -12,17 +12,20 @@ class Game {
 public:
     Game(){
         loaded = false;
-        maps.emplace_back(0, 0, MapTypes::STARTING, 0);
-        maps.emplace_back(0, 0, MapTypes::FOREST, 0);
-        maps.emplace_back(10, 0, MapTypes::FOREST, 1);
-        maps.emplace_back(0, 1, MapTypes::FOREST, 2);
-        maps.emplace_back(0, 1, MapTypes::CITY, 0);
-        maps.emplace_back(0, 1, MapTypes::CITY, 1);
-        maps.emplace_back(0, 1, MapTypes::CITY, 2);
+//        maps.emplace_back(0, 0, MapTypes::STARTING, 0);
+//        maps.emplace_back(0, 0, MapTypes::FOREST, 0);
+//        maps.emplace_back(10, 0, MapTypes::FOREST, 1);
+//        maps.emplace_back(0, 1, MapTypes::FOREST, 2);
+//        maps.emplace_back(0, 1, MapTypes::CITY, 0);
+//        maps.emplace_back(0, 1, MapTypes::CITY, 1);
+//        maps.emplace_back(0, 1, MapTypes::CITY, 2);
         maps.emplace_back(0, 1, MapTypes::PJATK, 0);
-        maps.emplace_back(0, 1, MapTypes::PJATK, 1);
-        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
+//        maps.emplace_back(0, 1, MapTypes::PJATK, 1);
+//        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
         currentLvl = 0;
+        pausedIcon.setTexture(ResourceManager::getTexture("../graphics/paused.png"));
+        pausedIcon.setScale(800/pausedIcon.getTexture()->getSize().x, 700/pausedIcon.getTexture()->getSize().y);
+        pausedIcon.setPosition(800 - (pausedIcon.getTexture()->getSize().x*pausedIcon.getScale().x/2), 100);
         currentMap = std::move(maps[currentLvl]);
         lastLvl = maps.size();
         for(auto &e : maps) {
@@ -44,7 +47,8 @@ public:
     void gameLoad(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Clock Time, bool newGame, std::string file_path);
 
 private:
-
+    void pausedMethod();
+    void pausedUpdate(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Clock Time);
     void nextLvl(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Clock Time);
     sf::Clock clockLvl0;
 //    std::vector<DialogElement> dialog = std::vector<DialogElement>{DialogElement("What a lovely sunday!")};
@@ -65,7 +69,10 @@ private:
     std::string file_path;
     std::string temp_path;
     sf::Clock timeClock;
+    sf::Sprite pausedIcon;
     int hour = 14;
     float minutes = 0;
+    float copyOfMinutes = 0;
+    bool copied = false;
 
 };

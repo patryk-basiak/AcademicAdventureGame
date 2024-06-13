@@ -17,11 +17,18 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::C
     sf::Time time = clock.getElapsedTime();
 
     if(!paused and game_started){
-        minutes = timeClock.getElapsedTime().asSeconds();
+        minutes = timeClock.getElapsedTime().asSeconds() + copyOfMinutes;
+        copied = false;
         if(minutes > 58){
             hour++;
             timeClock.restart();
         }
+    }if(paused){
+        if(!copied) {
+            copyOfMinutes += timeClock.getElapsedTime().asSeconds();
+            copied = true;
+        }
+        timeClock.restart();
     }
     if(hour >= 24){
         game = false;
@@ -38,16 +45,7 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::C
                 eq.show();
             }
             if (event.key.code == sf::Keyboard::Escape) {
-                if (paused) {
-                    movable = true;
-                    jumpable = true;
-                    paused = false;
-                } else {
-                    movable = false;
-                    jumpable = false;
-                    paused = true;
-                }
-
+                pausedMethod();
             }
             if (event.key.code == sf::Keyboard::SemiColon) {
                 if (debug) {
@@ -106,6 +104,9 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::C
             currentMap.update(window, deltaTime, player, eq, time);
             hud.update(player, fps, currentLvl, nextRoomAvailable, currentMap.getNumberOfEnemies(), hour, minutes);
             hud.draw(window, eq, player);
+        }if(paused){
+            window.draw(pausedIcon);
+            pausedUpdate(window,player,eq,clock);
         }
 
 
@@ -447,3 +448,53 @@ void Game::gameLoad(sf::RenderWindow &window, Player &player, Equipment &eq, sf:
             fmt::println("File error");
         }
     }
+
+void Game::pausedMethod() {
+    if(paused) {
+        movable = true;
+        jumpable = true;
+
+        mousekeyListener = false;
+        paused = false;
+    }else{
+        movable = false;
+        jumpable = false;
+        mousekeyListener = true;
+        paused = true;
+    }
+}
+
+void Game::pausedUpdate(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Clock Time) {
+    if(paused) {
+        sf::Vector2 mouse = sf::Mouse::getPosition(window);
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                    fmt::println("x: {}", mouse.x);
+        fmt::println("y: {}", mouse.y);
+        }
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+        if(mouse.x > 268 and mouse.x < 1070 and mouse.y > 268 and mouse.y < 375){
+
+                fmt::println("help");
+                movable = true;
+                jumpable = true;
+                mousekeyListener = false;
+                paused = false;
+            }
+
+        if(mouse.x > 268 and mouse.x < 1070 and mouse.y > 415 and mouse.y < 525){
+            gameSave(window, player, eq, Time, true);
+            window.close();
+            //source https://www.gavilan.edu/csis/languages/stop-end.html#:~:text=C%2B%2B%20uses%20the%20exit()%20function%20to%20terminate%20the%20program%20execution.
+            std::exit(EXIT_SUCCESS);
+            } // TODO okienku zapisu
+
+        if(mouse.x > 268 and mouse.x < 1070 and mouse.y > 566 and mouse.y < 679){
+            window.close();
+            //source https://www.gavilan.edu/csis/languages/stop-end.html#:~:text=C%2B%2B%20uses%20the%20exit()%20function%20to%20terminate%20the%20program%20execution.
+            std::exit(EXIT_SUCCESS);
+            }
+        }
+    }
+}
+
+

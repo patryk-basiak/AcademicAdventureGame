@@ -133,6 +133,16 @@ add_executable(game main.cpp
         objects/AssultRiffle.h
         Menu.cpp
         Menu.h
+        objects/Glass.cpp
+        objects/Glass.h
+        objects/Stairs.cpp
+        objects/Stairs.h
+        objects/WhiteWool.cpp
+        objects/WhiteWool.h
+        objects/DarkBlock.cpp
+        objects/DarkBlock.h
+        objects/StoneBlock.cpp
+        objects/StoneBlock.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

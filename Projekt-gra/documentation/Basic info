@@ -11,11 +11,13 @@ ID for map generation:
 5 - Brick
 6 - WoodBlock (plank)
 7 - woodenSlab
-
 8 - street
 9 - stone
-
-
+10 - glass
+11 - stairs
+12 - WhiteWool
+13 - DarkBlock
+14 - StoneBlock
 101 - Bed
 
 200 - Oak wood

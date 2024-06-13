@@ -13,6 +13,9 @@ class Door
             door.setTexture(ResourceManager::getTexture("../graphics/doorClosed.png"));
             door.setPosition(x,y);
             door.setScale(0.1,(float)128/door.getTexture()->getSize().y);
+            doorOpen.setTexture(ResourceManager::getTexture("../graphics/doorOpen.png"));
+            doorOpen.setPosition(x,y);
+            doorOpen.setScale((float)64/doorOpen.getTexture()->getSize().x,(float)128/doorOpen.getTexture()->getSize().y);
         }
         sf::Vector2<float> getSize() override;
         sf::Vector2<float> getPosition() override;
@@ -28,6 +31,7 @@ class Door
         int id = 99;
         float lastUsed;
         sf::Sprite door;
+        sf::Sprite doorOpen;
         bool isOpen;
 
 
