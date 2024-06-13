@@ -5,7 +5,8 @@
 #include <cmath>
 #include <utility>
 #include "HUD.h"
-
+#include <iomanip>
+#include <sstream>
 void HUD::draw(sf::RenderWindow &window, Equipment &eq, Player& player) {
 
     if(dialogShow) {
@@ -32,10 +33,14 @@ if(debug) {
     itemInfo.setString(eq.getItemInfo());
 }
 
-void HUD::update(Player &player, FPS& fps1, int lvl, bool nextRoomAvailable, int numOfEnemies ) {
+void HUD::update(Player &player, FPS& fps1, int lvl, bool nextRoomAvailable, int numOfEnemies, float hours, float minutes ) {
 
     health.setString("Health: " + std::to_string(player.getHealth()));
-    timer.setString("Time: 00:00");
+    if(minutes > 10) {
+        timer.setString("Time: " + std::to_string((int) std::round(((int) hours))) + ":" + std::to_string((int)std::round((int)minutes)));
+    }else{
+        timer.setString("Time: " + std::to_string((int) std::round(((int) hours))) + ":" + "0" + std::to_string((int)std::round((int)minutes)));
+    }
     if(dialogShow) {
         mess.update(player);
     }

@@ -17,7 +17,7 @@ public :WildBoar(float x, float y) : Entity(x, y, sf::Color::Black) {
         initialPositionX = x;
         initialPositionY = y;
         velocity = 50; //TODO
-        health = 5;
+        health = 3;
         horizontalVelocity = 0;
         healthLine.setPosition(wild.getPosition().x, wild.getPosition().y - 15);
         healthLine.setFillColor(sf::Color::Red);

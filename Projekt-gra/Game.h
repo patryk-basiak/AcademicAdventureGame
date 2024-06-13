@@ -14,7 +14,7 @@ public:
         loaded = false;
         maps.emplace_back(0, 0, MapTypes::STARTING, 0);
         maps.emplace_back(0, 0, MapTypes::FOREST, 0);
-        maps.emplace_back(15, 0, MapTypes::FOREST, 1);
+        maps.emplace_back(10, 0, MapTypes::FOREST, 1);
         maps.emplace_back(0, 1, MapTypes::FOREST, 2);
         maps.emplace_back(0, 1, MapTypes::CITY, 0);
         maps.emplace_back(0, 1, MapTypes::CITY, 1);
@@ -64,5 +64,8 @@ private:
     bool game_started = false;
     std::string file_path;
     std::string temp_path;
+    sf::Clock timeClock;
+    int hour = 14;
+    float minutes = 0;
 
 };

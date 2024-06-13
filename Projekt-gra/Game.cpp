@@ -11,9 +11,22 @@
 void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::Clock& clock, HUD& hud, FPS& fps, sf::Time deltaTime) {
     if(!started){
         clockLvl0.restart();
+        timeClock.restart();
         started = true;
     }
     sf::Time time = clock.getElapsedTime();
+
+    if(!paused and game_started){
+        minutes = timeClock.getElapsedTime().asSeconds();
+        if(minutes > 58){
+            hour++;
+            timeClock.restart();
+        }
+    }
+    if(hour >= 24){
+        game = false;
+        //TODO game lost due to not enough time
+    }
     sf::Event event = sf::Event();
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
@@ -91,7 +104,7 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::C
             }
             currentMap.draw(window);
             currentMap.update(window, deltaTime, player, eq, time);
-            hud.update(player, fps, currentLvl, nextRoomAvailable, currentMap.getNumberOfEnemies());
+            hud.update(player, fps, currentLvl, nextRoomAvailable, currentMap.getNumberOfEnemies(), hour, minutes);
             hud.draw(window, eq, player);
         }
 
@@ -307,6 +320,7 @@ void Game::gameSave(sf::RenderWindow &window, Player &player, Equipment &eq, sf:
         }
         fmt::println(file, "{}", currentMap.getSubType());
         fmt::println(file, "{}", Time.getElapsedTime().asSeconds());
+        fmt::println(file, "{}", player.getHealth());
         fmt::println(file, "{}", fmt::join(eq.getSave(), "\n"));
         file.close();
     }else{
@@ -336,6 +350,7 @@ void Game::gameSave(sf::RenderWindow &window, Player &player, Equipment &eq, sf:
         }
         fmt::println(file, "{}", currentMap.getSubType());
         fmt::println(file, "{}", Time.getElapsedTime().asSeconds());
+        fmt::println(file, "{}", player.getHealth());
         fmt::println(file, "eq--");
         fmt::println(file, "{}", fmt::join(eq.getSave(), "\n"));
         file.close();
@@ -379,8 +394,10 @@ void Game::gameLoad(sf::RenderWindow &window, Player &player, Equipment &eq, sf:
             }
             if (index == 2) {
                 //TODO Time
+            }if (index == 3) {
+                player.setHealth(std::stoi(line));
             }
-            if (index >= 4) {
+            if (index >= 5) {
                 int commaPoint = 0;
                 for (int i = 0; i < line.size(); ++i) {
                     if (line[i] == ',') {

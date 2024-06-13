@@ -1,5 +1,6 @@
 #include "WildBoar.h"
 #include "fmt/core.h"
+#include "../ThrowableContainer.h"
 
 void WildBoar::draw(sf::RenderWindow &window) {
     if (velocity < 0) {
@@ -44,16 +45,16 @@ void WildBoar::update(sf::Time time, Player &player) {
     }if(wild.getPosition().x > 1550){
         velocity = -50;
     }
-
-
     float distanceToPlayerX = player.getPosition().x - wild.getPosition().x;
     float distanceToPlayerY = player.getPosition().y - wild.getPosition().y;
-    if (std::abs(distanceToPlayerX) < 70 and std::abs(distanceToPlayerY) < 50 ) {
+    if (std::abs(distanceToPlayerX) < 150 and std::abs(distanceToPlayerY) < 64 ) {
         followingPlayer = true;
         velocity = (distanceToPlayerX > 0) ? 50 : -50;
-    }if (std::abs(distanceToPlayerX) > 100 and std::abs(distanceToPlayerY) > 70 ) {
+    }
+    else if (std::abs(distanceToPlayerX) > 200){
         followingPlayer = false;
     }
+
     if(!followingPlayer){
         if(wantedPos > wild.getPosition().x){
             velocity =  50;
@@ -82,6 +83,7 @@ void WildBoar::setVelocity(int i) {
 
 void WildBoar::setHealth(int i) {
     health = i;
+
 }
 
 int WildBoar::getHealth() {

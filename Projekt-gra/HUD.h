@@ -51,7 +51,7 @@ public:
     }
 
     void draw(sf::RenderWindow& window, Equipment& eq, Player& player);
-    void update(Player& player, FPS& fps, int lvl, bool nextRoomAvailable, int numOfEnemies);
+    void update(Player& player, FPS& fps, int lvl, bool nextRoomAvailable, int numOfEnemies, float time, float minutes );
     void lvls(int roomlvl);
 
     void showDebug();

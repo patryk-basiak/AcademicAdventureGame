@@ -717,7 +717,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
             doorLocations.push_back(firstDoor);
             for(int i = 0; i < 4; ++i){
                 firstDoor += (float) doorDistance(gen);
-                if(firstDoor < x){
+                if(firstDoor < x - 3){
                     doorLocations.push_back(firstDoor);
                 }
             }
@@ -771,7 +771,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                 doorLocations.push_back(firstDoor);
                 for(int g = 0; g < 4; ++g){
                     firstDoor += (float) doorDistance(gen);
-                    if(firstDoor < x){
+                    if(firstDoor < x - 3){
                         doorLocations.push_back(firstDoor);
                     }
                 }
@@ -977,17 +977,17 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
                     ThrowableContainer::getVector().erase(bullets);
                     bullets--;
                     if ((*it)->getHealth() <= 0) {
+                        auto x = new float((*it)->getPosition().x);
+                        auto y = new float((*it)->getPosition().y);
                         entity_vec.erase(it);
+                        ThrowableContainer::addItem(3, *x,*y);
+                        delete x;
+                        delete y;
                         it--;
                     }
+
                     return;
                 }
-                for (auto &iter: walls_vec)
-                    if ((*bullets)->getGlobalBounds().intersects(iter->getGlobalBounds())) {
-                        ThrowableContainer::getVector().erase(bullets);
-                        bullets--;
-                        return;
-                    }
             }
         }
     }
