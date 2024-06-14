@@ -18,6 +18,8 @@ ID for map generation:
 12 - WhiteWool
 13 - DarkBlock
 14 - StoneBlock
+15 - BrickStairs
+16 - BrickStairsReversed
 101 - Bed
 
 200 - Oak wood

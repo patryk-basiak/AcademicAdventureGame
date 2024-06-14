@@ -13,7 +13,6 @@ class Map {
 
 public:
     Map(int enemies_number, int npc_number, MapTypes::types mainType, int subtype);
-    bool CheckCollision(float x, float y, float width, float height);
     std::vector<std::vector<std::vector<int>>> generateMap(int x, int y);
     static std::vector<std::unique_ptr<Entity>> transformEntities(const std::vector<std::vector<int>>&vec);
     static std::vector<std::unique_ptr<Collectable>> transformObjects(std::vector<std::vector<int>> vec);
@@ -51,6 +50,7 @@ private:
     int npc_number;
     std::vector<float> spawnPoint;
     std::vector<float> endPoint;
-
+    std::vector<sf::Sprite> images;
+    bool drawStaticImages = true;
 };
 

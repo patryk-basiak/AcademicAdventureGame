@@ -24,9 +24,9 @@ public:
         std::uniform_int_distribution<> dist(1, 5);
         int numberOfItems = dist(gen);
         this->itemsInside.emplace(std::make_unique<Coin>(content.getPosition().x +  15, content.getPosition().y + 15), numberOfItems);
-        if(xID == 0){
-            this->itemsInside.emplace(std::make_unique<UniCard>(x + 30, y), 1);
-        }
+//        if(xID == 0){
+//            this->itemsInside.emplace(std::make_unique<UniCard>(x + 30, y), 1);
+//        }
         popUp.setString("Press F to open chest");
         popUp.setFont(Interactable::font);
         popUp.setPosition(chestTexture.getPosition().x, chestTexture.getPosition().y - this->size[1]);

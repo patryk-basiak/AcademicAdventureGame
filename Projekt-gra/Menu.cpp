@@ -34,11 +34,15 @@ void Menu::update(sf::RenderWindow& window, Game &gameClass, Player &player, Equ
     if(inMenu) {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             if (pos.x > 480 and pos.x < 1120 and pos.y > 310 and pos.y < 450) {
-                pointChooser = true;
-                inMenu = false;
-//                game = true;
-//                gameClass.startGame();
-//                menuX = false;
+                if(debugMode){
+                    game = true;
+                    gameClass.startGame();
+                    menuX = false;
+                }else{
+                    pointChooser = true;
+                    inMenu = false;
+                }
+//
             }
             if (pos.x > 480 and pos.x < 1120 and pos.y > 490 and pos.y < 630) {
                 gameClass.gameLoad(window, player, eq, timer, true, "../saves/save0.txt");

@@ -78,6 +78,10 @@ private:
     sf::Sprite playerImgSpire = sf::Sprite();
     sf::Sprite player;
     sf::FloatRect collisionRect;
-
+    std::vector<sf::Sprite> idleAnimation;
+    std::vector<sf::Sprite> run;
+    sf::Clock animation_clock;
+    int currentTexture = 0;
+    int currentTextureMove = 0;
 
 };

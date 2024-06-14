@@ -45,18 +45,10 @@
 #include "objects/DarkBlock.h"
 #include "objects/StoneBlock.h"
 
-static double dotProduct( std::vector<double> v1, std::vector<double> v2) {
-    double result = 0;
-    for (int i = 0; i < v1.size(); ++i) {
-        result += v1[i] * v2[i];
-    }
-    return result;
-}
 
 
 
 static int tempID = 0;
-
 Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subtype) {
     this->mainType = mainType;
     this->subType = subtype;
@@ -69,7 +61,7 @@ Map::Map(int enemies_number, int npc_number, MapTypes::types mainType, int subty
     this->items_vec = transformObjects(map_vec[1]);
     this->entity_vec = transformEntities(map_vec[2]);
     this->interactable_vec = transformInteractable(map_vec[3]);
-    this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/CountrySide.png"));
+
 }
 
 std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
@@ -108,19 +100,29 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
 
     }
     if(mainType == MapTypes::STARTING) {
+        this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/CountrySide.png"));
+        sf::Sprite temp;
+        temp.setTexture(ResourceManager::getTexture("../graphics/homeOutside.png"));
+        temp.setPosition(65,197);
+        images.push_back(temp);
+        sf::Sprite temp1;
+        temp1.setTexture(ResourceManager::getTexture("../graphics/homeInside.png"));
+        temp1.setScale(1.01,1);
+        temp1.setPosition(128,256);
+        images.push_back(temp1);
         auto map = std::vector<std::vector<int>>();
-        map = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 0, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        map = std::vector<std::vector<int>>{{0, 0, 0, 16, 5, 5,   5, 5, 5, 5, 15,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 0, 16, 5, 5, 5,   5,5, 5, 5, 5,   15, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 16, 5, 5, 5, 5,   5, 5, 5, 5, 5,   5, 15,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {0, 5, 5, 5, 5, 5,   5, 5, 5, 5, 5,   5, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 5, 0, 0, 0, 102, 0, 0, 0, 0, 101, 0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {0, 5, 0, 7, 7, 7,   7, 7, 7, 7, 7,   7, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 101,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                            {0, 5, 0, 14, 14, 14,  14, 14, 14,14, 14,  14, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 98, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                             {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                            {3, 6, 2, 6, 6, 6,   6, 6, 6, 6, 6,   6, 6,  3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+                                            {3, 5, 2, 14, 14, 14,   14, 14, 14, 14, 14,   14, 6,  3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
                                             {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
                                             {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
                                             {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
@@ -164,7 +166,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
         auto interact = std::vector<std::vector<int>>();
         interact = std::vector<std::vector<int>>{{0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                  {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                                                 {0, 0, 0, 0,   0,   0, 0, 5, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                 {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                  {0, 0, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                  {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                  {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -183,6 +185,9 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
 
     }
     if (mainType == MapTypes::FOREST) {
+        backgroundTexture = sf::Sprite();
+        backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/forestBackground.png"));
+        backgroundTexture.setScale((float)1600/backgroundTexture.getTexture()->getSize().x,(float)900/backgroundTexture.getTexture()->getSize().y);
         if (subType == 0) {
             spawnPoint = std::vector<float>{4, 590};
             endPoint; // TODO
@@ -467,6 +472,9 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
         if(mainType == MapTypes::CITY)
         {
             if (subType == 0) {
+                backgroundTexture = sf::Sprite();
+                backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/cityBackground.png"));
+                backgroundTexture.setScale((float)1600/backgroundTexture.getTexture()->getSize().x,(float)900/backgroundTexture.getTexture()->getSize().y);
                 spawnPoint = {10, 206};
                 auto map = std::vector<std::vector<int>>();
                 auto items = std::vector<std::vector<int>>();
@@ -625,11 +633,11 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                             temp.push_back(0);
                             interact.push_back(0);
                             enemy.push_back(6);
-                        }else if(i == y - 4 and (j == 4  or j == x - 4)){
+                        }else if(i == y - 3 and (j == 4  or j == x - 4)){
                             temp.push_back(2);
                             interact.push_back(0);
                             enemy.push_back(0);
-                        }else if(i == y - 4){
+                        }else if(i == y - 3){
                             temp.push_back(8);
                             interact.push_back(0);
                             enemy.push_back(0);
@@ -921,6 +929,12 @@ std::vector<std::unique_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
             }if(i==14)
             {
                 lvl0_trans.emplace_back(std::make_unique<StoneBlock>(x,y));
+            }if(i==15)
+            {
+                lvl0_trans.emplace_back(std::make_unique<Stairs>(x,y, 0));
+            }if(i==16)
+            {
+                lvl0_trans.emplace_back(std::make_unique<Stairs>(x,y,1));
             }
             if(i == 101){
                 lvl0_trans.emplace_back(std::make_unique<Bed>(x,y));
@@ -986,7 +1000,13 @@ std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vecto
 void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, Equipment& eq, sf::Time time){
     this->checkCollision(player, window);
     this->checkCollisionInteract(player, window);
-
+    if(mainType == MapTypes::STARTING){
+        if(player.getPosition().x < 804){
+            drawStaticImages = false;
+        }else{
+            drawStaticImages = true;
+        }
+    }
     for (auto it = items_vec.begin(); it != items_vec.end(); it++) {
         (*it)->update(window, player);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
@@ -1108,14 +1128,17 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
 
 void Map::draw(sf::RenderWindow& window) {
     window.draw(backgroundTexture);
+    if(!images.empty()){
+        window.draw(images[1]);
+    }
+    for (auto const &e: walls_vec) {
+        e->draw(window);
+    }
     for (auto &it: items_vec) {
         it->draw(window);
     }
     for (auto &it: entity_vec) {
         it->draw(window);
-    }
-    for (auto const &e: walls_vec) {
-        e->draw(window);
     }
     for (auto const &e: interactable_vec) {
         e->draw(window);
@@ -1130,6 +1153,13 @@ void Map::draw(sf::RenderWindow& window) {
         for (auto &x: walls_vec) {
             e->check(x);
         }
+    }
+    if(!images.empty()) {
+        if (drawStaticImages) {
+            window.draw(images[0]);
+        }
+//        window.draw(images[2]);
+
     }
 }
 

@@ -15,7 +15,7 @@ void Chest::draw(sf::RenderWindow &window) {
         }
         window.draw(number);
     }
-    if(active and !isOpen){
+    if(active and !isOpen and stage_1){
         window.draw(popUp);
     }
 }
@@ -51,7 +51,7 @@ void Chest::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::
     }
     if (player.getPosition().x - chestTexture.getPosition().x < 128 and
         player.getPosition().x - chestTexture.getPosition().x > 0 and
-        std::abs(player.getPosition().y - chestTexture.getPosition().y) < 80) {
+        std::abs(player.getPosition().y - chestTexture.getPosition().y) < 80 and stage_1) {
         active = true;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
             if (time.asSeconds() - lastUsed > 0.5) {

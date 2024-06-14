@@ -8,10 +8,24 @@
 Player::Player() {
     collisionRect = sf::FloatRect(1230,654, 46.88, 71.76);
     player.setPosition(1230,654);
-    player.setScale(0.06,0.06);
+    player.setScale(2,2);
     this->isFacingRight = false;
-    size.push_back(35.16);
-    size.push_back(53.82);
+    size.push_back(42);
+    size.push_back(70);
+    for(int i = 0; i<12; ++i){
+        sf::Sprite temp;
+        temp.setPosition(player.getPosition().x, player.getPosition().y);
+        temp.setTexture(ResourceManager::getTexture("../graphics/player/idle/idle" + std::to_string(i) + ".png"));
+    }for(int i = 0; i<12; ++i){
+        sf::Sprite temp;
+        temp.setPosition(player.getPosition().x, player.getPosition().y);
+        temp.setTexture(ResourceManager::getTexture("../graphics/player/idle/idle" + std::to_string(i) + "r.png"));
+    }for(int i = 0; i<8; ++i){
+        sf::Sprite temp;
+        temp.setPosition(player.getPosition().x, player.getPosition().y);
+        temp.setTexture(ResourceManager::getTexture("../graphics/player/run/run" + std::to_string(i) + ".png"));
+    }
+    player.setTexture(ResourceManager::getTexture("../graphics/player/idle/idle" + std::to_string(0) + ".png"));
 }
 
 void Player::move(float x, float y) {
@@ -27,8 +41,6 @@ void Player::setY(float y){
 }
 void Player::draw(sf::RenderWindow& window) {
     if(isShown) {
-        isFacingRight ? player.setTexture(ResourceManager::getTexture("../graphics/player.png")) : player.setTexture(
-                ResourceManager::getTexture("../graphics/player1.png"));
         this->player.setPosition(collisionRect.left, collisionRect.top);
         window.draw(this->player);
     }
@@ -43,6 +55,7 @@ void Player::jump(){
 void Player::update(sf::Time time) {
     float deltaTime = time.asSeconds();
     if(!game_started){
+        animation_clock.restart();
         deltaTime = 0; // first delta time was always so big that I have make it zero.
         game_started = true;
     }
@@ -78,6 +91,34 @@ void Player::update(sf::Time time) {
             isGround = false;
             lastJumpTime = clock.getElapsedTime().asSeconds();
         }
+    }
+    if (animation_clock.getElapsedTime().asSeconds() > 0.5 and horizontalVelocity == 0 and !isFacingRight) {
+        currentTextureMove = 0;
+        if(currentTexture < 11){
+            currentTexture++;
+        }else{
+            currentTexture = 0;
+        }
+        player.setTexture(ResourceManager::getTexture("../graphics/player/idle/idle" + std::to_string(currentTexture) + "r.png") );
+        animation_clock.restart();
+    }if (animation_clock.getElapsedTime().asSeconds() > 0.5 and horizontalVelocity == 0 and isFacingRight) {
+        currentTextureMove = 0;
+        if(currentTexture < 11){
+            currentTexture++;
+        }else{
+            currentTexture = 0;
+        }
+        player.setTexture(ResourceManager::getTexture("../graphics/player/idle/idle" + std::to_string(currentTexture) + ".png") );
+        animation_clock.restart();
+    }if (animation_clock.getElapsedTime().asSeconds() > 0.5 and horizontalVelocity != 0) {
+        currentTexture = 0;
+        if(currentTextureMove < 7){
+            currentTextureMove++;
+        }else{
+            currentTextureMove = 0;
+        }
+        player.setTexture(ResourceManager::getTexture("../graphics/player/run/run" + std::to_string(currentTextureMove) + ".png") );
+        animation_clock.restart();
     }
     if(!game or paused){
         player.setPosition(1500,200);

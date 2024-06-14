@@ -23,7 +23,7 @@ void Pistol::usage(Player& player) {
         if (ammunition > 0) {
             if (ready) {
                 int n = player.getFacingRight() ? 1: -1;
-                ThrowableContainer::addItem(4,pistol.getPosition().x + 15*n,pistol.getPosition().y,n);
+                ThrowableContainer::addItem(4,pistol.getPosition().x + 20*n,pistol.getPosition().y,n);
                 ammunition--;
                 ready = false;
             } else {

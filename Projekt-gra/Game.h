@@ -12,16 +12,16 @@ class Game {
 public:
     Game(){
         loaded = false;
-//        maps.emplace_back(0, 0, MapTypes::STARTING, 0);
-//        maps.emplace_back(0, 0, MapTypes::FOREST, 0);
-//        maps.emplace_back(10, 0, MapTypes::FOREST, 1);
-//        maps.emplace_back(0, 1, MapTypes::FOREST, 2);
-//        maps.emplace_back(0, 1, MapTypes::CITY, 0);
-//        maps.emplace_back(0, 1, MapTypes::CITY, 1);
-//        maps.emplace_back(0, 1, MapTypes::CITY, 2);
+        maps.emplace_back(0, 0, MapTypes::STARTING, 0);
+        maps.emplace_back(0, 0, MapTypes::FOREST, 0);
+        maps.emplace_back(10, 0, MapTypes::FOREST, 1);
+        maps.emplace_back(0, 1, MapTypes::FOREST, 2);
+        maps.emplace_back(0, 1, MapTypes::CITY, 0);
+        maps.emplace_back(0, 1, MapTypes::CITY, 1);
+        maps.emplace_back(0, 1, MapTypes::CITY, 2);
         maps.emplace_back(0, 1, MapTypes::PJATK, 0);
-//        maps.emplace_back(0, 1, MapTypes::PJATK, 1);
-//        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
+        maps.emplace_back(0, 1, MapTypes::PJATK, 1);
+        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
         currentLvl = 0;
         pausedIcon.setTexture(ResourceManager::getTexture("../graphics/paused.png"));
         pausedIcon.setScale(800/pausedIcon.getTexture()->getSize().x, 700/pausedIcon.getTexture()->getSize().y);
@@ -74,5 +74,14 @@ private:
     float minutes = 0;
     float copyOfMinutes = 0;
     bool copied = false;
+    // restart after every roudn
+
+    bool getTime = false;
+    bool getTime1 = false;
+    bool getTime2 = false;
+    bool addedStats = false;
+    float newTime = 0;
+    float lastMeasured = 0;
+    float measured = 0;
 
 };

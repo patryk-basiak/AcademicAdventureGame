@@ -14,7 +14,7 @@ void Wardrobe::draw(sf::RenderWindow &window) {
             item.first->draw(window);
         }
     }
-    if(active and !isOpen){
+    if(active and !isOpen and stage_1){
         window.draw(popUp);
     }
 
@@ -51,7 +51,7 @@ void Wardrobe::update(sf::RenderWindow &window, Player &player, Equipment& eq, s
     }
     if (player.getPosition().x - wardrobeTexture.getPosition().x < 128 and
         player.getPosition().x - wardrobeTexture.getPosition().x > 0 and
-        std::abs(player.getPosition().y - wardrobeTexture.getPosition().y) < 70) {
+        std::abs(player.getPosition().y - wardrobeTexture.getPosition().y) < 70 and stage_1) {
         active = true;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
             if (time.asSeconds() - lastUsed > 0.5) {

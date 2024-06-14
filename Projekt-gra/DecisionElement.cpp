@@ -56,7 +56,9 @@ void DecisionElement::setDecisions(std::vector<std::string> newDec) {
     float copyX = base.getPosition().x;
     float copyY = base.getPosition().y;
     decisions = newDec;
-    std::ranges::sort(newDec.begin(),newDec.end(), std::ranges::greater());
+    std::ranges::sort(newDec.begin(),newDec.end(), [](const std::string& a, const std::string& b) {
+        return a.size() > b.size();
+    });
     decisionFrame.clear();
     float width = newDec.at(0).size() * 8;
     float height = decisions.size()* 30;

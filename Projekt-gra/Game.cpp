@@ -150,24 +150,24 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
             float currentTime = clockLvl0.getElapsedTime().asSeconds();
             if (currentMap.getMainType() == MapTypes::STARTING) {
                 if (!stage_0) {
-                    if (currentTime <= 3) {
+                    if (currentTime <= 4) {
+                        hud.setMessage("What a lovely day");
+                        hud.dialogSet(true);
                         movable = false;
                         combat = false;
                         mousekeyListener = true;
-                        hud.dialogSet("What a lovely day");
-                        hud.dialogSet(true);
                         player.setPosition(player.getPosition().x - 0.03, player.getPosition().y);
                     }
-                    if (currentTime > 3 and currentTime <= 6) {
+                    if (currentTime > 4 and currentTime <= 6) {
                         hud.dialogSet(true);
                         hud.setMessage("Should I go on a walk or ride a bike with friends?");
                     }
                     if (currentTime > 6 and currentTime <= 7) {
                         // decision window
                         hud.dialogSet(true);
-                        hud.setDecision(std::vector<std::string>{"Go for a walk", "Go ride a bike with friends"},
+                        hud.setDecision(std::vector<std::string>{"Go for a walk", "Go ride a bike with friends", "Study math"},
                                         player.getPosition().x - (player.getSize()[0] * 1.5),
-                                        player.getPosition().y - (player.getSize()[1])); //
+                                        player.getPosition().y - (player.getSize()[1]));
                     }
                     if (currentTime > 8 and currentTime <= 12) {
                         hud.dialogSet(false);
@@ -176,28 +176,62 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
 
                     }
                 }
-                if (stage_0) {
-                    float newTime = clockLvl0.getElapsedTime().asSeconds();
-                    hud.dialogSet(true);
+                if (stage_0 and !stage_1) {
                     hud.setDecisionVisibility(false);
+                    if(!getTime) {
+                        newTime = clockLvl0.getElapsedTime().asSeconds();
+                        getTime = true;
+                    }
+                    hud.dialogSet(true);
                     movable = true;
-                    if (newTime > 3) {
+                    if (currentTime - newTime > 3) {
                         hud.dialogSet(false);
                         if (!hud.dialogGet()) {
 //                    hud.dialogSet(false);
                             int tempDecision = hud.getDecision();
-                            // TODO resultat decyzji
                             decisions.push_back(tempDecision);
+                            if(tempDecision == 2 and !addedStats){
+                                player.setIntelligence(player.getIntelligence()+1);
+                                fmt::println("inteligence added");
+                                addedStats = true;
+                            }
                             hud.setObjective("Check computer");
+                            hud.setMessage("I completely forgot that was due today, I have project on my pendrive, which should be somewhere around");
                         }
                     }
                 }
-                if (stage_1) {
-                    hud.setObjective("Look for disk");
+                if (stage_1 and !(stage_2 or stage_3)) {
+                    if(!getTime1){
+                        newTime = clockLvl0.getElapsedTime().asSeconds();
+                        getTime1 = true;
+                    }
+                    if(currentTime - newTime > 5){
+                        hud.dialogSet(false);
+                    }else{
+                        hud.dialogSet(true);
+                    }
+                    hud.setObjective("Look for pendrive");
+
                 }
-                if (stage_1 and stage_2) {
-                    nextRoomAvailable = true;
-                    hud.setObjective("Go back to Uni and find your files");
+                if (stage_1 and (stage_2 or stage_3)) {
+                    if(!getTime2){
+                        hud.setMessage("I must left it at University, I should go there, I should pick up gun might be useful");
+                        newTime = clockLvl0.getElapsedTime().asSeconds();
+                        getTime2 = true;
+                    }
+                    if(currentTime - newTime > 5){
+                        hud.dialogSet(false);
+                    }else{
+                        hud.dialogSet(true);
+                    }
+
+                    if(eq.hasItem(2)){
+                        hud.setObjective("Go back to Uni and find your files");
+                        nextRoomAvailable = true;
+                    }else{
+                        hud.setObjective("Pick pistol");
+                    }
+
                 }
 
             }
@@ -205,7 +239,14 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
                 hud.setObjective("Jump over the trees and go to Uni");
                 if (currentMap.getSubType() == 0) {
                     nextRoomAvailable = true;
-
+                }
+                if(player.getPosition().y > 640 and currentTime - lastMeasured > 10){
+                    fmt::println("measured");
+                    lastMeasured = currentTime;
+                    measured++;
+                }
+                if(player.getPosition().x > 1550 and measured == 0 and !addedStats){
+                    player.setAgile(player.getAgile() + 1);
                 }
                 if (currentMap.getSubType() == 1) {
                     hud.setObjective("Eliminate enemies");
@@ -275,6 +316,13 @@ void Game::nextLvl(sf::RenderWindow& window, Player& player, Equipment& eq, sf::
     stage_1 = false;
     stage_2 = false;
     stage_3 = false;
+    getTime = false;
+    getTime1 = false;
+    getTime2 = false;
+    addedStats = false;
+    newTime = 0;
+    lastMeasured = 0;
+    measured = 0;
     currentLvl += 1;
     currentMap = std::move(maps[currentLvl]);
     player.setPosition(spawnPoints.at(std::make_pair(currentMap.getMainType(), currentMap.getSubType())).first[0],spawnPoints.at(std::make_pair(currentMap.getMainType(), currentMap.getSubType())).first[1]);
@@ -406,6 +454,7 @@ void Game::gameLoad(sf::RenderWindow &window, Player &player, Equipment &eq, sf:
                     }
                 }
                 if (commaPoint == 0) {
+                    fmt::println("line: {}", line);
                     eq.addItem(std::stoi(line));
                 } else {
                     std::string item;
@@ -418,7 +467,9 @@ void Game::gameLoad(sf::RenderWindow &window, Player &player, Equipment &eq, sf:
                             number += line[j];
                         }
                     }
+                    fmt::println("{}", number);
                     for (int x = 0; x < std::stoi(number); ++x) {
+                        fmt::println("{}", item);
                         eq.addItem(std::stoi(item));
                     }
                 }
