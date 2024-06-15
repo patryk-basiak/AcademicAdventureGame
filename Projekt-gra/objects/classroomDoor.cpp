@@ -27,16 +27,13 @@ sf::Vector2<float> ClassroomDoor::getSize() {
 }
 
 void ClassroomDoor::draw(sf::RenderWindow &window)  {
-    window.draw(classroomDoor);
     if(isActive){
         window.draw(popUp);
     }
     if(isOpen){
-        classroomDoor.setTexture(ResourceManager::getTexture("../graphics/classroomDoorOpen.png"));
-        classroomDoor.setScale((float)192/classroomDoor.getTexture()->getSize().x,(float)140/classroomDoor.getTexture()->getSize().y);
+        window.draw(clasroomDoorOpen);
     }if(!isOpen){
-        classroomDoor.setTexture(ResourceManager::getTexture("../graphics/classroomDoorClosed.png"));
-        classroomDoor.setScale((float)64/classroomDoor.getTexture()->getSize().x,(float)128/classroomDoor.getTexture()->getSize().y);
+        window.draw(classroomDoor);
     }
     if(val == xRand){
         if(game){

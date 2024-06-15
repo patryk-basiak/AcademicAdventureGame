@@ -9,6 +9,7 @@ bool game = false;
 bool menuX = false;
 bool paused = false;
 bool combat = true;
+bool finished = false;
 bool died = false;
 bool jumpable = true;
 bool debugMode = false;

@@ -78,10 +78,6 @@ sf::Vector2<float> Collectable::getSize() {
 
 }
 
-std::vector<std::shared_ptr<Collectable>> Collectable::getThrowable() const {
-    return  throwable;
-}
-
 Collectable::Collectable(float x, float y) {
     collect.setPosition(x,y);
     collect.setSize(sf::Vector2f{100,50});
@@ -93,6 +89,10 @@ bool Collectable::isOneTimeUse() {
 
 std::string Collectable::getInfo() {
     return "";
+}
+
+bool Collectable::canHurtPlayer() {
+    return false;
 }
 
 

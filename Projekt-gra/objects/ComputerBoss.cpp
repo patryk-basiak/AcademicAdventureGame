@@ -3,6 +3,8 @@
 //
 
 #include "ComputerBoss.h"
+
+#include <cmath>
 #include "fmt/core.h"
 
 #include "../ThrowableContainer.h"
@@ -41,19 +43,33 @@ void ComputerBoss::update(sf::Time time, Player &player) {
     healthLine.setSize(sf::Vector2f (part * health, healthLine.getSize().y));
     healthLine.setPosition(computer.getPosition().x, computer.getPosition().y - 15);
 
-    if(addMoney){
+    if(addMoney and health > 3 and health %3 ==0) {
         int temp = sign(gen);
-        if(temp == -1){
-            ThrowableContainer::addItem(3, computer.getPosition().x - (float)coinPos(gen), computer.getPosition().y + (float)coinPosY(gen));
+        if (temp == -1) {
+            ThrowableContainer::addItem(3, computer.getPosition().x - (float) coinPos(gen),
+                                        computer.getPosition().y + (float) coinPosY(gen));
+
         }
-        if(temp == 1){
-            ThrowableContainer::addItem(3, computer.getPosition().x  + this->getSize().x + (float)coinPos(gen), computer.getPosition().y + (float)coinPosY(gen));
+        if (temp == 1) {
+            ThrowableContainer::addItem(3, computer.getPosition().x + this->getSize().x + (float) coinPos(gen),
+                                        computer.getPosition().y + (float) coinPosY(gen));
         }
         int nextTemp = coinPos(gen);
-        if(nextTemp < 75) {
+        if (nextTemp < 75) {
             ThrowableContainer::addItemEntity(7, computer.getPosition().x, computer.getPosition().y, 4);
         }
         addMoney = false;
+    }if(health % 2 == 1 and bulletSpawn){
+        int temp = sign(gen);
+        int amount = bulletAmount(gen);
+        if(temp == -1){
+            for(int i = 0; i<amount + (std::abs(30 - health)/5); ++i)
+                ThrowableContainer::addItem(4, computer.getPosition().x - 25, computer.getPosition().y + bulletPosY(gen) ,-1);
+        }if(temp == 1){
+            for(int i = 0; i<amount + (std::abs(30 - health)/5); ++i)
+                ThrowableContainer::addItem(4, computer.getPosition().x + this->getSize().x, computer.getPosition().y + bulletPosY(gen) ,1);
+        }
+        bulletSpawn = false;
     }
 }
 
@@ -72,6 +88,8 @@ void ComputerBoss::setVelocity(int i) {
 void ComputerBoss::setHealth(int i) {
     health = i;
     addMoney = true;
+    bulletSpawn = true;
+
 }
 
 int ComputerBoss::getHealth() {

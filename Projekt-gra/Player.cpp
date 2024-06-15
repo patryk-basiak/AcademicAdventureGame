@@ -24,6 +24,10 @@ Player::Player() {
         sf::Sprite temp;
         temp.setPosition(player.getPosition().x, player.getPosition().y);
         temp.setTexture(ResourceManager::getTexture("../graphics/player/run/run" + std::to_string(i) + ".png"));
+    }for(int i = 0; i<8; ++i){
+        sf::Sprite temp;
+        temp.setPosition(player.getPosition().x, player.getPosition().y);
+        temp.setTexture(ResourceManager::getTexture("../graphics/player/run/run" + std::to_string(i) + "r.png"));
     }
     player.setTexture(ResourceManager::getTexture("../graphics/player/idle/idle" + std::to_string(0) + ".png"));
 }
@@ -62,13 +66,6 @@ void Player::update(sf::Time time) {
     float horizontalVelocity = 0.0f;
     float verticalVelocityIncrement = gravity * deltaTime;
 
-
-
-    if (health <= 0) {
-        died = true;
-        game = false;
-        return;
-    }
     if(player.getPosition().y > 1000){
         health = 0;
     }
@@ -85,8 +82,9 @@ void Player::update(sf::Time time) {
         }
     }
 
-    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) and jumpable) {
+    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) and jumpable and isGround) {
         if(clock.getElapsedTime().asSeconds() - lastJumpTime > JumpCooldown) {
+            isGround = false;
             verticalVelocity = jumpVelocity;
             isGround = false;
             lastJumpTime = clock.getElapsedTime().asSeconds();
@@ -110,7 +108,7 @@ void Player::update(sf::Time time) {
         }
         player.setTexture(ResourceManager::getTexture("../graphics/player/idle/idle" + std::to_string(currentTexture) + ".png") );
         animation_clock.restart();
-    }if (animation_clock.getElapsedTime().asSeconds() > 0.5 and horizontalVelocity != 0) {
+    }if (animation_clock.getElapsedTime().asSeconds() > 0.5 and horizontalVelocity != 0 and isFacingRight) {
         currentTexture = 0;
         if(currentTextureMove < 7){
             currentTextureMove++;
@@ -118,6 +116,15 @@ void Player::update(sf::Time time) {
             currentTextureMove = 0;
         }
         player.setTexture(ResourceManager::getTexture("../graphics/player/run/run" + std::to_string(currentTextureMove) + ".png") );
+        animation_clock.restart();
+    }if (animation_clock.getElapsedTime().asSeconds() > 0.5 and horizontalVelocity != 0 and !isFacingRight) {
+        currentTexture = 0;
+        if(currentTextureMove < 7){
+            currentTextureMove++;
+        }else{
+            currentTextureMove = 0;
+        }
+        player.setTexture(ResourceManager::getTexture("../graphics/player/run/run" + std::to_string(currentTextureMove) + "r.png") );
         animation_clock.restart();
     }
     if(!game or paused){
@@ -240,23 +247,34 @@ int Player::getEndurance() const {
     return endurance;
 }
 
-void Player::setStrength(int strength) {
-    Player::strength = strength;
+void Player::setStrength(int xstrength) {
+    Player::strength = xstrength;
+    damage = 1 + (xstrength/3);
 }
 
-void Player::setIntelligence(int intelligence) {
-    Player::intelligence = intelligence;
+void Player::setIntelligence(int xintelligence) {
+    Player::intelligence = xintelligence;
 }
 
-void Player::setLuck(int luck) {
-    Player::luck = luck;
+void Player::setLuck(int xluck) {
+    Player::luck = xluck;
 }
 
-void Player::setAgile(int agile) {
-    Player::agile = agile;
+void Player::setAgile(int xagile) {
+    Player::agile = xagile;
+    jumpVelocity = -150 - ((float)(150*agile)/40);
 }
 
-void Player::setEndurance(int endurance) {
-    Player::endurance = endurance;
+void Player::setEndurance(int xendurance) {
+    Player::endurance = xendurance;
+    health = 3 + (xendurance/3);
+}
+
+bool Player::isGround1() const {
+    return isGround;
+}
+
+void Player::setIsGround(bool ground) {
+    Player::isGround = ground;
 }
 

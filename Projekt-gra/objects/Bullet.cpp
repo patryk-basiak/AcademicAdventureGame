@@ -31,7 +31,7 @@ int Bullet::getId() {
 
 
 void Bullet::collision(Player &player) {
-    ;
+    player.setHealth(player.getHealth()-1);
 }
 
 std::vector<sf::RectangleShape> Bullet::getAmmoList() {

@@ -143,6 +143,8 @@ add_executable(game main.cpp
         objects/DarkBlock.h
         objects/StoneBlock.cpp
         objects/StoneBlock.h
+        objects/Quartz.cpp
+        objects/Quartz.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

@@ -1,5 +1,6 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/System/Clock.hpp"
+#include "SFML/Audio.hpp"
 #include "fmt/core.h"
 #include <thread>
 #include "Player.h"
@@ -16,6 +17,9 @@ auto main() -> int {
             sf::VideoMode({1600, 900}), "Academic Rush: Sunday Quest",
             sf::Style::Default, sf::ContextSettings(0, 0, 8));
 
+    sf::Image icon;
+    icon.loadFromFile("../graphics/player/idle/idle0.png");
+    window.setIcon(icon.getSize().x,icon.getSize().y, icon.getPixelsPtr());
     game = false;
     menuX = true;
     Menu menuClass;
@@ -25,6 +29,7 @@ auto main() -> int {
     HUD hud;
     Game gameClass;
     debugMode = true;
+    eq.addItem(13);
     sf::Clock clock;
     sf::Clock timer;
     while (window.isOpen()) {
@@ -43,6 +48,7 @@ auto main() -> int {
             window.display();
         }
         while (game) {
+
             sf::Time deltaTime = clock.restart();
             sf::Time time = timer.getElapsedTime();
             window.clear(sf::Color::White);

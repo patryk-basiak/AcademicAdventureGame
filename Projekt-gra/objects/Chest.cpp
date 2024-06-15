@@ -33,7 +33,6 @@ void Chest::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::
         active = true;
     }
     sf::Vector2 mouse = sf::Mouse::getPosition(window);
-    std::map<std::shared_ptr<Collectable>, int>::iterator();
     for(auto it = itemsInside.begin(); it!= itemsInside.end(); it++){
         if((*it).first->getPosition().x < mouse.x and (*it).first->getPosition().x + (*it).first->getSize().x > mouse.x and
                 (*it).first->getPosition().y < mouse.y and (*it).first->getPosition().y + (*it).first->getSize().y > mouse.y){
@@ -41,7 +40,7 @@ void Chest::update(sf::RenderWindow &window, Player &player, Equipment& eq, sf::
                 for(int i = 0; i < (*it).second; ++i) {
                     eq.addItem((*it).first->getId());
                 }
-                itemsInside.erase(it);
+                itemsInside.erase(it); // na macu to nie dziala
                 it--;
                 number.setString("");
                 return;

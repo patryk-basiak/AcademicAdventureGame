@@ -5,7 +5,7 @@ last edited: null
 ID for map generation:
 0 - void (not an object)
 1 - Wall
-2- Jump pad
+2 - Jump pad
 3 - Grass
 4 - Dirt
 5 - Brick
@@ -20,6 +20,7 @@ ID for map generation:
 14 - StoneBlock
 15 - BrickStairs
 16 - BrickStairsReversed
+17 - quartz
 101 - Bed
 
 200 - Oak wood
@@ -34,6 +35,7 @@ ID for Interactable generation:
 99 - Door (to right)
 98 - Door (to Left)
 102 - Computer
+500 - Computer (ending)
 103 - Wardrobe
 201 - Kiosk
 300 - Shop

@@ -11,6 +11,7 @@ class Interactable {
 public:
     Interactable(float x, float y);
     virtual void draw(sf::RenderWindow& window) ;
+    virtual void drawWindow(sf::RenderWindow& window) ;
     virtual sf::Vector2<float> getPosition();
     virtual sf::Vector2<float> getSize();
     virtual ~Interactable();

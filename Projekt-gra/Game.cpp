@@ -33,6 +33,9 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::C
     if(hour >= 24){
         game = false;
         //TODO game lost due to not enough time
+    }if(player.getHealth() <= 0){
+        died = true;
+        game = false;
     }
     sf::Event event = sf::Event();
     while (window.pollEvent(event)) {
@@ -79,7 +82,11 @@ void Game::update(sf::RenderWindow& window, Player& player, Equipment& eq, sf::C
 
         }
     }
-
+        if(player.getPosition().y <= 0){
+            player.setPosition(player.getPosition().x, 3);
+        }if(player.getPosition().x <= 0){
+            player.setPosition(5, player.getPosition().y);
+        }
         if (player.getPosition().x >=  (float)(window.getSize().x - 30)) {
             if (currentLvl != lastLvl and nextRoomAvailable) {
                 if(time.asSeconds() - lastLvlChanged > 5) {
@@ -149,6 +156,11 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
         if(game_started) {
             float currentTime = clockLvl0.getElapsedTime().asSeconds();
             if (currentMap.getMainType() == MapTypes::STARTING) {
+                if(!soundPlayed) {
+                    if (!ambience.openFromFile("../Audio/residentialday-24098.mp3"));
+                    ambience.play();
+                    soundPlayed = true;
+                }
                 if (!stage_0) {
                     if (currentTime <= 4) {
                         hud.setMessage("What a lovely day");
@@ -240,13 +252,13 @@ void Game::gameRules(sf::RenderWindow& window, Player& player, Equipment& eq, sf
                 if (currentMap.getSubType() == 0) {
                     nextRoomAvailable = true;
                 }
-                if(player.getPosition().y > 640 and currentTime - lastMeasured > 10){
-                    fmt::println("measured");
+                if(player.getPosition().y > 620 and currentTime - lastMeasured > 10){
                     lastMeasured = currentTime;
                     measured++;
                 }
                 if(player.getPosition().x > 1550 and measured == 0 and !addedStats){
                     player.setAgile(player.getAgile() + 1);
+                    addedStats = true;
                 }
                 if (currentMap.getSubType() == 1) {
                     hud.setObjective("Eliminate enemies");
@@ -320,6 +332,7 @@ void Game::nextLvl(sf::RenderWindow& window, Player& player, Equipment& eq, sf::
     getTime1 = false;
     getTime2 = false;
     addedStats = false;
+    ambience.stop();
     newTime = 0;
     lastMeasured = 0;
     measured = 0;

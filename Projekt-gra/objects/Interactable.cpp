@@ -57,3 +57,7 @@ void Interactable::setColl(bool collide) {
 void Interactable::check(std::unique_ptr<Wall> &wall) {
 
 }
+
+void Interactable::drawWindow(sf::RenderWindow &window) {
+
+}

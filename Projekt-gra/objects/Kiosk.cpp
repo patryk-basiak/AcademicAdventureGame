@@ -22,22 +22,28 @@ bool Kiosk::getStatus()
 
 void Kiosk::collision(Player &player, sf::RenderWindow &window)
 {
-    if(!inUse) {
-        window.draw(text);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
-        if (inUse) {
-            movable = true;
-            inUse = false;
-        } else {
-            movable = false;
-            inUse = true;
-        }
-    }
+
 }
 
-void Kiosk::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Time, sf::Time deltatime)
+void Kiosk::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::Time time, sf::Time deltatime)
 {
+    if (player.getPosition().x - kiosk.getPosition().x < 128 and
+        player.getPosition().x - kiosk.getPosition().x > 0 and
+        std::abs(player.getPosition().y - kiosk.getPosition().y) < 80 ) {
+        active = true;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+            if (time.asSeconds() - lastUsed > 0.5) {
+                if (inUse) {
+                    inUse = false;
+                } else {
+                    inUse = true;
+                }
+            }
+            lastUsed = time.asSeconds();
+        }
+    } else {
+        active = false;
+    }
     sf::Vector2 mouse = sf::Mouse::getPosition(window);
     if(inUse){
         player.hide();
@@ -94,6 +100,9 @@ void Kiosk::draw(sf::RenderWindow &window)
                 window.draw(e);
             }
         }
+    }
+    if(active and !inUse) {
+        window.draw(text);
     }
 }
 

@@ -73,7 +73,7 @@ void Elevator::update(sf::RenderWindow &window, Player &player, Equipment &eq,  
     if(isOpen){
         sf::Vector2 mouse = sf::Mouse::getPosition(window);
         for (int i = 0; i < floors.size(); ++i) {
-            pointer.setPosition(floors.at(i).getPosition().x, floors.at(i).getPosition().y + 20);
+            pointer.setPosition(floors.at(i).getPosition().x, floors.at(i).getPosition().y + 30);
             if (mouse.x > floors.at(i).getPosition().x and mouse.x < floors.at(i).getPosition().x + 100 and
                 mouse.y > floors.at(i).getPosition().y and mouse.y < floors.at(i).getPosition().y + 30) {
                 window.draw(pointer);

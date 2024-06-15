@@ -9,6 +9,7 @@ extern bool combat;
 extern bool debugMode;
 extern bool keyboardInput;
 extern bool paused;
+extern bool finished;
 extern bool jumpable;
 extern bool mousekeyListener;
 

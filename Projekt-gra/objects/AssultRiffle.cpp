@@ -29,9 +29,9 @@ void AssultRiffle::usage(Player& player) {
             if (ready) {
                 int n = player.getFacingRight() ? 1: -1;
                 ThrowableContainer::addItem(4,  assultRifle.getPosition().x + 15*n , assultRifle.getPosition().y,n);
-                ThrowableContainer::addItem(4,assultRifle.getPosition().x + + 20*n,assultRifle.getPosition().y,n);
-                ThrowableContainer::addItem(4,assultRifle.getPosition().x + + 25*n,assultRifle.getPosition().y,n);
-                ammunition -= 3;
+//                ThrowableContainer::addItem(4,assultRifle.getPosition().x + + 25*n,assultRifle.getPosition().y,n);
+//                ThrowableContainer::addItem(4,assultRifle.getPosition().x + + 25*n,assultRifle.getPosition().y,n);
+                ammunition -= 2;
                 ready = false;
             } else {
                 fmt::println("not ready to shot");

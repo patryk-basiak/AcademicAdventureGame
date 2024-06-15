@@ -44,8 +44,7 @@
 #include "objects/WhiteWool.h"
 #include "objects/DarkBlock.h"
 #include "objects/StoneBlock.h"
-
-
+#include "objects/Quartz.h"
 
 
 static int tempID = 0;
@@ -246,14 +245,10 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                     } else if (i >= y - 4 - distance and i <= y - 4 and it != treeTrunks.end()) {
                         temp.push_back(200);
                         items.push_back(0);
-                    }
-//                else if (i >= y - distance - 3 and  i < y - distance - tempDistance  and (before != treeTrunks.end() or after != treeTrunks.end()) and tempDistance > 2){
-//                    temp.push_back(201);
-//                } // TODO
-                    else if (i > y - 4 and it == treeTrunks.end() and tempDistance > 3) {
+                    }else if (i > y - 4 and it == treeTrunks.end() and tempDistance > 3) {
                         temp.push_back(0);
                         items.push_back(0);
-                    } else if (i == y - 3 and it == treeTrunks.end() and tempDistance <= 3 and tempDistance > 1) {
+                    } else if (i == y - 3 and it == treeTrunks.end() and tempDistance <= 3 and tempDistance > 0) {
                         temp.push_back(2);
                         items.push_back(0);
                     } else if (i == y - 4 and j < 4) {
@@ -526,6 +521,9 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
             }
             if(subType == 1)
             {
+                backgroundTexture = sf::Sprite();
+                backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/marketBackGround.png"));
+                backgroundTexture.setScale((float)1600/backgroundTexture.getTexture()->getSize().x,(float)900/backgroundTexture.getTexture()->getSize().y);
                 spawnPoint = {8, 654};
                 std::uniform_int_distribution<> chestPos(3, 11);
                 auto chP = chestPos(gen);
@@ -610,6 +608,10 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                 return vec;
             }if(subType == 2)
             {
+                backgroundTexture = sf::Sprite();
+                backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/computerFightBackground.png"));
+                backgroundTexture.setScale((float)1600/backgroundTexture.getTexture()->getSize().x,(float)900/backgroundTexture.getTexture()->getSize().y);
+
                 spawnPoint = {8, 654};
                 std::uniform_int_distribution<> chestPos(3, 11);
                 auto chP = chestPos(gen);
@@ -666,6 +668,8 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
         }
     if(mainType == MapTypes::PJATK){
         if(subType == 0){
+            this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/pjatkBackground.png"));
+            this->backgroundTexture.setScale((float)1600/backgroundTexture.getTexture()->getSize().x,(float)900/backgroundTexture.getTexture()->getSize().y);
             spawnPoint = {852, 718};
 
             auto map = std::vector<std::vector<int>>();
@@ -746,6 +750,13 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
 
         }if(subType == 1){
             spawnPoint = {852, 718};
+            this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/pjatkBackground.png"));
+            this->backgroundTexture.setScale((float)1600/backgroundTexture.getTexture()->getSize().x,(float)900/backgroundTexture.getTexture()->getSize().y);
+            sf::Sprite temporary;
+            temporary.setTexture(ResourceManager::getTexture("../graphics/insideUni.png"));
+            temporary.setPosition(0,96);
+            temporary.setScale(1.5,1.5);
+            images.push_back(temporary);
             std::uniform_int_distribution<> doorPos(5, 8);
             std::uniform_int_distribution<> doorDistance(3, 8);
             std::vector<float> doorLocations;
@@ -761,6 +772,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
             auto items = std::vector<std::vector<int>>();
             auto ENEMY = std::vector<std::vector<int>>();
             auto inter = std::vector<std::vector<int>>();
+
             for (int i = 0; i < y; ++i)
             {
                 std::vector temp = std::vector<int>();
@@ -770,6 +782,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                 int xTemp=0;
                 for (int j = 0; j < x; ++j)
                 {
+
                     if(i % 4 == 1 and i != 0 and i < y - 3) {
                         temp.push_back(7);
                         enemy.push_back(0);
@@ -820,10 +833,95 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
 
         }
         }
+        if(mainType == MapTypes::ENDING){
+            this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/CountrySide.png"));
+            sf::Sprite temp;
+            temp.setTexture(ResourceManager::getTexture("../graphics/homeOutside.png"));
+            temp.setPosition(65,197);
+            images.push_back(temp);
+            sf::Sprite temp1;
+            temp1.setTexture(ResourceManager::getTexture("../graphics/homeInside.png"));
+            temp1.setScale(1.01,1);
+            temp1.setPosition(128,256);
+            images.push_back(temp1);
+            auto map = std::vector<std::vector<int>>();
+            map = std::vector<std::vector<int>>{{0, 0, 0, 16, 5, 5,   5, 5, 5, 5, 15,   0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {0, 0, 16, 5, 5, 5,   5,5, 5, 5, 5,   15, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {0, 16, 5, 5, 5, 5,   5, 5, 5, 5, 5,   5, 15,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {0, 5, 5, 5, 5, 5,   5, 5, 5, 5, 5,   5, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 101,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {0, 5, 0, 14, 14, 14,  14, 14, 14,14, 14,  14, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 5,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 98, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {0, 5, 0, 0, 0, 0,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                {3, 5, 2, 14, 14, 14,   14, 14, 14, 14, 14,   14, 6,  3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+                                                {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+                                                {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+                                                {4, 4, 4, 4, 4, 4,   4, 4, 4, 4, 4,   4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            };
+            vec.push_back(map);
+            auto items = std::vector<std::vector<int>>();
+            items = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 1, 0, 0, 0, 3, 0, 0, 0, 0, 13, 0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 1,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 1, 0, 0, 3, 0, 0, 0, 0, 0, 0,  0, 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 99, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                                                  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},};
+            vec.push_back(items);
+            auto entity = std::vector<std::vector<int>>();
+            entity = std::vector<std::vector<int>>{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 98, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                   {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                   {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                   {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                   {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            };
+            vec.push_back(entity);
+            auto interact = std::vector<std::vector<int>>();
+            interact = std::vector<std::vector<int>>{{0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                     {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                     {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                     {0, 0, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                     {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                     {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                     {0, 0, 0, 0,   500, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                     {0, 0, 0, 1,   1,   1, 1, 1, 1, 1, 1, 1, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                     {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                     {0, 0, 0, 0,   0,   0, 0, 0, 0, 0, 0, 0, 98, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                                     {0, 0, 0, 103, 0,   0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0},
+                                                     {1, 1, 2, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                     {1, 1, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                     {1, 1, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                                                     {1, 1, 1, 1,   1,   1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            };
+            vec.push_back(interact);
+            return vec;
+
+        }else{
+            return {{{0}}};
+        }
     }
-//    if(mainType == MapTypes::ENDING){
-//
-//    }
+
 
 std::vector<std::unique_ptr<Entity>> Map::transformEntities(const std::vector<std::vector<int>>& vec) {
     auto trans = std::vector<std::unique_ptr<Entity>>();
@@ -935,6 +1033,9 @@ std::vector<std::unique_ptr<Wall>> Map::transformWalls(std::vector<std::vector<i
             }if(i==16)
             {
                 lvl0_trans.emplace_back(std::make_unique<Stairs>(x,y,1));
+            }if(i==17)
+            {
+                lvl0_trans.emplace_back(std::make_unique<Quartz>(x,y));
             }
             if(i == 101){
                 lvl0_trans.emplace_back(std::make_unique<Bed>(x,y));
@@ -972,6 +1073,8 @@ std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vecto
             }
             if(i == 102){
                 lvl0_trans.emplace_back(std::make_unique<Computer>(x,y));
+            }if(i == 500){
+                lvl0_trans.emplace_back(std::make_unique<Computer>(x,y, 1));
             }
             if(i == 103){
                 lvl0_trans.emplace_back(std::make_unique<Wardrobe>(x,y));
@@ -1000,7 +1103,7 @@ std::vector<std::unique_ptr<Interactable>> Map::transformInteractable(std::vecto
 void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, Equipment& eq, sf::Time time){
     this->checkCollision(player, window);
     this->checkCollisionInteract(player, window);
-    if(mainType == MapTypes::STARTING){
+    if(mainType == MapTypes::STARTING or mainType == MapTypes::ENDING ){
         if(player.getPosition().x < 804){
             drawStaticImages = false;
         }else{
@@ -1019,39 +1122,36 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
     for( auto it = entity_vec.begin(); it != entity_vec.end(); it++) {
         checkCollisionEntity((*it), window);
         (*it)->update(deltatime, player);
+
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             (*it)->collision(player);
             if (!(*it)->isFriendly()) {
-                entity_vec.erase(it);
-                it--;
+                it = entity_vec.erase(it);
                 return;
             }
         }
-        if (((*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610) and (*it)->diesOutsideScreen()) {
-            entity_vec.erase(it);
-            it--;
+
+        if (((*it)->getPosition().x < -10 || (*it)->getPosition().x > 1610) && (*it)->diesOutsideScreen()) {
+            it = entity_vec.erase(it);
             return;
         }
+
         if (!(*it)->isFriendly()) {
-            for (auto bullets = ThrowableContainer::getVector().begin();
-                 bullets != ThrowableContainer::getVector().end(); bullets++) {
+            auto bullets = ThrowableContainer::getVector().begin();
+            while (bullets != ThrowableContainer::getVector().end()) {
                 if ((*bullets)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
                     (*it)->setHealth((*it)->getHealth() - 1);
-                    ThrowableContainer::getVector().erase(bullets);
-                    bullets--;
-                    if ((*it)->getHealth() <= 0) {
-                        auto x = new float((*it)->getPosition().x);
-                        auto y = new float((*it)->getPosition().y);
-                        entity_vec.erase(it);
-                        ThrowableContainer::addItem(3, *x,*y);
-                        delete x;
-                        delete y;
-                        it--;
-                    }
-
-                    return;
+                    bullets = ThrowableContainer::getVector().erase(bullets);
+                } else {
+                    ++bullets;
                 }
             }
+        }
+
+        if ((*it)->getHealth() <= 0) {
+            it = entity_vec.erase(it);
+        } else {
+            ++it;
         }
     }
         for( auto it = ThrowableContainer::getEntityVector().begin(); it != ThrowableContainer::getEntityVector().end(); it++) {
@@ -1102,6 +1202,7 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
             (*it)->collision(player);
             ThrowableContainer::getVector().erase(it);
             it--;
+            return;
         }
         for(auto & iter : walls_vec)
             if((*it)->getGlobalBounds().intersects(iter->getGlobalBounds())){
@@ -1117,8 +1218,8 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
     for (auto const &e: interactable_vec) {
         e->update(window,player, eq, time, deltatime);
     }
-    for (auto const &e: ThrowableContainer::getVector()) {
-        e->update(window,player);
+    for (auto it = ThrowableContainer::getVector().begin(); it != ThrowableContainer::getVector().end(); it++) {
+        (*it)->update(window,player);
     }for (auto const &e: walls_vec) {
         e->update();
     }for (auto const &e: ThrowableContainer::getEntityVector()) {
@@ -1128,8 +1229,10 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
 
 void Map::draw(sf::RenderWindow& window) {
     window.draw(backgroundTexture);
-    if(!images.empty()){
+    if(images.size() >= 2 and (mainType == MapTypes::STARTING or mainType == MapTypes::ENDING )){
         window.draw(images[1]);
+    }if(mainType == MapTypes::PJATK and subType == 1){
+        window.draw(images[0]);
     }
     for (auto const &e: walls_vec) {
         e->draw(window);
@@ -1154,8 +1257,11 @@ void Map::draw(sf::RenderWindow& window) {
             e->check(x);
         }
     }
+    for (auto const &e: interactable_vec) {
+        e->drawWindow(window);
+    }
     if(!images.empty()) {
-        if (drawStaticImages) {
+        if (drawStaticImages and (mainType == MapTypes::STARTING or mainType == MapTypes::ENDING)) {
             window.draw(images[0]);
         }
 //        window.draw(images[2]);
@@ -1166,7 +1272,7 @@ void Map::draw(sf::RenderWindow& window) {
 
 void Map::checkCollision(Player& player, sf::RenderWindow &window) {
 // sources: https://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects //TODO read more
-
+        int collisionS = 0;
         float playerBottom = player.getPosition().y + player.getSize()[1];
         float playerTop = player.getPosition().y;
         float playerLeft = player.getPosition().x;
@@ -1202,12 +1308,17 @@ void Map::checkCollision(Player& player, sf::RenderWindow &window) {
                     if (fromTop) {
                         // Collision from the top
                         wall->collision(player, window);
+                        player.setIsGround(true);
+                        collisionS++;
                     } else {
                         // Collision from the bottom
                         wall->collisionBottom(player,window);
                     }
                 }
             }
+        }
+        if(collisionS == 0){
+            player.setIsGround(false);
         }
     }
 

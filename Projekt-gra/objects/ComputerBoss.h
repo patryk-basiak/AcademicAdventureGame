@@ -13,7 +13,7 @@ public :ComputerBoss(float x, float y) : Entity(x, y, sf::Color::Black) {
         initialPositionX = x;
         initialPositionY = y;
         velocity = 50; //TODO
-        health = 20;
+        health = 31;
         horizontalVelocity = 0;
         healthLine.setPosition(computer.getPosition().x, computer.getPosition().y - 15);
         healthLine.setFillColor(sf::Color::Red);
@@ -52,11 +52,14 @@ private:
     sf::RectangleShape healthLine;
     float part;
     bool addMoney = false;
+    bool bulletSpawn = false;
     std::random_device rd;
     std::mt19937 gen = std::mt19937(this->rd());
     std::uniform_int_distribution<> coinPos = std::uniform_int_distribution<>(0, 150);
     std::uniform_int_distribution<> coinPosY= std::uniform_int_distribution<>(0, 250);
+    std::uniform_int_distribution<> bulletPosY= std::uniform_int_distribution<>(0, 300);
     std::uniform_int_distribution<> sign = std::uniform_int_distribution<>(-1, 1);
+    std::uniform_int_distribution<> bulletAmount = std::uniform_int_distribution<>(0, 3);
 
 };
 

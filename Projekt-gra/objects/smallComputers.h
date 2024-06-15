@@ -1,9 +1,8 @@
 #pragma once
 
-
-
 #include "Entity.h"
 #include "../ResourceManager.h"
+#include <random>
 
 class SmallComputers
         : public Entity{
@@ -17,6 +16,9 @@ public :SmallComputers(float x, float y) : Entity(x, y, sf::Color::Black) {
         velocity = 50; //TODO
         health = 2;
         horizontalVelocity = 0;
+        gen = std::mt19937(rd());
+        wantedPos = destination(gen);
+        destination = std::uniform_int_distribution<>(300, 1500);
         healthLine.setPosition(computer.getPosition().x, computer.getPosition().y - 15);
         healthLine.setFillColor(sf::Color::Red);
         healthLine.setSize(sf::Vector2f (this->getSize().x, 4));
@@ -51,6 +53,10 @@ private:
     float initialPositionY;
     float lastShot = 0;
     float shootCooldown = 2;
+    std::random_device rd;
+    std::mt19937 gen;
+    float wantedPos;
+    std::uniform_int_distribution<> destination;
     float respawnTime = 0;
     bool respawnTimeSet = false;
     sf::RectangleShape healthLine;

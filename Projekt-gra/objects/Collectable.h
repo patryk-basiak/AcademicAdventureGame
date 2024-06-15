@@ -26,14 +26,13 @@ public:
     virtual int getId();
     int id = 0;
     virtual bool isOneTimeUse();
-    std::vector<std::shared_ptr<Collectable>> getThrowable() const;
+    virtual bool canHurtPlayer();
 
 
     virtual std::string getInfo();
 
 protected:
     sf::Font font;
-    std::vector<std::shared_ptr<Collectable>> throwable;
 
 private:
     sf::RectangleShape collect;

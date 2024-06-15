@@ -25,8 +25,12 @@ public:
         classroomDoor.setTexture(ResourceManager::getTexture("../graphics/classroomDoorClosed.png"));
         classroomDoor.setPosition(x,y);
         classroomDoor.setScale((float)64/classroomDoor.getTexture()->getSize().x,(float)128/classroomDoor.getTexture()->getSize().y);
+        clasroomDoorOpen.setTexture(ResourceManager::getTexture("../graphics/classroomDoorOpen.png"));
+        clasroomDoorOpen.setScale((float)128/classroomDoor.getTexture()->getSize().x,(float)128/classroomDoor.getTexture()->getSize().y);
+        clasroomDoorOpen.setPosition(x,y);
         popUp.setString("Press F to open door");
         popUp.setFont(Interactable::font);
+        popUp.setFillColor(sf::Color::Black);
         popUp.setPosition(classroomDoor.getPosition().x, classroomDoor.getPosition().y - (classroomDoor.getTexture()->getSize().y*classroomDoor.getScale().y/3));
         if(val != random_type){
 
@@ -105,6 +109,7 @@ private:
     int id = 400;
     float lastUsed;
     sf::Sprite classroomDoor;
+    sf::Sprite clasroomDoorOpen;
     sf::RectangleShape gameRoom;
     sf::RectangleShape playerGame;
     sf::RectangleShape endPoint;

@@ -63,6 +63,8 @@ private:
     std::vector<float> size;
     sf::Sprite kiosk;
     sf::Sprite inside; // TODO
+    float lastUsed = 0;
+    bool active = false;
     sf::RectangleShape tempInside;
 
 };

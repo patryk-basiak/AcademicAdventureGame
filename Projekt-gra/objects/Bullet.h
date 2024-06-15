@@ -31,6 +31,16 @@ public:
         this->degX = angle;
         this->degY = angleY;
         type = 2;
+    }Bullet(float x, float y, int n, float angle, float angleY, float l) : Collectable(x, y, sf::Color{255, 165, 0, 255 }, 16, 16){
+        bullet.setPosition(x,y);
+        bullet.setRadius(8);
+        bullet.setFillColor(sf::Color::Black);
+        initalPosX = x;
+        initalPosY = y;
+        direction = n;
+        this->degX = angle;
+        this->degY = angleY;
+        type = 3;
     }
     void setPosition(float x, float y) override;
      sf::FloatRect getGlobalBounds() override;
