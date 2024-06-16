@@ -36,9 +36,10 @@ public:
     void movedMouse();
     void movedMouseDown();
     int itemInHand() const;
+    void clear();
     bool getStatus();
     sf::Sprite eqRect;
-    sf::RectangleShape smallEq;
+    sf::Sprite smallEq;
     sf::RectangleShape pointer;
     void showInHand(Player& player, sf::RenderWindow& window) const;
     void update(sf::RenderWindow& window, Player& player, sf::Time timer);

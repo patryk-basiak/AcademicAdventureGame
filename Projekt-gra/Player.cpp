@@ -127,7 +127,7 @@ void Player::update(sf::Time time) {
         player.setTexture(ResourceManager::getTexture("../graphics/player/run/run" + std::to_string(currentTextureMove) + "r.png") );
         animation_clock.restart();
     }
-    if(!game or paused){
+    if(!game or paused or finished){
         player.setPosition(1500,200);
         velocity = 0;
         verticalVelocity = 0;
@@ -276,5 +276,9 @@ bool Player::isGround1() const {
 
 void Player::setIsGround(bool ground) {
     Player::isGround = ground;
+}
+
+int Player::getDamage() const {
+    return damage;
 }
 

@@ -3,8 +3,7 @@
 #include "../Equipment.h"
 
 void Coin::collision(Player &player) {
-    this->coin.setPosition(2000,2000);
-    fmt::println("collision with coin");
+
 }
 
 void Coin::draw(sf::RenderWindow &window) {

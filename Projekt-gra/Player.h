@@ -63,6 +63,10 @@ private:
     int luck = 3;
     int agile = 3;
     int damage = 1;
+public:
+    int getDamage() const;
+
+private:
     int endurance = 3;
     float lastJumpTime = 0;
     float JumpCooldown = 1.2;

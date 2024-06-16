@@ -16,7 +16,7 @@ public:
             fmt::println("font loading error");
         }
 
-        objective.setPosition(690,760);
+        objective.setPosition(1000,800);
         objective.setFont(font);
         objective.setCharacterSize(30);
         positionX.setPosition(1250,150);
@@ -46,6 +46,9 @@ public:
         numberOfEnemies.setFont(font);
         numberOfEnemies.setPosition(1250,350);
         numberOfEnemies.setCharacterSize(30);
+        endTime.setFont(font);
+        endTime.setPosition(800,400);
+        endTime.setCharacterSize(30);
 
 
     }
@@ -77,6 +80,7 @@ private:
     sf::Text numberOfEnemies;
     sf::Font font;
     sf::Text roomAvail;
+    sf::Text endTime;
     sf::Text fps;
     sf::Text positionX;
     sf::Text positionY;

@@ -43,7 +43,8 @@ public:
         type = 3;
     }
     void setPosition(float x, float y) override;
-     sf::FloatRect getGlobalBounds() override;
+    sf::Vector2<float> getPosition() override;
+    sf::FloatRect getGlobalBounds() override;
     std::vector<sf::RectangleShape> getAmmoList() override;
     void draw(sf::RenderWindow& window) override;
     void collision(Player& player) override;

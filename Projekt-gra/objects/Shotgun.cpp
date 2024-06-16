@@ -53,7 +53,7 @@ void Shotgun::update(sf::RenderWindow& window, Player& player){
         reloadStart = clock.getElapsedTime().asSeconds();
     }
     if(reloading) {
-        if (currentTime - reloadStart >= reloadTime) {
+        if (currentTime - reloadStart >= reloadTime - (float)(player.getIntelligence()/4)) {
             fmt::println("reloaded");
             ammunition = 12;
             reloading = false;

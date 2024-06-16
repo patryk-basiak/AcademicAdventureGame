@@ -79,7 +79,7 @@ settings.cpp
 Collectable:
     - Coin
     - Pistol
-    - Bullet (still empty)
+    - Bullet
 Entity:
     -
 

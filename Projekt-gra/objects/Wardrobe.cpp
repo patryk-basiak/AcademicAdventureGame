@@ -59,12 +59,16 @@ void Wardrobe::update(sf::RenderWindow &window, Player &player, Equipment& eq, s
                     isOpen = false;
                 } else {
                     isOpen = true;
+                    player.hide();
                 }
             }
             lastUsed = time.asSeconds();
         }
     } else {
         active = false;
+    }
+    if(!isOpen and time.asSeconds() - lastUsed > 0.3 and time.asSeconds() - lastUsed < 0.4 ){
+        player.showPlayer();
     }
 }
 

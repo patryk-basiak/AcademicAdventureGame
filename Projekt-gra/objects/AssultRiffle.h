@@ -41,7 +41,7 @@ private:
     bool ready = true;
     void shot();
     int ID = 13;
-    int ammunition = 30;
+    int ammunition = 24;
     bool Stackable = false;
     std::vector<sf::RectangleShape> ammo;
     sf::Sprite assultRifle;

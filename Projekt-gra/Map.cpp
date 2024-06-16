@@ -45,6 +45,7 @@
 #include "objects/DarkBlock.h"
 #include "objects/StoneBlock.h"
 #include "objects/Quartz.h"
+#include "objects/NPC.h"
 
 
 static int tempID = 0;
@@ -462,6 +463,107 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
             vec.push_back(inter);
             return vec;
 
+        }if(subType == 3){
+            spawnPoint = std::vector<float>{1500, 590};
+            endPoint; // TODO
+            // source: https://stackoverflow.com/questions/22923551/generating-number-0-1-using-mersenne-twister-c
+            std::uniform_int_distribution<> dist(3, 5);
+            std::uniform_int_distribution<> treeNumbers(5, 11);
+            std::uniform_int_distribution<> distanceBeetwenTrees(3, 5);
+            std::uniform_int_distribution<> treeSize(0, 2);
+            std::uniform_int_distribution<> jumpPadRespawn(1, 6);
+            std::uniform_int_distribution<> spawnCoins(0, 1);
+
+
+            int amountOfThrees = treeNumbers(gen);
+            std::vector<int> treeTrunks = std::vector<int>();
+            int start = 3;
+            for (int i = 0; i < amountOfThrees; i++) {
+                if (start < 22) {
+                    treeTrunks.push_back(start);
+                }
+                start += distanceBeetwenTrees(gen);
+            }
+            int door = dist(gen);
+
+            auto tempDistance = 0;
+
+            auto map = std::vector<std::vector<int>>();
+            auto collect = std::vector<std::vector<int>>();
+            for (int i = 0; i < y; ++i) {
+            std::vector temp = std::vector<int>();
+            std::vector items = std::vector<int>();
+            for (int j = 0; j < x; ++j) {
+                auto it = std::find(treeTrunks.begin(), treeTrunks.end(), j);
+                auto before = std::find(treeTrunks.begin(), treeTrunks.end(), j + 1);
+                auto after = std::find(treeTrunks.begin(), treeTrunks.end(), j - 1);
+                if (it != treeTrunks.end()) {
+                    tempDistance++;
+                }
+                auto distance = std::distance(treeTrunks.begin(), it);
+                if (j >= x - 3 and i == door + 1) {
+                    temp.push_back(3);
+                    items.push_back(0);
+                } else if (j == x - 1 and i != door and i != door - 1) {
+                    temp.push_back(4);
+                    items.push_back(0);
+                } else if (i == y - 6 - distance and i <= y - 4 and it != treeTrunks.end()) {
+                    int tempCoin = spawnCoins(gen);
+                    fmt::println("coin: {}", tempCoin);
+                    if (tempCoin == 1) {
+                        items.push_back(3);
+                    } else {
+                        items.push_back(0);
+                    }
+                    temp.push_back(0);
+                } else if (i == y - 5 - distance and it != treeTrunks.end()) {
+                    temp.push_back(201);
+                    items.push_back(0);
+                } else if (i >= y - 4 - distance and i <= y - 4 and it != treeTrunks.end()) {
+                    temp.push_back(200);
+                    items.push_back(0);
+                }else if (i > y - 4 and it == treeTrunks.end() and tempDistance > 3) {
+                    temp.push_back(0);
+                    items.push_back(0);
+                } else if (i == y - 3 and it == treeTrunks.end() and tempDistance <= 3 and tempDistance > 0) {
+                    temp.push_back(2);
+                    items.push_back(0);
+                } else if (i == y - 4 and j < 4) {
+                    temp.push_back(3);
+                    items.push_back(0);
+                } else if (i == y - 3) {
+                    if(j<4){
+                        temp.push_back(4);
+                        items.push_back(0);
+                    }
+                    else{
+                        temp.push_back(3);
+                        items.push_back(0);
+                    }
+                } else if (i > y - 3) {
+                    temp.push_back(4);
+                    items.push_back(0);
+                } else {
+                    temp.push_back(0);
+                    items.push_back(0);
+                }
+            }
+            map.push_back(temp);
+            collect.push_back(items);
+            tempDistance = 0;
+        }
+        vec.push_back(map);
+        vec.push_back(collect);
+        vec.push_back({{0}});
+        vec.push_back({{0}});
+
+            fmt::println("vec {}", vec);
+            for(auto &e: vec){
+                for(auto &o : e){
+                    std::ranges::reverse(o);
+            }
+            return vec;
+        }
         }
     }
         if(mainType == MapTypes::CITY)
@@ -526,7 +628,8 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                 backgroundTexture.setScale((float)1600/backgroundTexture.getTexture()->getSize().x,(float)900/backgroundTexture.getTexture()->getSize().y);
                 spawnPoint = {8, 654};
                 std::uniform_int_distribution<> chestPos(3, 11);
-                auto chP = chestPos(gen);
+                std::uniform_int_distribution<> enemyPos(4, 12);
+                int enemyPosGen = enemyPos(gen);
                 auto map = std::vector<std::vector<int>>();
                 auto items = std::vector<std::vector<int>>();
                 auto ENEMY = std::vector<std::vector<int>>();
@@ -536,74 +639,90 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                     std::vector temp = std::vector<int>();
                     std::vector interact = std::vector<int>();
                     std::vector collect = std::vector<int>();
+                    std::vector enemy = std::vector<int>();
                     for (int j = 0; j < x; ++j)
                     {
                         if(j == x - 1)
                         {
                             if( i == y - 4 or i == y - 5)
                             {
+                                enemy.push_back(0);
                                 temp.push_back(0);
                                 interact.push_back(0);
                             }
                             else
                             {
+                                enemy.push_back(0);
                                 temp.push_back(9);
                                 interact.push_back(0);
                             }
                         }
                         else if(i % 4 == 0 and i < y - 5 and j < x - 4 and j % 4 != 1 and i != 0 and j != 0)
                         {
+                            enemy.push_back(0);
                             temp.push_back(7);
                             interact.push_back(0);
-                        }else if(i % 4 == 2 and i < y - 5 and j < x - 4)
+                        }
+                        else if(i % 4 == 2 and i < y - 5 and j < x - 4)
                         {
                             if(j == x - 7 and i < y -10)
                             {
+                                enemy.push_back(0);
                                 temp.push_back(0);
                                 interact.push_back(301);
                             }
                             else if(j % 4 == 2)
                             {
+                                enemy.push_back(7);
                                 temp.push_back(0);
                                 interact.push_back(300);
                             }
                             else{
+                                enemy.push_back(0);
                                 temp.push_back(0);
                                 interact.push_back(0);
                             }
                         }
                         else if(i == y - 3 and j % 4 == 1)
                         {
+                            enemy.push_back(0);
                             temp.push_back(2);
                             interact.push_back(0);
                         }
                         else if(j == x - 4 and i == y - 5)
                         {
                             {
+                                enemy.push_back(0);
                                 temp.push_back(300);
                                 interact.push_back(0);
                             }
                         }
                         else if (i == y - 3)
                         {
+                            enemy.push_back(0);
                             temp.push_back(8);
                             interact.push_back(0);
-                        } else if (i > y - 3)
+                        }
+                        else if (i > y - 3)
                         {
+                            enemy.push_back(0);
                             temp.push_back(9);
                             interact.push_back(0);
-                        } else
+                        }
+                        else
                         {
+                            enemy.push_back(0);
                             temp.push_back(0);
                             interact.push_back(0);
                         }
                     }
+                    ENEMY.push_back(enemy);
                     map.push_back(temp);
                     inter.push_back(interact);
                 }
                 vec.push_back(map);
                 vec.push_back({{0}});
-                vec.push_back({{0}});
+                vec.push_back(ENEMY);
                 vec.push_back(inter);
                 return vec;
             }if(subType == 2)
@@ -726,9 +845,12 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                         temp.push_back(13);
                         enemy.push_back(0);
                         interact.push_back(0);
-                    }
-                    else if(j > x -6 and j < x-2 and i == y -3 or (i == y - 4 and (j == x -3 or j == x-4))){
-                            temp.push_back(11);
+                    }else if(i == y - 4 and( j == 6 or  j== 8 or j == 9)){
+                        temp.push_back(0);
+                        enemy.push_back(7);
+                        interact.push_back(0);
+                    }else if(j > x -6 and j < x-2 and i == y -3 or (i == y - 4 and (j == x -3 or j == x-4))){
+                            temp.push_back(17);
                             enemy.push_back(0);
                             interact.push_back(0);
                     }
@@ -759,13 +881,18 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
             images.push_back(temporary);
             std::uniform_int_distribution<> doorPos(5, 8);
             std::uniform_int_distribution<> doorDistance(3, 8);
+            std::uniform_int_distribution<> npcDistance(1, 2);
             std::vector<float> doorLocations;
+            std::vector<float> npcLocation;
             auto firstDoor = (float)doorPos(gen);
             doorLocations.push_back(firstDoor);
+            auto firstDoorNPc = (float)doorPos(gen) +(float)npcDistance(gen) ;
+            npcLocation.push_back(firstDoorNPc);
             for(int i = 0; i < 4; ++i){
                 firstDoor += (float) doorDistance(gen);
                 if(firstDoor < x - 3){
                     doorLocations.push_back(firstDoor);
+                    npcLocation.push_back(firstDoor + (float)npcDistance(gen));
                 }
             }
             auto map = std::vector<std::vector<int>>();
@@ -780,6 +907,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                 std::vector collect = std::vector<int>();
                 std::vector enemy = std::vector<int>();
                 int xTemp=0;
+                int npcTemp=0;
                 for (int j = 0; j < x; ++j)
                 {
 
@@ -800,6 +928,13 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                         if(xTemp < doorLocations.size() - 1) {
                             xTemp++;
                         }
+                    }else if((i % 4 == 3 or i == y - 4) and i < y - 3 and j == (int)npcLocation.at(npcTemp)){
+                        temp.push_back(0);
+                        enemy.push_back(7);
+                        interact.push_back(0);
+                        if(npcTemp < doorLocations.size() - 1) {
+                            npcTemp++;
+                        }
                     }
                     else if (i > y - 3) {
                         temp.push_back(6);
@@ -816,12 +951,16 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
                 inter.push_back(interact);
                 ENEMY.push_back(enemy);
                 doorLocations.clear();
+                npcLocation.clear();
                 firstDoor = (float)doorPos(gen);
                 doorLocations.push_back(firstDoor);
+                firstDoorNPc = (float)doorPos(gen) +(float)npcDistance(gen) ;
+                npcLocation.push_back(firstDoorNPc);
                 for(int g = 0; g < 4; ++g){
                     firstDoor += (float) doorDistance(gen);
                     if(firstDoor < x - 3){
                         doorLocations.push_back(firstDoor);
+                        npcLocation.push_back(firstDoor + (float)npcDistance(gen));
                     }
                 }
             }
@@ -834,6 +973,7 @@ std::vector<std::vector<std::vector<int>>> Map::generateMap(int x, int y) {
         }
         }
         if(mainType == MapTypes::ENDING){
+            spawnPoint = {1518, 630};
             this->backgroundTexture.setTexture(ResourceManager::getTexture("../graphics/CountrySide.png"));
             sf::Sprite temp;
             temp.setTexture(ResourceManager::getTexture("../graphics/homeOutside.png"));
@@ -939,6 +1079,8 @@ std::vector<std::unique_ptr<Entity>> Map::transformEntities(const std::vector<st
                 trans.push_back(std::make_unique<CarEnemy>(x,y));
             }if (i == 6) {
                 trans.push_back(std::make_unique<ComputerBoss>(x,y));
+            }if (i == 7) {
+                trans.push_back(std::make_unique<NPC>(x,y));
             }
             x += 64;
             if (x >= 1600) {
@@ -1117,113 +1259,118 @@ void Map::update(sf::RenderWindow& window, sf::Time deltatime, Player& player, E
             (*it)->collision(player);
             items_vec.erase(it);
             it--;
+            return;
         }
     }
-    for( auto it = entity_vec.begin(); it != entity_vec.end(); it++) {
+
+    for (auto it = entity_vec.begin(); it != entity_vec.end(); ) {
         checkCollisionEntity((*it), window);
         (*it)->update(deltatime, player);
-
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             (*it)->collision(player);
             if (!(*it)->isFriendly()) {
                 it = entity_vec.erase(it);
-                return;
+                continue;
             }
         }
 
         if (((*it)->getPosition().x < -10 || (*it)->getPosition().x > 1610) && (*it)->diesOutsideScreen()) {
             it = entity_vec.erase(it);
-            return;
+            continue;
         }
 
         if (!(*it)->isFriendly()) {
             auto bullets = ThrowableContainer::getVector().begin();
             while (bullets != ThrowableContainer::getVector().end()) {
                 if ((*bullets)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
-                    (*it)->setHealth((*it)->getHealth() - 1);
+                    (*it)->setHealth((*it)->getHealth() - player.getDamage());
                     bullets = ThrowableContainer::getVector().erase(bullets);
                 } else {
                     ++bullets;
                 }
             }
         }
-
         if ((*it)->getHealth() <= 0) {
             it = entity_vec.erase(it);
+            continue;
+        }
+        ++it;
+    }
+
+    auto& entities = ThrowableContainer::getEntityVector();
+    for (auto it = entities.begin(); it != entities.end();) {
+        checkCollisionEntity((*it), window);
+        bool erase = false;
+
+        if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+            (*it)->collision(player);
+            if (!(*it)->isFriendly()) {
+                erase = true;
+            }
+        }
+
+        if (((*it)->getPosition().x < -10 || (*it)->getPosition().x > 1610) && (*it)->diesOutsideScreen()) {
+            erase = true;
+        }
+
+        if (!erase && !(*it)->isFriendly()) {
+            auto& bullets = ThrowableContainer::getVector();
+            for (auto bulletsIt = bullets.begin(); bulletsIt != bullets.end();) {
+                if ((*bulletsIt)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+                    (*it)->setHealth((*it)->getHealth() - 1);
+                    bulletsIt = bullets.erase(bulletsIt);
+                } else {
+                    ++bulletsIt;
+                }
+            }
+        }
+        if ((*it)->getHealth() <= 0) {
+            erase = true;
+        }
+        if (erase) {
+            it = entities.erase(it);
         } else {
             ++it;
         }
     }
-        for( auto it = ThrowableContainer::getEntityVector().begin(); it != ThrowableContainer::getEntityVector().end(); it++) {
-        checkCollisionEntity((*it), window);
-        (*it)->update(deltatime, player);
-        if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
-            (*it)->collision(player);
-            if (!(*it)->isFriendly()) {
-                ThrowableContainer::getEntityVector().erase(it);
-                it--;
-                return;
-            }
+
+    auto& projectiles = ThrowableContainer::getVector();
+    for (auto it = projectiles.begin(); it != projectiles.end();) {
+        bool shouldErase = false;
+        if ((*it)->getPosition().x > 1600 or (*it)->getPosition().x < 0) {
+            shouldErase = true;
         }
 
-        if( ((*it)->getPosition().x < -10 or (*it)->getPosition().x > 1610 )and (*it)->diesOutsideScreen()){
-            ThrowableContainer::getEntityVector().erase(it);
-            it--;
-            return;
-        }
-        if(!(*it)->isFriendly()) {
-            for (auto bullets = ThrowableContainer::getVector().begin(); bullets != ThrowableContainer::getVector().end(); bullets++) {
-                if ((*bullets)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
-                    (*it)->setHealth((*it)->getHealth()-1);
-                    ThrowableContainer::getVector().erase(bullets);
-                    bullets--;
-                    if((*it)->getHealth() <= 0){
-                        ThrowableContainer::getEntityVector().erase(it);
-                        it--;
-                    }
-                    return;
-                }
-            }
-        }
-
-    }
-        for( auto its = ThrowableContainer::getVector().begin(); its != ThrowableContainer::getVector().end(); its++) {
-            if ((*its)->getPosition().x > window.getSize().x) {
-                (*its)->collision(player);
-                ThrowableContainer::getVector().erase(its);
-                its--;
-            }
-        }
-
-    for (auto it = ThrowableContainer::getVector().begin(); it != ThrowableContainer::getVector().end(); it++) {
-        (*it)->update(window, player);
         if (player.getGlobalBounds().intersects((*it)->getGlobalBounds())) {
             eq.addItem((*it)->getId());
             (*it)->collision(player);
-            ThrowableContainer::getVector().erase(it);
-            it--;
-            return;
+            shouldErase = true;
         }
-        for(auto & iter : walls_vec)
-            if((*it)->getGlobalBounds().intersects(iter->getGlobalBounds())){
-                ThrowableContainer::getVector().erase((it));
-                it--;
-                return;
-            }
-    }
 
+        for (auto& iter : walls_vec) {
+            if ((*it)->getGlobalBounds().intersects(iter->getGlobalBounds())) {
+                shouldErase = true;
+                break;
+            }
+        }
+        if (shouldErase) {
+            it = projectiles.erase(it);
+        } else {
+            ++it;
+        }
+    }
     for (auto const &e: ThrowableContainer::getInteractVector()) {
         e->update(window,player, eq, time, deltatime);
     }
     for (auto const &e: interactable_vec) {
         e->update(window,player, eq, time, deltatime);
     }
-    for (auto it = ThrowableContainer::getVector().begin(); it != ThrowableContainer::getVector().end(); it++) {
-        (*it)->update(window,player);
-    }for (auto const &e: walls_vec) {
+    for (auto const &e: walls_vec) {
         e->update();
     }for (auto const &e: ThrowableContainer::getEntityVector()) {
         e->update(deltatime, player);
+    }for(auto const &e : ThrowableContainer::getVector()){
+        e->update(window,player);
     }
 }
 
@@ -1240,15 +1387,7 @@ void Map::draw(sf::RenderWindow& window) {
     for (auto &it: items_vec) {
         it->draw(window);
     }
-    for (auto &it: entity_vec) {
-        it->draw(window);
-    }
     for (auto const &e: interactable_vec) {
-        e->draw(window);
-    }
-    for (auto const &e: ThrowableContainer::getVector()) {
-        e->draw(window);
-    }for (auto const &e: ThrowableContainer::getEntityVector()) {
         e->draw(window);
     }
     for (auto const &e: ThrowableContainer::getInteractVector()) {
@@ -1257,9 +1396,17 @@ void Map::draw(sf::RenderWindow& window) {
             e->check(x);
         }
     }
-    for (auto const &e: interactable_vec) {
+    for (auto &it: entity_vec) {
+        it->draw(window);
+    }
+    for (auto const &e: ThrowableContainer::getVector()) {
+        e->draw(window);
+    }for (auto const &e: ThrowableContainer::getEntityVector()) {
+        e->draw(window);
+    }for (auto const &e: interactable_vec) {
         e->drawWindow(window);
     }
+
     if(!images.empty()) {
         if (drawStaticImages and (mainType == MapTypes::STARTING or mainType == MapTypes::ENDING)) {
             window.draw(images[0]);
@@ -1337,20 +1484,38 @@ void Map::checkCollisionEntity(std::unique_ptr<Entity>& entity, sf::RenderWindow
         float wallBottom = wall->getPosition().y + wall->getSize().y;
 
         if (entityRight > wallLeft && entityLeft < wallRight && entityBottom > wallTop && entityTop < wallBottom) {
-            if (entityBottom > wallTop && entityTop < wallTop) {
-                entity->setVerticalVelocity(0);
-                entity->setPosition(entity->getPosition().x, wall->getPosition().y - entity->getSize().y);
-            }
-            if (entityTop < wallBottom && entityBottom > wallBottom){
-                // Bottom
-//                entity->setVerticalVelocity(0);
-//
-//                fmt::print("Collision with the bottom ({}, {})\n", wall->getPosition().x,
-//                           wall->getPosition().y);
+            float overlapLeft = entityRight - wallLeft;
+            float overlapRight = wallRight - entityLeft;
+            float overlapTop = entityBottom - wallTop;
+            float overlapBottom = wallBottom - entityTop;
+
+            bool fromLeft(std::abs(overlapLeft) < std::abs(overlapRight));
+            bool fromTop(std::abs(overlapTop) < std::abs(overlapBottom));
+
+            float minOverlapX = fromLeft ? overlapLeft : overlapRight;
+            float minOverlapY = fromTop ? overlapTop : overlapBottom;
+
+            if (std::abs(minOverlapX) < std::abs(minOverlapY)) {
+                if (fromLeft) {
+                    // Collision from the left
+                    wall->collisionLeft(entity,window);
+                } else {
+                    // Collision from the right
+                    wall->collisionRight(entity,window);
+                }
+            } else {
+                if (fromTop) {
+                    // Collision from the top
+                    wall->collision(entity, window);
+
+                } else {
+                    // Collision from the bottom
+                    wall->collisionBottom(entity,window);
+                }
             }
         }
+        }
     }
-}
 
 
 void Map::getMapSeed() {

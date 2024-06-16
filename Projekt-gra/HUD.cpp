@@ -18,7 +18,9 @@ void HUD::draw(sf::RenderWindow &window, Equipment &eq, Player& player) {
         decisionElement.update(player, window); // TODO zrobic to w update
 
     }
-
+if(finished){
+    window.draw(endTime);
+}
 if(debug) {
     window.draw(positionX);
     window.draw(positionY);
@@ -51,6 +53,8 @@ void HUD::update(Player &player, FPS& fps1, int lvl, bool nextRoomAvailable, int
         fps.setString("FPS: " + std::to_string((int) std::round(fps1.getFPS())));
         lvlNumber.setString("Current Lvl: " + std::to_string(lvl));
         roomAvail.setString("Next room available: " + std::to_string(nextRoomAvailable));
+    }if(finished){
+        endTime.setString("Minutes:" + std::to_string((int) std::round(((int) hours))) + " Seconds:" + std::to_string((int)std::round((int)minutes)));
     }
 
 

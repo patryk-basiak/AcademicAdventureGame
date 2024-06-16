@@ -35,8 +35,10 @@ void Kiosk::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::
             if (time.asSeconds() - lastUsed > 0.5) {
                 if (inUse) {
                     inUse = false;
+                    mousekeyListener = false;
                 } else {
                     inUse = true;
+                    mousekeyListener = true;
                 }
             }
             lastUsed = time.asSeconds();
@@ -55,7 +57,7 @@ void Kiosk::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::
             float sizeY = item.first->getSize().x;
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 if (mouse.x > posX and mouse.x < posX + sizeX and mouse.y > posY and mouse.y < posY + sizeY) {
-                    if(item.second.first < eq.getMoney())
+                    if(item.second.first <= eq.getMoney())
                     {
                         eq.setMoney(eq.getMoney() - item.second.first);
                         if(item.first->isOneTimeUse())

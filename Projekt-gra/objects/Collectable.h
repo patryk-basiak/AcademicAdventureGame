@@ -15,7 +15,7 @@ public:
 
     virtual sf::FloatRect getGlobalBounds();
     virtual void draw(sf::RenderWindow& window);
-    sf::Vector2<float> getPosition();
+    virtual sf::Vector2<float> getPosition();
     void reColor(sf::Color color);
     virtual sf::Vector2<float> getSize();
     virtual void setPosition(float x, float y);

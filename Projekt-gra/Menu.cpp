@@ -45,7 +45,7 @@ void Menu::update(sf::RenderWindow& window, Game &gameClass, Player &player, Equ
 //
             }
             if (pos.x > 480 and pos.x < 1120 and pos.y > 490 and pos.y < 630) {
-                gameClass.gameLoad(window, player, eq, timer, true, "../saves/save0.txt");
+                gameClass.gameLoad(window, player, eq, timer, true, "../saves/savesX1.txt");
                 game = true;
                 menuX = false;
             }

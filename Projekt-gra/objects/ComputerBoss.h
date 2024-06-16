@@ -56,7 +56,7 @@ private:
     std::random_device rd;
     std::mt19937 gen = std::mt19937(this->rd());
     std::uniform_int_distribution<> coinPos = std::uniform_int_distribution<>(0, 150);
-    std::uniform_int_distribution<> coinPosY= std::uniform_int_distribution<>(0, 250);
+    std::uniform_int_distribution<> coinPosY= std::uniform_int_distribution<>(280, 320);
     std::uniform_int_distribution<> bulletPosY= std::uniform_int_distribution<>(0, 300);
     std::uniform_int_distribution<> sign = std::uniform_int_distribution<>(-1, 1);
     std::uniform_int_distribution<> bulletAmount = std::uniform_int_distribution<>(0, 3);

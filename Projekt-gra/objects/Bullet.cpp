@@ -41,3 +41,7 @@ std::vector<sf::RectangleShape> Bullet::getAmmoList() {
 sf::FloatRect Bullet::getGlobalBounds() {
     return this->bullet.getGlobalBounds();
 }
+
+sf::Vector2<float> Bullet::getPosition() {
+    return bullet.getPosition();
+}

@@ -10,6 +10,7 @@
 #include "HUD.h"
 #include "Game.h"
 #include "Menu.h"
+#include "End.h"
 
 
 auto main() -> int {
@@ -28,8 +29,12 @@ auto main() -> int {
     Equipment eq;
     HUD hud;
     Game gameClass;
-    debugMode = true;
-    eq.addItem(13);
+    debugMode = false;
+    eq.addItem(2);
+    eq.addItem(12);
+    eq.addItem(3);
+    eq.addItem(3);
+    End end;
     sf::Clock clock;
     sf::Clock timer;
     while (window.isOpen()) {
@@ -41,7 +46,6 @@ auto main() -> int {
                 if (event.type == sf::Event::Closed)
                     window.close();
             }
-            gameClass.loadGraphics();
             window.clear(sf::Color::Black);
             menuClass.update(window, gameClass, player, eq, timer);
             menuClass.draw(window);
@@ -61,23 +65,16 @@ auto main() -> int {
             window.display();
 
         }
-        while (died) {
-            gameClass.loadGraphics();
-            sf::Event event = sf::Event();
-            while (window.pollEvent(event)) {
-                if (event.type == sf::Event::KeyPressed) {
-                    if (event.key.code == sf::Keyboard::Enter) {
-                        died = false;
-                        window.close();
-                    }
-                }
-                window.clear(sf::Color::Blue);
-                window.display();
+        while (finished) {
+
+            window.clear(sf::Color::Black);
+            End::draw(window);
+            window.display();
+
             }
 
 
         }
     }
-}
 
 

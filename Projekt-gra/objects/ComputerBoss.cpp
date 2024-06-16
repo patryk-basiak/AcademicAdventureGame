@@ -55,7 +55,7 @@ void ComputerBoss::update(sf::Time time, Player &player) {
                                         computer.getPosition().y + (float) coinPosY(gen));
         }
         int nextTemp = coinPos(gen);
-        if (nextTemp < 75) {
+        if (nextTemp < 40) {
             ThrowableContainer::addItemEntity(7, computer.getPosition().x, computer.getPosition().y, 4);
         }
         addMoney = false;

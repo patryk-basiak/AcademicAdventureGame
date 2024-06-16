@@ -90,7 +90,7 @@ public:
     void draw(sf::RenderWindow &window) override;
     void update(sf::RenderWindow& window, Player& player, Equipment& eq,  sf::Time, sf::Time deltatime) override;
     bool status() const;
-
+    void drawWindow(sf::RenderWindow& window) override;
     void setStatus(bool status);
 
 

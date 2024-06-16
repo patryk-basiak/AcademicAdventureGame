@@ -35,16 +35,6 @@ void ClassroomDoor::draw(sf::RenderWindow &window)  {
     }if(!isOpen){
         window.draw(classroomDoor);
     }
-    if(val == xRand){
-        if(game){
-            window.draw(gameRoom);
-            window.draw(playerGame);
-            for(auto const &e: boxesShapes){
-                window.draw(e);
-            }
-            window.draw(endPoint);
-        }
-    }
 }
 
 sf::Vector2<float> ClassroomDoor::getPosition() {
@@ -162,6 +152,8 @@ void ClassroomDoor::update(sf::RenderWindow &window, Player &player, Equipment &
 }
 
 void ClassroomDoor::generateMaze(int size) {
+    //source https://en.wikipedia.org/wiki/Maze_generation_algorithm
+    // https://tschinz.github.io/days-of-algo/content/notebooks/008-maze-generation-kruskal.html
     boxes.resize(size, std::vector<int>(size, 1));
     for (int o = 1; o < size - 1; o += 2) {
         for (int k = 1; k < size - 1; k += 2) {
@@ -178,6 +170,19 @@ void ClassroomDoor::generateMaze(int size) {
             } else if (k > 1) {
                 boxes[o][k - 1] = 0;
             }
+        }
+    }
+}
+
+void ClassroomDoor::drawWindow(sf::RenderWindow &window) {
+    if(val == xRand){
+        if(game){
+            window.draw(gameRoom);
+            window.draw(playerGame);
+            for(auto const &e: boxesShapes){
+                window.draw(e);
+            }
+            window.draw(endPoint);
         }
     }
 }

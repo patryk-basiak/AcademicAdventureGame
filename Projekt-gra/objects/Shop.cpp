@@ -76,7 +76,6 @@ void Shop::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::T
                 if (!closed) {
                     if (isOpen) {
                         isOpen = false;
-                        player.showPlayer();
                         movable = true;
                     } else {
                         isOpen = true;
@@ -108,6 +107,9 @@ void Shop::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::T
                     lastUsed = time.asSeconds();
                 }
             }
+        }
+        if(!isOpen and type != 0 and time.asSeconds() - lastUsed > 0.3 and time.asSeconds() - lastUsed < 0.4){
+            player.showPlayer();
         }
     }
     if(type == 0) {
@@ -246,7 +248,7 @@ void Shop::update(sf::RenderWindow &window, Player &player, Equipment &eq, sf::T
             }
         }
     }
-    else{
+    if(HackingDone and time.asSeconds() - lastUsed > 0.3 and time.asSeconds() - lastUsed < 0.4){
         player.showPlayer();
     }
 }

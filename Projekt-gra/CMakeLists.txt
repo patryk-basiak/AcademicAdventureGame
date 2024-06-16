@@ -145,6 +145,10 @@ add_executable(game main.cpp
         objects/StoneBlock.h
         objects/Quartz.cpp
         objects/Quartz.h
+        End.cpp
+        End.h
+        objects/NPC.cpp
+        objects/NPC.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

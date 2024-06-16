@@ -6,6 +6,8 @@
 #include "HUD.h"
 #include "DialogElement.h"
 #include "SFML/Audio/Music.hpp"
+#include "SFML/Audio/Sound.hpp"
+#include "SFML/Audio/SoundBuffer.hpp"
 
 class Game {
 
@@ -13,17 +15,22 @@ class Game {
 public:
     Game(){
         loaded = false;
-//        maps.emplace_back(0, 0, MapTypes::STARTING, 0);
-//        maps.emplace_back(0, 0, MapTypes::FOREST, 0);
-//        maps.emplace_back(10, 0, MapTypes::FOREST, 1);
-//        maps.emplace_back(0, 1, MapTypes::FOREST, 2);
-//        maps.emplace_back(0, 1, MapTypes::CITY, 0);
-//        maps.emplace_back(0, 1, MapTypes::CITY, 1);
-//        maps.emplace_back(0, 1, MapTypes::CITY, 2);
-//        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
-//        maps.emplace_back(0, 1, MapTypes::PJATK, 1);
-//        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
-        maps.emplace_back(0, 1, MapTypes::ENDING, 0);
+        maps.emplace_back(0, 0, MapTypes::STARTING, 0);
+        maps.emplace_back(0, 0, MapTypes::FOREST, 0);
+        maps.emplace_back(10, 0, MapTypes::FOREST, 1);
+        maps.emplace_back(0, 1, MapTypes::FOREST, 2);
+        maps.emplace_back(0, 1, MapTypes::CITY, 0);
+        maps.emplace_back(0, 1, MapTypes::CITY, 1);
+        maps.emplace_back(0, 1, MapTypes::CITY, 2);
+        maps.emplace_back(0, 1, MapTypes::PJATK, 0);
+        maps.emplace_back(0, 1, MapTypes::PJATK, 1);
+        if (!sb.loadFromFile("../Audio/teamsNotifiaction.mp3")){
+            fmt::println("error");
+        }
+        fx.setBuffer(sb);
+
+        hour = 17;
+        minutes = 45;
         currentLvl = 0;
         pausedIcon.setTexture(ResourceManager::getTexture("../graphics/paused.png"));
         pausedIcon.setScale(800/pausedIcon.getTexture()->getSize().x, 700/pausedIcon.getTexture()->getSize().y);
@@ -86,5 +93,12 @@ private:
     float newTime = 0;
     float lastMeasured = 0;
     float measured = 0;
+    bool finishedTimeGet = false;
+    bool fxPlayed = false;
+    float endTime =0;
+    bool decisionLoaded = false;
+    sf::SoundBuffer sb;
+    sf::Sound fx;
+
 
 };

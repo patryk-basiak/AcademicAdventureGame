@@ -29,7 +29,7 @@ class Computer
             wallpaper.setScale(0.374,0.395);
             icons.push_back(std::make_unique<GoogleIcons>(311.5, 161.5));
             icons.push_back(std::make_unique<TeamsIcon>(451, 161.5));
-            icons.push_back(std::make_unique<ChatGptIcon>(590.5, 161.5));
+//            icons.push_back(std::make_unique<ChatGptIcon>(590.5, 161.5));
             text.setString("Press F to use computer");
             text.setFont(Interactable::font);
             text.setPosition(computer.getPosition().x, computer.getPosition().y - this->size[1]);
@@ -50,7 +50,7 @@ class Computer
             wallpaper.setScale(0.374,0.395);
             icons.push_back(std::make_unique<GoogleIcons>(311.5, 161.5));
             icons.push_back(std::make_unique<TeamsIcon>(451, 161.5));
-            icons.push_back(std::make_unique<ChatGptIcon>(590.5, 161.5));
+//            icons.push_back(std::make_unique<ChatGptIcon>(590.5, 161.5));
             text.setString("Press Q to insert pendrive computer");
             text.setFont(Interactable::font);
             text.setFillColor(sf::Color::Red);

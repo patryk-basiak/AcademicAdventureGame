@@ -21,11 +21,11 @@ Equipment::Equipment(){
     eqRect.setTexture(ResourceManager::getTexture("../graphics/shelf.png"));
     eqRect.setScale((float)300/eqRect.getTexture()->getSize().x,(float)300/eqRect.getTexture()->getSize().y);
     eqRect.setPosition(800 - (eqRect.getTexture()->getSize().x*eqRect.getScale().x/2),450 - (eqRect.getTexture()->getSize().x*eqRect.getScale().y/2));
-    smallEq.setSize(sf::Vector2f(220,70));
-    smallEq.setPosition(800 - (smallEq.getSize().x/2),900 - (smallEq.getSize().y));
-    smallEq.setFillColor(sf::Color::Magenta);
-    pointer.setSize(sf::Vector2f(70,50));
-    pointer.setPosition(700,840);
+    smallEq.setTexture(ResourceManager::getTexture("../graphics/eqImage.png"));
+    smallEq.setScale((float)300/smallEq.getTexture()->getSize().x, (float)100/smallEq.getTexture()->getSize().y);
+    smallEq.setPosition(800 - (300/2),900 - (100));
+    pointer.setSize(sf::Vector2f(70,60));
+    pointer.setPosition(680,835);
     pointer.setOutlineColor(sf::Color::Black);
     pointer.setFillColor(sf::Color{0,0,0,0});
     pointer.setOutlineThickness(2);
@@ -45,11 +45,11 @@ void Equipment::show() {
 
 void Equipment::update(sf::RenderWindow& window, Player& player, sf::Time timer)  {
     Equipment::showInHand(player, window);
-    if (!this->isShown) {
+    if (!this->isShown and !finished and !items.empty()) {
         window.draw(smallEq);
         window.draw(pointer);
-        float x = smallEq.getPosition().x + padding - 20;
-        float y = smallEq.getPosition().y + padding - 20;
+        float x = smallEq.getPosition().x + padding;
+        float y = smallEq.getPosition().y + padding;
         for(int i = 0; i<3; ++i){
             auto temp = items.find(itemPos[i]);
             if(temp != items.end()){
@@ -62,13 +62,13 @@ void Equipment::update(sf::RenderWindow& window, Player& player, sf::Time timer)
             }
                 temp_items.at(i)->setPosition(x,y);
                 temp_items.at(i)->draw(window);
-            x += 70.0f;
+            x += 75.0f;
             }
         }
         if(timer.asSeconds() - lastOpen < 0.3 and timer.asSeconds() - lastOpen > 0.2){
             mousekeyListener = false;
         }
-    } else {
+    } else if(isShown and !finished and !items.empty()) {
         lastOpen = timer.asSeconds();
         mousekeyListener = true;
         sf::Vector2i pos = sf::Mouse::getPosition(window);
@@ -76,28 +76,30 @@ void Equipment::update(sf::RenderWindow& window, Player& player, sf::Time timer)
         float x = eqRect.getPosition().x + padding;
         float y = eqRect.getPosition().y + padding + 10;
         for(int i = 0; i<9; ++i){
-            auto temp = items.find(itemPos[i]);
-            if(temp != items.end()){
-                if ((*temp).second.first->isStackable() and (*temp).second.second > 1 and i != holding) {
-                    auto itemCount = sf::Text("000", font, 12);
-                    itemCount.setPosition({x + 20, y + 30});
-                    itemCount.setFillColor(sf::Color::Black);
-                    itemCount.setString(std::to_string((*temp).second.second));
-                    window.draw(itemCount);
-                }
-                if((!isHolding and !mouseClicked) or i != holding) {
-                    temp_items.at(i)->setPosition(x, y);
-                }else{
-                    temp_items.at(i)->setPosition(pos.x,pos.y);
-                }
-                temp_items.at(i)->draw(window);
-                if (i % 3 == 2 and i != 0) {
-                    x = eqRect.getPosition().x + padding;
-                    y += 90.0f;
-                }else{
-                    x += 80.0f;
-                }
+            if(i < itemPos.size()) {
+                auto temp = items.find(itemPos[i]);
+                if (temp != items.end()) {
+                    if ((*temp).second.first->isStackable() and (*temp).second.second > 1 and i != holding) {
+                        auto itemCount = sf::Text("000", font, 12);
+                        itemCount.setPosition({x + 20, y + 30});
+                        itemCount.setFillColor(sf::Color::Black);
+                        itemCount.setString(std::to_string((*temp).second.second));
+                        window.draw(itemCount);
+                    }
+                    if ((!isHolding and !mouseClicked) or i != holding) {
+                        temp_items.at(i)->setPosition(x, y);
+                    } else {
+                        temp_items.at(i)->setPosition(pos.x, pos.y);
+                    }
+                    temp_items.at(i)->draw(window);
+                    if (i % 3 == 2 and i != 0) {
+                        x = eqRect.getPosition().x + padding;
+                        y += 90.0f;
+                    } else {
+                        x += 80.0f;
+                    }
 
+                }
             }
         }
 
@@ -148,15 +150,8 @@ void Equipment::update(sf::RenderWindow& window, Player& player, sf::Time timer)
         }
 
     }
-
-int Equipment::itemInHand() const {
-    if (!eq.empty()){
-        return eq[currentEq];
-    }
-    return -1;
-}
 void Equipment::showInHand(Player& player, sf::RenderWindow& window) const {
-    if (!items.empty() && currentEq < items.size() and player.isSeen()) {
+    if (!items.empty() && currentEq < items.size()  and player.isSeen()) {
         auto iterator = items.find(itemPos[currentEq]);
         auto& item = (*iterator).second.first;
         if (item == nullptr) {
@@ -176,10 +171,10 @@ void Equipment::showInHand(Player& player, sf::RenderWindow& window) const {
 void Equipment::movedMouse() {
     if(this->currentEq >=2){
         this->currentEq = 0;
-        pointer.setPosition(700, 840);
+        pointer.setPosition(680, 830);
     }else{
         this->currentEq += 1;
-        pointer.setPosition(pointer.getPosition().x + 70, pointer.getPosition().y);
+        pointer.setPosition(pointer.getPosition().x + 80, pointer.getPosition().y);
     }
 }
 
@@ -188,7 +183,7 @@ void Equipment::movedMouseDown() {
         pointer.setPosition(840, pointer.getPosition().y);
         this->currentEq = 2;
     }else{
-        pointer.setPosition(pointer.getPosition().x - 70, pointer.getPosition().y);
+        pointer.setPosition(pointer.getPosition().x - 80, pointer.getPosition().y);
         this->currentEq -= 1;
     }
 }
@@ -242,7 +237,7 @@ void Equipment::addItem(int id) {
 void Equipment::useItemInHand(Player& player) {
     if (!items.empty()) {
         if(!mousekeyListener) {
-            if (currentEq < itemPos.size()) {
+            if (currentEq < itemPos.size() and !items.empty()) {
                 auto iter = ((items.find(itemPos[currentEq])));
                 if ((*items.find(itemPos[currentEq])).second.first->isOneTimeUse()) {
                     (*iter).second.first->usage(player);
@@ -275,8 +270,12 @@ int Equipment::getMoney() {
 
 void Equipment::setMoney(int n) {
     auto x = items.find(3);
+    auto d = std::find(itemPos.begin(), itemPos.end(),3);
     if(x != items.end()){
         x->second.second = n;
+    }
+    if(x->second.second == 0){
+        items.erase(x);
     }
 }
 
@@ -290,19 +289,23 @@ bool Equipment::hasItem(int ID) {
 }
 
 std::vector<std::string> Equipment::getSave() {
-    std::vector<std::string> saves;
-
-    for(int itemPo : itemPos){
-        std::string temp;
-        temp = std::to_string(items.find(itemPo)->second.first->getId());
-        if(items.find(itemPo)->second.first->isStackable()){
-            temp += "," + std::to_string(items.find(itemPo)->second.second);
+        std::vector<std::string> saves;
+        for (int itemPo : itemPos) {
+            auto it = items.find(itemPo);
+            if (it != items.end()) {
+                std::string temp = std::to_string(it->second.first->getId());
+                if (it->second.first->isStackable()) {
+                    temp += "," + std::to_string(it->second.second);
+                }
+                saves.push_back(temp);
+            } else {
+                fmt::println("item save error");
+            }
         }
-        saves.push_back(temp);
+        return saves;
     }
-    return saves;
 
-}
+
 
 std::string Equipment::getItemInfo() {
     if (!items.empty() and currentEq < items.size()) {
@@ -310,6 +313,11 @@ std::string Equipment::getItemInfo() {
     }else{
         return "";
     }
+}
+void Equipment::clear() {
+    items.clear();
+    temp_items.clear();
+    itemPos.clear();
 }
 
 

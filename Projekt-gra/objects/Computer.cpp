@@ -75,8 +75,8 @@ void Computer::update(sf::RenderWindow& window, Player& player, Equipment& eq, s
             positionSet = false;
             selection.setSize(sf::Vector2f(0, 0));
         }
-        if (selection.getPosition().x < 590 and selection.getPosition().x + selection.getSize().x > 590 and
-            selection.getPosition().y < 500 and selection.getPosition().y + selection.getSize().y > 500) {
+        if (std::abs(selection.getPosition().x) < 590 and selection.getPosition().x + std::abs(selection.getSize().x) > 590 and
+            selection.getPosition().y < 500 and selection.getPosition().y + std::abs(selection.getSize().y) > 500) {
             fileSelected = true;
         }
         if (fileClicked and !fileAttached) {
@@ -89,6 +89,7 @@ void Computer::update(sf::RenderWindow& window, Player& player, Equipment& eq, s
             if(mouse.x > 1063 and mouse.x < 1167 and mouse.y >94 and mouse.y < 120){
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
                     inUse = false;
+                    finished = true;
                 }
             }
         }
@@ -97,9 +98,10 @@ void Computer::update(sf::RenderWindow& window, Player& player, Equipment& eq, s
     if(inUse){
         player.hide();
     }
-    else{
+    if(!inUse and time.asSeconds() - lastUsed > 0.3 and time.asSeconds() - lastUsed < 0.4 ){
         player.showPlayer();
     }
+
     for(auto &e: icons){
         e->update(window);
     }

@@ -28,10 +28,8 @@ void AssultRiffle::usage(Player& player) {
         if (ammunition > 0) {
             if (ready) {
                 int n = player.getFacingRight() ? 1: -1;
-                ThrowableContainer::addItem(4,  assultRifle.getPosition().x + 15*n , assultRifle.getPosition().y,n);
-//                ThrowableContainer::addItem(4,assultRifle.getPosition().x + + 25*n,assultRifle.getPosition().y,n);
-//                ThrowableContainer::addItem(4,assultRifle.getPosition().x + + 25*n,assultRifle.getPosition().y,n);
-                ammunition -= 2;
+                ThrowableContainer::addItem(4,  assultRifle.getPosition().x + 15*n , assultRifle.getPosition().y,n);\
+                ammunition -= 1;
                 ready = false;
             } else {
                 fmt::println("not ready to shot");
@@ -57,7 +55,7 @@ void AssultRiffle::update(sf::RenderWindow& window, Player& player){
         reloadStart = clock.getElapsedTime().asSeconds();
     }
     if(reloading) {
-        if (currentTime - reloadStart >= reloadTime) {
+        if (currentTime - reloadStart >= reloadTime - (float)(player.getIntelligence()/4)) {
             fmt::println("reloaded");
             ammunition = 30;
             reloading = false;
