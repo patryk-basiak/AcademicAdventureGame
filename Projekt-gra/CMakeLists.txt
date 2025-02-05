@@ -149,6 +149,8 @@ add_executable(game main.cpp
         End.h
         objects/NPC.cpp
         objects/NPC.h
+        menuComponents/Button.cpp
+        menuComponents/Button.h
 )
 target_link_libraries(game sfml-graphics sfml-audio)
 target_link_libraries(game fmt)

@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "Game.h"
 #include "Player.h"
+#include "menuComponents/Button.h"
 
 class Menu {
 private:
@@ -33,65 +34,70 @@ private:
     bool start_game;
     bool exit;
     bool load_game;
+    // Button button;
 public:
-    Menu(){
+    Menu() {
         menuImage.setTexture(ResourceManager::getTexture("../graphics/menu.png"));
-        menuImage.setScale((float)1600/menuImage.getTexture()->getSize().x,(float)900/menuImage.getTexture()->getSize().y);
+        menuImage.setScale((float) 1600 / menuImage.getTexture()->getSize().x,
+                           (float) 900 / menuImage.getTexture()->getSize().y);
         playerPointChooser.setTexture(ResourceManager::getTexture("../graphics/chooser.png"));
-        playerPointChooser.setScale((float)900/playerPointChooser.getTexture()->getSize().x,(float)800/playerPointChooser.getTexture()->getSize().y);
-        playerPointChooser.setPosition(800 - (playerPointChooser.getTexture()->getSize().x*playerPointChooser.getScale().x/2), 50);
-        if(!font.loadFromFile("../graphics/PIXELAR REGULAR.OTF")) {
+        playerPointChooser.setScale((float) 900 / playerPointChooser.getTexture()->getSize().x,
+                                    (float) 800 / playerPointChooser.getTexture()->getSize().y);
+        playerPointChooser.setPosition(
+            800 - (playerPointChooser.getTexture()->getSize().x * playerPointChooser.getScale().x / 2), 50);
+        if (!font.loadFromFile("../graphics/PIXELAR REGULAR.OTF")) {
             fmt::println("font loading error");
         }
         int strengX = 480;
         int strengY = 275;
-        for(int i = 0; i<8; ++i){
+        for (int i = 0; i < 8; ++i) {
             sf::Sprite temp;
             temp.setTexture(ResourceManager::getTexture("../graphics/point.png"));
-            temp.setScale(0.05,0.05);
+            temp.setScale(0.05, 0.05);
             temp.setPosition(strengX, strengY);
             vector_strengt.push_back(temp);
-            strengX += temp.getTexture()->getSize().x*temp.getScale().x + 10;
+            strengX += temp.getTexture()->getSize().x * temp.getScale().x + 10;
         }
         int intelY = 400;
         int intelX = 480;
-        for(int i = 0; i<8; ++i){
+
+        for (int i = 0; i < 8; ++i) {
             sf::Sprite temp;
             temp.setTexture(ResourceManager::getTexture("../graphics/point.png"));
-            temp.setScale(0.05,0.05);
+            temp.setScale(0.05, 0.05);
             temp.setPosition(intelX, intelY);
             vector_inteli.push_back(temp);
-            intelX += temp.getTexture()->getSize().x*temp.getScale().x + 10;
+            intelX += temp.getTexture()->getSize().x * temp.getScale().x + 10;
         }
         int luckY = 520;
         int luckX = 480;
-        for(int i = 0; i<8; ++i){
+        for (int i = 0; i < 8; ++i) {
             sf::Sprite temp;
             temp.setTexture(ResourceManager::getTexture("../graphics/point.png"));
-            temp.setScale(0.05,0.05);
+            temp.setScale(0.05, 0.05);
             temp.setPosition(luckX, luckY);
             vector_luck.push_back(temp);
-            luckX += temp.getTexture()->getSize().x*temp.getScale().x + 10;
+            luckX += temp.getTexture()->getSize().x * temp.getScale().x + 10;
         }
         int agileY = 635;
         int agileX = 480;
-        for(int i = 0; i<8; ++i){
+        for (int i = 0; i < 8; ++i) {
             sf::Sprite temp;
             temp.setTexture(ResourceManager::getTexture("../graphics/point.png"));
-            temp.setScale(0.05,0.05);
+            temp.setScale(0.05, 0.05);
             temp.setPosition(agileX, agileY);
             vector_agile.push_back(temp);
-            agileX += temp.getTexture()->getSize().x*temp.getScale().x + 10;
+            agileX += temp.getTexture()->getSize().x * temp.getScale().x + 10;
         }
         int enduranceY = 760;
         int enduranceX = 480;
-        for(int i = 0; i<8; ++i){
+        for (int i = 0; i < 8; ++i) {
             sf::Sprite temp;
             temp.setTexture(ResourceManager::getTexture("../graphics/point.png"));
-            temp.setScale(0.05,0.05);
+            temp.setScale(0.05, 0.05);
             temp.setPosition(enduranceX, enduranceY);
             vector_enduran.push_back(temp);
-            enduranceX += temp.getTexture()->getSize().x*temp.getScale().x + 10;
+            enduranceX += temp.getTexture()->getSize().x * temp.getScale().x + 10;
         }
         settings = false;
         inMenu = true;
@@ -111,13 +117,11 @@ public:
         intelligence = 1;
         luck = 1;
         strength = 1;
-        agile =1;
+        agile = 1;
     }
 
 
-
-
-   void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window);
    void update(sf::RenderWindow& window, Game& gameClass, Player& player, Equipment& eq, sf::Clock timer);
 
 

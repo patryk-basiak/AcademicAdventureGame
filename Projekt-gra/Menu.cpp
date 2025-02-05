@@ -27,8 +27,6 @@ void Menu::draw(sf::RenderWindow &window) {
 }
 
 void Menu::update(sf::RenderWindow& window, Game &gameClass, Player &player, Equipment& eq, sf::Clock timer) {
-//    if(pos.x >= eqRect.getPosition().x + j*70 and pos.x <= eqRect.getPosition().x + ((j+1)*70) and
-//       pos.y >= eqRect.getPosition().y + i*70 and pos.y <= eqRect.getPosition().y + ((i+1)*70)){
     sf::Vector2i pos = sf::Mouse::getPosition(window);
     sf::Time time = timer.getElapsedTime();
     if(inMenu) {
@@ -44,7 +42,7 @@ void Menu::update(sf::RenderWindow& window, Game &gameClass, Player &player, Equ
                 }
 //
             }
-            if (pos.x > 480 and pos.x < 1120 and pos.y > 490 and pos.y < 630) {
+            if (pos.x > 480 and pos.x < 1120 and pos.y > 490 and pos.y < 630) { // Load game from save
                 gameClass.gameLoad(window, player, eq, timer, true, "../saves/savesX1.txt");
                 game = true;
                 menuX = false;

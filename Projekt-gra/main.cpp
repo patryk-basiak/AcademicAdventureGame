@@ -30,17 +30,13 @@ auto main() -> int {
     HUD hud;
     Game gameClass;
     debugMode = false;
-    eq.addItem(2);
-    eq.addItem(12);
-    eq.addItem(3);
-    eq.addItem(3);
     End end;
     sf::Clock clock;
     sf::Clock timer;
     while (window.isOpen()) {
         while (menuX) {
             clock.restart();
-            sf::Event event = sf::Event();
+            auto event = sf::Event();
             while (window.pollEvent(event))
             {
                 if (event.type == sf::Event::Closed)
@@ -66,14 +62,11 @@ auto main() -> int {
 
         }
         while (finished) {
-
             window.clear(sf::Color::Black);
             End::draw(window);
             window.display();
 
             }
-
-
         }
     }
 
